@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/white"/> <!-- Cambia a tu color deseado -->
+    <size android:width="60dp" android:height="60dp"/> <!-- Ajusta según sea necesario -->
+</shape>
