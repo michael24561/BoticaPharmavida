@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">BoticaPhar</string>
+
+    <string name="menu_sobre_nosotros">Sobre Nosotros</string>
+    <string name="menu_Categorias">Categorías</string>
+    <string name="menu_ofertas">Ofertas</string>
+    <string name="menu_contactanos">Contactanos</string>
+    <string name="menu_cerrar_sesion">Cerrar Sesión</string>
+
+    <string name="menu_categoria1">Aña 1</string>
+    <string name="menu_categoria2">Aña 2</string>
+    <string name="menu_categoria3">Aña 3</string>
+
 </resources>
