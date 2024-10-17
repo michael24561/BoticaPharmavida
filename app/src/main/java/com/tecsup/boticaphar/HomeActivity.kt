@@ -3,6 +3,7 @@ package com.tecsup.boticaphar
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -19,6 +20,7 @@ class HomeActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.nav_home -> {
                     // Aquí puedes manejar el caso si deseas permanecer en la misma actividad
+                    Toast.makeText(this, "Estás en la página principal", Toast.LENGTH_SHORT).show()
                     true
                 }
                 R.id.nav_cart -> {
@@ -37,14 +39,17 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        // Manejo de iconos de menú y notificaciones
         findViewById<View>(R.id.menu_icon).setOnClickListener {
             val intent = Intent(this, MenuLateralActivity::class.java)
             startActivity(intent)
+            Toast.makeText(this, "Abriendo menú lateral", Toast.LENGTH_SHORT).show()
         }
 
         findViewById<View>(R.id.notification_icon).setOnClickListener {
             val intent = Intent(this, NotificacionActivity::class.java)
             startActivity(intent)
+            Toast.makeText(this, "Abriendo notificaciones", Toast.LENGTH_SHORT).show()
         }
     }
 }

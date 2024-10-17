@@ -48,6 +48,7 @@
             android:name=".CarritoActivity" />
         <activity
             android:name=".MenuLateralActivity" />
+
     </application>
 
 </manifest>
