@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import android.widget.TextView
 
 class MenuLateralActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -20,10 +21,25 @@ class MenuLateralActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil_completo_drawer)
 
+        // Inicialización del DrawerLayout y NavigationView
         drawerLayout = findViewById(R.id.drawer_menu_perfil_completo)
         navigationView = findViewById(R.id.nav_menu_completo_view)
         navigationView.setNavigationItemSelectedListener(this)
+
+        // Obtener los datos del usuario de SharedPreferences
+        val sharedPreferences = getSharedPreferences("sesion_usuario", Context.MODE_PRIVATE)
+        val nombreUsuario = sharedPreferences.getString("usuario_nombre", "Usuario")
+        val gmailUsuario = sharedPreferences.getString("usuario_gmail", "usuario@gmail.com")
+
+        // Establecer el nombre en el TextView del header
+        val headerView = navigationView.getHeaderView(0)
+        val txtNombre = headerView.findViewById<TextView>(R.id.username)
+        val txtGmail = headerView.findViewById<TextView>(R.id.et_email)
+
+        txtNombre.text = nombreUsuario
+        txtGmail.text = gmailUsuario
     }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_cerrar_sesion -> {

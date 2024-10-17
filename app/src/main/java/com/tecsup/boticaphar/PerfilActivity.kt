@@ -1,16 +1,36 @@
 package com.tecsup.boticaphar
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class PerfilActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_perfil)
+    class PerfilActivity : AppCompatActivity() {
+        private lateinit var nameTextView: TextView
+        private lateinit var emailTextView: TextView
 
-        // Obtén la referencia al BottomNavigationView
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_perfil)
+
+            nameTextView = findViewById(R.id.username)
+            emailTextView = findViewById(R.id.et_email)
+
+            // Cargar datos de SharedPreferences
+            val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
+            val username = sharedPreferences.getString("username", null)
+            val email = sharedPreferences.getString("email", null)
+
+            // Muestra los detalles en los TextViews
+            nameTextView.text = username ?: "Nombre no disponible"
+            emailTextView.text = email ?: "Email no disponible"
+
+            // Configurar BottomNavigationView si es necesario...
+
+    // Obtén la referencia al BottomNavigationView
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         // Establece el listener para los ítems seleccionados

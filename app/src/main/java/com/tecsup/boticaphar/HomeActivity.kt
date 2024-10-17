@@ -2,6 +2,7 @@ package com.tecsup.boticaphar
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -17,6 +18,7 @@ class HomeActivity : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
+                    // Aquí puedes manejar el caso si deseas permanecer en la misma actividad
                     true
                 }
                 R.id.nav_cart -> {
@@ -33,6 +35,16 @@ class HomeActivity : AppCompatActivity() {
                 }
                 else -> false
             }
+        }
+
+        findViewById<View>(R.id.menu_icon).setOnClickListener {
+            val intent = Intent(this, MenuLateralActivity::class.java)
+            startActivity(intent)
+        }
+
+        findViewById<View>(R.id.notification_icon).setOnClickListener {
+            val intent = Intent(this, NotificacionActivity::class.java)
+            startActivity(intent)
         }
     }
 }

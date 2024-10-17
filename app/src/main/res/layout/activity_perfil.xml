@@ -13,43 +13,53 @@ android:layout_height="match_parent">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/white">
 
-        <ImageView
-            android:id="@+id/menu_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu"
-            android:layout_gravity="start"
-            android:padding="8dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <ImageView
-            android:id="@+id/logo_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/pharmavida"
-            android:layout_gravity="center"
-            android:padding="8dp" />
+            <ImageView
+                android:id="@+id/menu_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu"
+                android:padding="8dp" />
 
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="iHealth"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:padding="8dp"
-            android:layout_marginStart="8dp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center">
 
-        <ImageView
-            android:id="@+id/notification_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_notification"
-            android:layout_gravity="end"
-            android:padding="8dp" />
+                <ImageView
+                    android:id="@+id/logo_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/pharmavida"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="iHealth"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/notification_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_notification"
+                android:padding="8dp" />
+        </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <ImageView
@@ -59,13 +69,18 @@ android:layout_height="match_parent">
         android:src="@drawable/iconperfil"
         android:layout_marginTop="40dp"
         android:layout_gravity="center_horizontal" />
-
     <TextView
-        android:id="@+id/nombreusuario"
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="David Vilchez"
+        android:textSize="20sp"
+        android:layout_gravity="center_horizontal" />
+    <TextView
+        android:id="@+id/et_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:textSize="20sp"
         android:layout_gravity="center_horizontal" />
 

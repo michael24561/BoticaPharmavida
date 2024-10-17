@@ -19,17 +19,16 @@
         app:srcCompat="@drawable/iconperfil"/>
 
     <TextView
+        android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="David Vilchez"
         android:textColor="@color/black"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
-        android:id="@+id/txt_gmail"
+        android:id="@+id/et_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="david@gmail.com"
         android:textColor="@color/black"/>
 </LinearLayout>
