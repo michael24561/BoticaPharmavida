@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">>
-    <group android:checkableBehavior="single">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group>
         <item
-            android:id="@+id/nav_categorias"
-            android:icon="@drawable/category"
             android:title="@string/menu_Categorias">
             <menu>
                 <group android:checkableBehavior="none">
@@ -29,17 +27,17 @@
             android:id="@+id/nav_contactanos"
             android:icon="@drawable/telephone"
             android:title="@string/menu_contactanos"/>
-    </group>
 
-    <item
-        android:id="@+id/nav_sobre_nosotros"
-        android:icon="@drawable/sobrenosotros"
-        android:title="@string/menu_sobre_nosotros"
-        android:menuCategory="secondary"/>
-    <item
-        android:id="@+id/nav_cerrar_sesion"
-        android:icon="@drawable/cerrarsesion"
-        android:title="@string/menu_cerrar_sesion"
-        android:menuCategory="secondary"
-        android:titleTextColor="@color/red"/>
+        <item
+            android:id="@+id/nav_sobre_nosotros"
+            android:icon="@drawable/sobrenosotros"
+            android:title="@string/menu_sobre_nosotros"
+            android:menuCategory="secondary"/>
+        <item
+            android:id="@+id/nav_cerrar_sesion"
+            android:icon="@drawable/cerrarsesion"
+            android:title="@string/menu_cerrar_sesion"
+            android:menuCategory="secondary"
+            android:titleTextColor="@color/red"/>
+    </group>
 </menu>

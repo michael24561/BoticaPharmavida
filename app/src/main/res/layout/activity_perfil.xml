@@ -112,17 +112,19 @@ android:layout_height="match_parent">
                     android:gravity="center">
 
                     <ImageView
-                        android:layout_width="28dp"
+                        android:id="@+id/ic_profile"
+                        android:layout_width="wrap_content"
                         android:layout_height="28dp"
-                        android:src="@drawable/doctoricon"
-                        app:tint="@color/black" />
+                        android:src="@drawable/ic_profile"
+                        app:tint="@color/black"
+                        android:clickable="true" />
                 </LinearLayout>
             </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Médicos\nsalvados"
+                android:text="Editar perfil"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:gravity="center"/>
@@ -183,9 +185,10 @@ android:layout_height="match_parent">
                     android:gravity="center">
 
                     <ImageView
+                        android:id="@+id/pedidos"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:src="@drawable/corazon"
+                        android:src="@drawable/pedidos"
                         app:tint="@color/black" />
                 </LinearLayout>
             </FrameLayout>
@@ -193,7 +196,7 @@ android:layout_height="match_parent">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Diario\nde salud"
+                android:text="Mis pedidos"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:gravity="center"/>

@@ -47,6 +47,11 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
+        if (!isValidEmail(email)) {
+            emailEditText.error = "Correo electrónico inválido"
+            return
+        }
+
         if (password != confirmPassword) {
             Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
             return
@@ -66,5 +71,9 @@ class RegisterActivity : AppCompatActivity() {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
         finish() // Cierra esta actividad
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }

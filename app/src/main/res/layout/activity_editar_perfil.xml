@@ -1,0 +1,251 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Sección de Título, subtítulo e imagen juntos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <!-- Título y subtítulo -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/edit_profile_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Editar perfil"
+                    android:textSize="24sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/edit_profile_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Actualiza tus datos personales"
+                    android:textSize="16sp"
+                    android:textColor="@color/lead"/>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="80dp"
+                android:layout_height="80dp">
+
+                <ImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/iconperfil"
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/change_photo_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_camara"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="4dp"
+                    android:elevation="8dp" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Nombres -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombres"
+            android:textSize="16sp"
+            android:textColor="@color/lead" />
+
+        <EditText
+            android:id="@+id/et_nombres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Michael Dangelo"
+            android:padding="12dp"
+            android:textColorHint="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Apellido paterno y materno -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apellido paterno"
+                    android:textSize="16sp"
+                    android:textColor="@color/lead" />
+
+                <EditText
+                    android:id="@+id/et_apellido_paterno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Fernández"
+                    android:padding="12dp"
+                    android:textColorHint="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apellido materno"
+                    android:textSize="16sp"
+                    android:textColor="@color/lead" />
+
+                <EditText
+                    android:id="@+id/et_apellido_materno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Hoyos"
+                    android:padding="12dp"
+                    android:textColorHint="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Correo electrónico -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Correo electrónico"
+            android:textSize="16sp"
+            android:textColor="@color/lead" />
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="mic************@gmail.com"
+            android:padding="12dp"
+            android:textColorHint="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Número de documento -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Número de documento"
+            android:textColor="@color/lead"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/et_num_documento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="74578964"
+            android:padding="12dp"
+            android:textColorHint="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Fecha de nacimiento -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha de nacimiento"
+            android:textSize="16sp"
+            android:textColor="@color/lead" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Selecciona una fecha"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_weight="1" />  <!-- Utiliza layout_weight para que ocupe el espacio disponible -->
+
+            <ImageView
+                android:id="@+id/iv_calendar_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_calendario"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+
+        <!-- Género -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Género"
+            android:textSize="16sp"
+            android:textColor="@color/lead" />
+
+        <!-- Número de celular -->
+        <Spinner
+            android:id="@+id/spinner_genero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:padding="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Número de celular"
+            android:textSize="16sp"
+            android:textColor="@color/lead" />
+
+        <EditText
+            android:id="@+id/et_numero_celular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="961 333 453"
+            android:padding="12dp"
+            android:textColorHint="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Botón Guardar -->
+        <Button
+            android:id="@+id/btn_guardar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:textColor="@color/white"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp" />
+    </LinearLayout>
+</ScrollView>

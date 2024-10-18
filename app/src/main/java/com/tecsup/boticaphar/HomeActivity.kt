@@ -3,6 +3,7 @@ package com.tecsup.boticaphar
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -14,6 +15,7 @@ class HomeActivity : AppCompatActivity() {
 
         // Obtén la referencia al BottomNavigationView
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        val menuIcon: ImageView = findViewById(R.id.menu_icon)
 
         // Establece el listener para los ítems seleccionados
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
@@ -41,9 +43,9 @@ class HomeActivity : AppCompatActivity() {
 
         // Manejo de iconos de menú y notificaciones
         findViewById<View>(R.id.menu_icon).setOnClickListener {
+            // Redirigir a la actividad activity_perfil_completo_drawer
             val intent = Intent(this, MenuLateralActivity::class.java)
             startActivity(intent)
-            Toast.makeText(this, "Abriendo menú lateral", Toast.LENGTH_SHORT).show()
         }
 
         findViewById<View>(R.id.notification_icon).setOnClickListener {

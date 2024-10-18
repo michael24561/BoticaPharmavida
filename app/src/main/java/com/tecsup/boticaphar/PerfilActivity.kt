@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -19,10 +21,23 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
             nameTextView = findViewById(R.id.username)
             emailTextView = findViewById(R.id.et_email)
 
+
             // Cargar datos de SharedPreferences
             val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
             val username = sharedPreferences.getString("username", null)
             val email = sharedPreferences.getString("email", null)
+            val editarPerfil = findViewById<ImageView>(R.id.ic_profile)
+            val misPedidos = findViewById<ImageView>(R.id.pedidos)
+
+            editarPerfil.setOnClickListener {
+                val intent = Intent(this@PerfilActivity, EditarPerfilActivity::class.java)
+                startActivity(intent)
+            }
+
+            misPedidos.setOnClickListener {
+                val intent = Intent(this@PerfilActivity, HistorialPedidosActivity::class.java)
+                startActivity(intent)
+            }
 
             // Muestra los detalles en los TextViews
             nameTextView.text = username ?: "Nombre no disponible"

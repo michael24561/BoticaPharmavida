@@ -49,6 +49,15 @@
         <activity
             android:name=".MenuLateralActivity" />
 
+        <activity
+            android:name=".NotificacionActivity" />
+
+        <activity
+            android:name=".EditarPerfilActivity" />
+
+        <activity
+            android:name=".HistorialPedidosActivity" />
+
     </application>
 
 </manifest>

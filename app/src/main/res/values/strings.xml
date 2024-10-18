@@ -10,5 +10,10 @@
     <string name="menu_categoria1">Aña 1</string>
     <string name="menu_categoria2">Aña 2</string>
     <string name="menu_categoria3">Aña 3</string>
+        <string-array name="genero_options">
+            <item>Masculino</item>
+            <item>Femenino</item>
+            <item>Otro</item>
+        </string-array>
 
 </resources>
