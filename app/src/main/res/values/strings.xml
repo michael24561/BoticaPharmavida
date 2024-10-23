@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">BoticaPhar</string>
-
     <string name="menu_sobre_nosotros">Sobre Nosotros</string>
     <string name="menu_Categorias">Categorías</string>
     <string name="menu_ofertas">Ofertas</string>
     <string name="menu_contactanos">Contactanos</string>
-    <string name="menu_cerrar_sesion">Cerrar Sesión</string>
+
+
+    <string name="navigation_drawer_open">menu abierto</string>
+    <string name="navigation_drawer_close">menu cerrado</string>
 
     <string name="menu_categoria1">Aña 1</string>
     <string name="menu_categoria2">Aña 2</string>
@@ -15,5 +16,10 @@
             <item>Femenino</item>
             <item>Otro</item>
         </string-array>
+
+        <string name="app_name">BoticaPharmavida</string>
+        <string name="open_drawer">Abrir menú</string>
+        <string name="close_drawer">Cerrar menú</string>
+
 
 </resources>

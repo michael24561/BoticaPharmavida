@@ -6,4 +6,6 @@
     </style>
 
     <style name="Theme.BoticaPhar" parent="Base.Theme.BoticaPhar" />
+    
+
 </resources>

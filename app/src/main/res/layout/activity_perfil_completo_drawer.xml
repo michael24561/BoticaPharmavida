@@ -8,12 +8,51 @@
     android:layout_height="match_parent"
     tools:openDrawer="start">
 
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_menu_completo_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/menu_header_perfil_drawer"
-            app:menu="@menu/menu_perfil_drawer">
-        </com.google.android.material.navigation.NavigationView>
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                        <androidx.appcompat.widget.Toolbar
+                            android:id="@+id/toolbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/actionBarSize"
+                            android:background="@color/white"
+                            android:contentInsetStartWithNavigation="0dp"
+                            android:elevation="4dp">
+
+                                <ImageView
+                                    android:id="@+id/menu_icon"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_menu"
+                                    android:padding="8dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="iHealth"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:layout_gravity="center" />
+                        </androidx.appcompat.widget.Toolbar>
+
+                        <!-- Aquí van tus otros elementos del layout -->
+
+                </LinearLayout>
+
+                <com.google.android.material.navigation.NavigationView
+                    android:id="@+id/nav_menu_completo_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    app:headerLayout="@layout/menu_header_perfil_drawer"
+                    app:menu="@menu/menu_perfil_drawer"/>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </androidx.drawerlayout.widget.DrawerLayout>

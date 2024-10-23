@@ -13,7 +13,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:contentInsetStartWithNavigation="0dp"
+            android:elevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -25,8 +27,8 @@
                     android:id="@+id/menu_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_menu"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:src="@drawable/ic_menu" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -61,6 +63,7 @@
             </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
+
 
         <EditText
             android:id="@+id/search_bar"

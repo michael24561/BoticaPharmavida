@@ -31,13 +31,7 @@
         <item
             android:id="@+id/nav_sobre_nosotros"
             android:icon="@drawable/sobrenosotros"
-            android:title="@string/menu_sobre_nosotros"
-            android:menuCategory="secondary"/>
-        <item
-            android:id="@+id/nav_cerrar_sesion"
-            android:icon="@drawable/cerrarsesion"
-            android:title="@string/menu_cerrar_sesion"
-            android:menuCategory="secondary"
-            android:titleTextColor="@color/red"/>
+            android:title="@string/menu_sobre_nosotros" />
+
     </group>
 </menu>
