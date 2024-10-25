@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Toolbar con botón de regreso y logo a la derecha -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -16,7 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Botón de regreso -->
     <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
@@ -25,9 +23,10 @@
         android:contentDescription="Regresar"
         android:background="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="@id/toolbar"
-        app:layout_constraintTop_toTopOf="@id/toolbar" />
+        app:layout_constraintTop_toTopOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar" />
 
-    <!-- Logo a la derecha -->
+    <!-- Logo a la derecha del Toolbar -->
     <ImageView
         android:id="@+id/app_logo"
         android:layout_width="35dp"
@@ -35,7 +34,8 @@
         android:src="@drawable/pharmavida"
         android:contentDescription="Logo de la app"
         app:layout_constraintEnd_toEndOf="@id/toolbar"
-        app:layout_constraintTop_toTopOf="@id/toolbar" />
+        app:layout_constraintTop_toTopOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar" />
 
     <!-- Contenido principal del layout -->
     <ImageView
