@@ -41,13 +41,11 @@
                                     android:layout_gravity="center" />
                         </androidx.appcompat.widget.Toolbar>
 
-                        <!-- Aquí van tus otros elementos del layout -->
-
                 </LinearLayout>
 
                 <com.google.android.material.navigation.NavigationView
                     android:id="@+id/nav_menu_completo_view"
-                    android:layout_width="wrap_content"
+                    android:layout_width="250dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="start"
                     app:headerLayout="@layout/menu_header_perfil_drawer"

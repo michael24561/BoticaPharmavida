@@ -79,5 +79,6 @@ class MenuLateralActivity : AppCompatActivity() {
             super.onBackPressed()
         }
         }
+
     }
 

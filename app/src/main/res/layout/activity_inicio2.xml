@@ -69,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/indicator_layout"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -85,9 +86,10 @@
             android:id="@+id/skip_button"
             android:layout_width="110dp"
             android:layout_height="50dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="45dp"
             android:backgroundTint="@color/black"
-            android:text="Saltar" />
+            android:text="Saltar"
+            android:textColor="@color/white"/>
     </LinearLayout>
 
 </RelativeLayout>

@@ -3,7 +3,7 @@
     <!-- Estado cuando se presiona el botón -->
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/light_red" /> <!-- Color para el estado presionado -->
+            <solid android:color="@color/btn_fondo" /> <!-- Color para el estado presionado -->
             <corners android:radius="8dp" />
         </shape>
     </item>

@@ -6,4 +6,14 @@
     <color name="lead">#727273</color>
     <color name="red">#E2034F</color>
     <color name="light_red">#FFAEAE</color>
+    <color name="btn_fondo">#979393</color>
+
+
+        <color name="colorPrimary">#FFFFFF</color> <!-- Color que quieres que se mantenga blanco -->
+        <color name="colorPrimaryDark">#000000</color> <!-- Color que quieres que se mantenga negro -->
+        <color name="colorAccent">#FF4081</color>
+
+    <color name="selected_color">#3F51B5</color>
+    <color name="unselected_color">#757575</color>
+
 </resources>

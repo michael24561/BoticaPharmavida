@@ -12,6 +12,8 @@ class CarritoActivity : AppCompatActivity() {
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
+        bottomNavigationView.selectedItemId = R.id.nav_cart
+
         // Establece el listener para los ítems seleccionados
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {

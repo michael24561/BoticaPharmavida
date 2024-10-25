@@ -30,12 +30,12 @@ class PerfilActivity : AppCompatActivity() {
         val misPedidos = findViewById<ImageView>(R.id.pedidos)
 
         editarPerfil.setOnClickListener {
-            val intent = Intent(this@PerfilActivity, EditarPerfilActivity::class.java)
+            val intent = Intent(this, EditarPerfilActivity::class.java)
             startActivity(intent)
         }
 
         misPedidos.setOnClickListener {
-            val intent = Intent(this@PerfilActivity, HistorialPedidosActivity::class.java)
+            val intent = Intent(this, HistorialPedidosActivity::class.java)
             startActivity(intent)
         }
 
@@ -43,8 +43,12 @@ class PerfilActivity : AppCompatActivity() {
         nameTextView.text = username ?: "Nombre no disponible"
         emailTextView.text = email ?: "Email no disponible"
 
-        // Configurar BottomNavigationView si es necesario
+        // Configurar BottomNavigationView
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        // Establecer el ítem del perfil como seleccionado
+        bottomNavigationView.selectedItemId = R.id.nav_profile
+
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
@@ -57,15 +61,9 @@ class PerfilActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-                R.id.nav_profile -> true
+                R.id.nav_profile -> true // Mantener en la misma actividad
                 else -> false
             }
-        }
-
-        // Manejo de iconos de menú y notificaciones
-        findViewById<View>(R.id.menu_icon).setOnClickListener {
-            val intent = Intent(this, MenuLateralActivity::class.java)
-            startActivity(intent)
         }
 
         // Manejo del botón de cerrar sesión
@@ -75,18 +73,15 @@ class PerfilActivity : AppCompatActivity() {
         }
     }
 
-    // Función para cerrar sesión
     private fun cerrarSesion() {
-        // Eliminar los datos del usuario de SharedPreferences
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.clear() // Borra todos los datos almacenados
         editor.apply()
 
-        // Redirigir a la pantalla de inicio de sesión
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
-        finish() // Cerrar la actividad actual para evitar que el usuario regrese
+        finish()
     }
 }

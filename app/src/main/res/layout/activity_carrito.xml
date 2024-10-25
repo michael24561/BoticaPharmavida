@@ -73,14 +73,20 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <!-- BottomNavigationView para la barra inferior -->
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_navigation_menu"
+        android:background="@color/white"
+        app:itemIconTint="@color/selector_color"
+        app:itemTextColor="@color/selector_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:menu="@menu/bottom_navigation_menu"
-        app:backgroundTint="@color/white" />
+        app:itemHorizontalTranslationEnabled="false"
+        app:labelVisibilityMode="labeled" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
