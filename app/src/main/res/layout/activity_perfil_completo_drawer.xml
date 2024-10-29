@@ -42,7 +42,6 @@
                         </androidx.appcompat.widget.Toolbar>
 
                 </LinearLayout>
-
                 <com.google.android.material.navigation.NavigationView
                     android:id="@+id/nav_menu_completo_view"
                     android:layout_width="250dp"

@@ -8,8 +8,9 @@
         android:id="@+id/image_placeholder"
         android:layout_width="216dp"
         android:layout_height="204dp"
+        android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
-        android:background="#CCCCCC" />
+        android:src="@drawable/inicio3" />
 
     <TextView
         android:id="@+id/title_text"
@@ -76,11 +77,11 @@
         <Button
             android:id="@+id/start_button"
             android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:backgroundTint="@color/skyblue"
+            android:layout_height="40dp"
+            android:background="@drawable/button_rounded_blue"
             android:text="Empezar"
-            android:textColor="#FFFFFF" />
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"/>
 
     </LinearLayout>
-
 </RelativeLayout>

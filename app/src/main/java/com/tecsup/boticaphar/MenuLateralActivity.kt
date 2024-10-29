@@ -2,6 +2,7 @@ package com.tecsup.boticaphar
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -56,7 +57,10 @@ class MenuLateralActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_contactanos -> {
-
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse("https://www.youtube.com/watch?v=uWfbR_juSdY")
+                    }
+                    startActivity(intent)
                     true
                 }
                 R.id.nav_sobre_nosotros -> {

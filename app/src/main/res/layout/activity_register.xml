@@ -94,7 +94,7 @@
             android:onClick="onReturnToLoginClick"
             android:text="¿Ya tienes una cuenta? Iniciar sesión"
             android:textColor="@color/skyblue"
-            android:textSize="14sp" />
+            android:textSize="15sp" />
 
     </LinearLayout>
 </ScrollView>
