@@ -76,7 +76,6 @@ class PerfilActivity : AppCompatActivity() {
     private fun cerrarSesion() {
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        editor.clear() // Borra todos los datos almacenados
         editor.apply()
 
         val intent = Intent(this, LoginActivity::class.java)

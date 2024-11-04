@@ -1,37 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <group>
-        <item
-            android:title="@string/menu_Categorias">
-            <menu>
-                <group android:checkableBehavior="none">
-                    <item
-                        android:id="@+id/nav_categoria1"
-                        android:title="@string/menu_categoria1"/>
-                    <item
-                        android:id="@+id/nav_categoria2"
-                        android:title="@string/menu_categoria2"/>
-                    <item
-                        android:id="@+id/nav_categoria3"
-                        android:title="@string/menu_categoria3"/>
-                </group>
-            </menu>
-        </item>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <item
-            android:id="@+id/nav_ofertas"
-            android:icon="@drawable/coin"
-            android:title="@string/menu_ofertas"/>
-        <item
-            android:id="@+id/nav_contactanos"
-            android:icon="@drawable/telephone"
-            android:title="@string/menu_contactanos"/>
+    <item
+        android:id="@+id/nav_categoria"
+        android:title="Categoría" />  <!-- Cambia esto al string correspondiente -->
 
-        <item
-            android:id="@+id/nav_sobre_nosotros"
-            android:icon="@drawable/sobrenosotros"
-            android:title="@string/menu_sobre_nosotros" />
+    <item
+        android:id="@+id/nav_categoria1"
+        android:title="Subcategoría 1"
+        android:visible="false" /> <!-- Inicialmente oculto -->
 
-    </group>
+    <item
+        android:id="@+id/nav_categoria2"
+        android:title="Subcategoría 2"
+        android:visible="false" /> <!-- Inicialmente oculto -->
+
+    <item
+        android:id="@+id/nav_categoria3"
+        android:title="Subcategoría 3"
+        android:visible="false" /> <!-- Inicialmente oculto -->
+
+    <item
+        android:id="@+id/nav_ofertas"
+        android:title="Ofertas" />
+
+    <item
+        android:id="@+id/nav_contactanos"
+        android:title="Contáctanos" />
+
+    <item
+        android:id="@+id/nav_sobre_nosotros"
+        android:title="Sobre Nosotros" />
 </menu>
