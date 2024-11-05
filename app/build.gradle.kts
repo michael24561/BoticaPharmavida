@@ -15,6 +15,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+
     }
 
     buildTypes {
@@ -33,11 +35,18 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+
 }
 
-dependencies {
+val room_version = "2.6.1"
 
+dependencies {
+    //Fragmentos
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
+
+    //Room
+    implementation("androidx.room:room-runtime:$room_version")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
