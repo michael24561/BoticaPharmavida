@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tecsup.boticaphar.adapters.CategoriaAdapter
 import com.tecsup.boticaphar.adapters.ProductoAdapter
-// Asegúrate de que este sea el nombre correcto
 import com.tecsup.boticaphar.models.Categoria
 import com.tecsup.boticaphar.models.Producto
 import com.tecsup.boticaphar.network.ApiService
