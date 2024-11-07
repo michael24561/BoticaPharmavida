@@ -44,7 +44,17 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.swiperefreshlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //Picasso
+    implementation (libs.picasso)
+    
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.convertergson)
+    implementation(libs.glide)
+    implementation(libs.glideCompiler)
 }
