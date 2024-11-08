@@ -22,80 +22,67 @@ import retrofit2.Response
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var categoriaAdapter: CategoriaAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var categoriaAdapter: CategoriaAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         recyclerView = findViewById(R.id.category_recycler_view)
+
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Llamada a obtener las categorías
         obtenerCategorias()
     }
 
     private fun obtenerCategorias() {
-        Log.d("HomeActivity", "Obteniendo categorías...")
         val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
         apiService.obtenerCategorias().enqueue(object : Callback<List<Categoria>> {
             override fun onResponse(call: Call<List<Categoria>>, response: Response<List<Categoria>>) {
-                Log.d("HomeActivity", "Respuesta de categorías: ${response.body()}")
                 if (response.isSuccessful) {
                     val categorias = response.body() ?: emptyList()
                     if (categorias.isNotEmpty()) {
-                        // Ahora obtenemos los productos
+                        // Obtener los productos después de obtener las categorías
                         obtenerProductos(categorias)
                     } else {
-                        Log.w("HomeActivity", "No se encontraron categorías.")
                         Toast.makeText(this@HomeActivity, "No se encontraron categorías", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Log.e("HomeActivity", "Error al obtener categorías: ${response.errorBody()?.string()}")
                     Toast.makeText(this@HomeActivity, "Error al obtener categorías", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<List<Categoria>>, t: Throwable) {
-                Log.e("HomeActivity", "Error de red: ${t.message}")
                 Toast.makeText(this@HomeActivity, "Error de red: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun obtenerProductos(categorias: List<Categoria>) {
-        Log.d("HomeActivity", "Obteniendo productos...")
         val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
         apiService.obtenerProductos().enqueue(object : Callback<List<Producto>> {
             override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {
                 if (response.isSuccessful) {
                     val productos = response.body() ?: emptyList()
-                    if (productos != null) {
-                        val adapter = ProductoAdapter(productos)
-                        recyclerView.adapter = adapter
-                    }
-                    Log.d("HomeActivity", "Respuesta de productos: ${productos.size} productos encontrados")
 
-                    // Asignar productos a cada categoría
                     categorias.forEach { categoria ->
-                        categoria.productos = productos.filter { it.categoriaId == categoria.id }.toMutableList()
+                        categoria.productos = productos.filter { it.categoria == categoria.id }
                     }
 
-                    // Inicializa y asigna el adaptador de categorías
                     categoriaAdapter = CategoriaAdapter(categorias)
-                    recyclerView.adapter = categoriaAdapter  // Asegúrate de asignar el adaptador aquí
+                    recyclerView.adapter = categoriaAdapter
                 } else {
                     Toast.makeText(this@HomeActivity, "Error al obtener productos", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<List<Producto>>, t: Throwable) {
-                Log.e("HomeActivity", "Error al obtener productos: ${t.message}")
                 Toast.makeText(this@HomeActivity, "Error al obtener productos: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
+
 
 
 
