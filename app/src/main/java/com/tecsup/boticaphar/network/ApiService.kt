@@ -4,6 +4,7 @@ import com.tecsup.boticaphar.models.Categoria
 import com.tecsup.boticaphar.models.Producto
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 
 interface ApiService {
@@ -12,4 +13,5 @@ interface ApiService {
 
     @GET("productos/")
     fun obtenerProductos(): Call<List<Producto>>
+
 }
