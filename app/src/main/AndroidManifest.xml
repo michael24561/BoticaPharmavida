@@ -41,6 +41,8 @@
         <activity android:name=".HistorialPedidosActivity" />
         <activity android:name=".SobrenosotrosActivity" />
         <activity android:name="DetalleProductoActivity" />
+        <activity android:name=".ProductosCategoriaActivity" />
+
 
     </application>
 

@@ -2,7 +2,6 @@ package com.tecsup.boticaphar
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tecsup.boticaphar.adapters.CategoriaAdapter
-import com.tecsup.boticaphar.adapters.ProductoAdapter
 import com.tecsup.boticaphar.models.Categoria
 import com.tecsup.boticaphar.models.Producto
 import com.tecsup.boticaphar.network.ApiService
@@ -30,9 +28,9 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         recyclerView = findViewById(R.id.category_recycler_view)
-
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        // Iniciar la carga de categorías y productos
         obtenerCategorias()
     }
 
@@ -43,7 +41,7 @@ class HomeActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val categorias = response.body() ?: emptyList()
                     if (categorias.isNotEmpty()) {
-                        // Obtener los productos después de obtener las categorías
+                        // Después de obtener las categorías, obtenemos los productos
                         obtenerProductos(categorias)
                     } else {
                         Toast.makeText(this@HomeActivity, "No se encontraron categorías", Toast.LENGTH_SHORT).show()
@@ -61,15 +59,19 @@ class HomeActivity : AppCompatActivity() {
 
     private fun obtenerProductos(categorias: List<Categoria>) {
         val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
+
+        // Llamada para obtener todos los productos, sin filtros
         apiService.obtenerProductos().enqueue(object : Callback<List<Producto>> {
             override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {
                 if (response.isSuccessful) {
                     val productos = response.body() ?: emptyList()
 
+                    // Asignar productos a su categoría correspondiente
                     categorias.forEach { categoria ->
                         categoria.productos = productos.filter { it.categoria == categoria.id }
                     }
 
+                    // Configurar el adaptador de categorías
                     categoriaAdapter = CategoriaAdapter(categorias)
                     recyclerView.adapter = categoriaAdapter
                 } else {
@@ -82,10 +84,6 @@ class HomeActivity : AppCompatActivity() {
             }
         })
     }
-
-
-
-
 
     override fun onStart() {
         super.onStart()
@@ -122,5 +120,3 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 }
-
-

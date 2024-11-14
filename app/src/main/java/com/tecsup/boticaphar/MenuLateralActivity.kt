@@ -4,61 +4,41 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.ActionBarDrawerToggle
-import android.widget.ImageView
+import com.tecsup.boticaphar.models.Categoria
+import com.tecsup.boticaphar.network.ApiService
+import com.tecsup.boticaphar.network.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MenuLateralActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
-    private var isSubmenuVisible = false // Control de visibilidad del submenú
+    private lateinit var navigationView: NavigationView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil_completo_drawer)
 
-        // Inicializar el DrawerLayout
         drawerLayout = findViewById(R.id.drawer_menu_perfil_completo)
+        navigationView = findViewById(R.id.nav_menu_completo_view)
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        // Llamada a la API para obtener las categorías
+        obtenerCategorias()
 
-        val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        val menuIcon: ImageView = findViewById(R.id.menu_icon)
-        menuIcon.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
-
-        val navigationView: NavigationView = findViewById(R.id.nav_menu_completo_view)
-
+        // Configuración del menú lateral
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_categoria -> {
-                    // Alternar visibilidad de las subcategorías cuando se presiona "Categoría"
-                    toggleSubmenu(navigationView)
-                    false // No cerrar el menú al presionar "Categoría"
-                }
-                R.id.nav_categoria1 -> {
-                    // Acción para Subcategoría 1
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                    true
-                }
-                R.id.nav_categoria2 -> {
-                    // Acción para Subcategoría 2
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                    true
-                }
-                R.id.nav_categoria3 -> {
-                    // Acción para Subcategoría 3
+                    // Al presionar "Categoría", solo cerramos el menú sin hacer nada especial
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
@@ -86,15 +66,68 @@ class MenuLateralActivity : AppCompatActivity() {
         }
     }
 
-    // Función para expandir y contraer las subcategorías
-    private fun toggleSubmenu(navigationView: NavigationView) {
-        isSubmenuVisible = !isSubmenuVisible // Alternar visibilidad
+    // Función para obtener las categorías desde la API
+    private fun obtenerCategorias() {
+        val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
+        apiService.obtenerCategorias().enqueue(object : Callback<List<Categoria>> {
+            override fun onResponse(call: Call<List<Categoria>>, response: Response<List<Categoria>>) {
+                if (response.isSuccessful) {
+                    val categorias = response.body() ?: emptyList()
+                    Log.d("MenuLateralActivity", "Categorías obtenidas: $categorias") // Verifica las categorías obtenidas
 
-        // Cambiar visibilidad de las subcategorías
-        navigationView.menu.findItem(R.id.nav_categoria1).isVisible = isSubmenuVisible
-        navigationView.menu.findItem(R.id.nav_categoria2).isVisible = isSubmenuVisible
-        navigationView.menu.findItem(R.id.nav_categoria3).isVisible = isSubmenuVisible
+                    if (categorias.isNotEmpty()) {
+                        // Llenar el menú con las categorías obtenidas
+                        cargarCategoriasEnMenuLateral(categorias)
+                    } else {
+                        Toast.makeText(this@MenuLateralActivity, "No se encontraron categorías", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@MenuLateralActivity, "Error al obtener categorías", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Categoria>>, t: Throwable) {
+                Toast.makeText(this@MenuLateralActivity, "Error de red: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
+
+    private fun cargarCategoriasEnMenuLateral(categorias: List<Categoria>) {
+        val menu = navigationView.menu // Obtenemos el menú desde el NavigationView
+
+        // Obtenemos el ítem de categoría principal
+        val navCategoria = menu.findItem(R.id.nav_categoria)
+
+        // Obtenemos el submenú dentro de 'nav_categoria'
+        val subMenu = navCategoria.subMenu
+
+        // Limpiamos el submenú para evitar duplicados
+        subMenu?.clear()
+
+        // Verificamos que las categorías se han recibido correctamente
+        if (categorias.isEmpty()) {
+            Toast.makeText(this, "No se encontraron categorías", Toast.LENGTH_SHORT).show()
+        }
+
+        // Agregamos cada categoría al submenú
+        categorias.forEach { categoria ->
+            subMenu?.add(Menu.NONE, Menu.NONE, Menu.NONE, categoria.nombre)
+                ?.setOnMenuItemClickListener {
+                    // Aquí manejas el clic en la categoría
+                    Toast.makeText(this, "Seleccionada: ${categoria.nombre}", Toast.LENGTH_SHORT).show()
+
+                    // Redirigir a los productos de la categoría seleccionada
+                    val intent = Intent(this, ProductosCategoriaActivity::class.java)
+                    intent.putExtra("categoriaId", categoria.id) // Pasamos el ID de la categoría seleccionada
+                    intent.putExtra("categoriaNombre", categoria.nombre) // Pasamos el nombre de la categoría
+                    startActivity(intent)
+
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+        }
+    }
+
 
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {

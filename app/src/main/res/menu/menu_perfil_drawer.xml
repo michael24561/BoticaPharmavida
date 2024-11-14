@@ -2,22 +2,13 @@
 
     <item
         android:id="@+id/nav_categoria"
-        android:title="Categoría" />  <!-- Cambia esto al string correspondiente -->
+        android:title="Categoría" >
 
-    <item
-        android:id="@+id/nav_categoria1"
-        android:title="Subcategoría 1"
-        android:visible="false" /> <!-- Inicialmente oculto -->
+        <menu>
 
-    <item
-        android:id="@+id/nav_categoria2"
-        android:title="Subcategoría 2"
-        android:visible="false" /> <!-- Inicialmente oculto -->
+        </menu>
 
-    <item
-        android:id="@+id/nav_categoria3"
-        android:title="Subcategoría 3"
-        android:visible="false" /> <!-- Inicialmente oculto -->
+    </item>
 
     <item
         android:id="@+id/nav_ofertas"

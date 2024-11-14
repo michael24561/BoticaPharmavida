@@ -45,7 +45,7 @@ class DetalleProductoActivity : AppCompatActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
             // Obtener productos similares (usando la categoría del producto)
-            obtenerProductosSimilares(it.categoria, it.id)
+            obtenerProductosSimilares(it.categoria, it.id)  // Usamos it.categoria directamente
         }
     }
 
@@ -75,7 +75,3 @@ class DetalleProductoActivity : AppCompatActivity() {
         })
     }
 }
-
-
-
-
