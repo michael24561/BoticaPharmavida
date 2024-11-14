@@ -13,22 +13,14 @@ import com.tecsup.boticaphar.R
 import com.tecsup.boticaphar.models.Producto
 import java.util.Locale
 
-class ProductoAdapter(
-    private var productos: List<Producto>,
-    private val isHorizontal: Boolean = false // Nuevo parámetro para controlar el tipo de layout
-) : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {
+class ProductoHorizontalAdapter(
+    private var productos: List<Producto>
+) : RecyclerView.Adapter<ProductoHorizontalAdapter.ProductoViewHolder>() {
 
     private var productosFiltrados: List<Producto> = productos.toMutableList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
-        // Inflar el layout dependiendo de si es horizontal o no
-        val layoutRes = if (isHorizontal) {
-            R.layout.item_producto_horizontal // Vista horizontal
-        } else {
-            R.layout.item_producto // Vista vertical
-        }
-
-        val view = LayoutInflater.from(parent.context).inflate(layoutRes, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_producto_horizontal, parent, false)
         return ProductoViewHolder(view)
     }
 
@@ -37,12 +29,10 @@ class ProductoAdapter(
         notifyDataSetChanged() // Esto notifica al RecyclerView que los datos han cambiado
     }
 
-
     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
         val producto = productosFiltrados[position]
         holder.productoNombre.text = producto.nombre
         holder.productoPrecio.text = "$${producto.precio}"
-        holder.productoDescripcion.text = producto.descripcion
 
         // Cargar la imagen usando Picasso
         Picasso.get().load(producto.imagen).into(holder.productoImagen)
@@ -75,8 +65,5 @@ class ProductoAdapter(
         val productoNombre: TextView = itemView.findViewById(R.id.producto_nombre)
         val productoPrecio: TextView = itemView.findViewById(R.id.producto_precio)
         val productoImagen: ImageView = itemView.findViewById(R.id.producto_imagen)
-        val productoDescripcion: TextView = itemView.findViewById(R.id.producto_descripcion)
     }
 }
-
-

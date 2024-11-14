@@ -1,0 +1,83 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Barra de búsqueda -->
+        <EditText
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Buscar productos..."
+            android:padding="12dp"
+            android:imeOptions="actionSearch"
+            android:background="@drawable/search_bar_background"
+            android:drawableStart="@drawable/baseline_search_24"
+            android:drawablePadding="10dp"
+            android:textSize="16sp"
+            android:layout_margin="8dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:inputType="text" />
+
+        <!-- Contenedor para las Búsquedas Recientes -->
+        <LinearLayout
+            android:id="@+id/container_recientes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:id="@+id/txt_busqueda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Búsquedas Recientes"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingBottom="8dp" />
+
+            <!-- RecyclerView para mostrar las búsquedas recientes -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recent_searches_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"/>
+        </LinearLayout>
+
+        <!-- Contenedor para los Productos -->
+        <LinearLayout
+            android:id="@+id/container_productos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingTop="8dp">
+
+            <!-- Título con el número de productos encontrados -->
+            <TextView
+                android:id="@+id/resultado_busqueda_titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resultado de Búsqueda: 0 productos encontrados"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:padding="8dp" />
+
+            <!-- RecyclerView para los productos filtrados -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_productos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tecsup.boticaphar.adapters.ProductoAdapter
@@ -34,9 +33,9 @@ class ProductosCategoriaActivity : AppCompatActivity() {
         categoriaNombreTextView.text = categoriaNombre
 
         if (categoriaId != -1) {
-            // Inicializar RecyclerView con GridLayoutManager para mostrar 2 columnas
+            // Inicializar RecyclerView
             recyclerView = findViewById(R.id.productos_recycler_view)
-            recyclerView.layoutManager = GridLayoutManager(this, 2)  // 2 columnas
+            recyclerView.layoutManager = LinearLayoutManager(this)
 
             // Llamar a la función para obtener productos por categoría
             obtenerProductosPorCategoria(categoriaId)
@@ -44,7 +43,6 @@ class ProductosCategoriaActivity : AppCompatActivity() {
             Toast.makeText(this, "ID de categoría no disponible", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun obtenerProductosPorCategoria(categoriaId: Int) {
         val apiService = RetrofitClient.getInstance().create(ApiService::class.java)

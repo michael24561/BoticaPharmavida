@@ -1,6 +1,8 @@
 package com.tecsup.boticaphar
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -20,11 +22,21 @@ class DetalleProductoActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var productoAdapter: ProductoAdapter
+    private lateinit var searchBar: EditText
     private var productosSimilares: List<Producto> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_producto_detalle)
+
+        searchBar = findViewById(R.id.search_bar)
+
+        // Usar setOnClickListener para manejar el clic una sola vez
+        searchBar.setOnClickListener {
+            // Verificar si la actividad de búsqueda no está ya abierta
+            val intent = Intent(this, BusquedaActivity::class.java)
+            startActivity(intent)
+        }
 
         // Obtener el producto del Intent
         val producto = intent.getParcelableExtra<Producto>("producto")

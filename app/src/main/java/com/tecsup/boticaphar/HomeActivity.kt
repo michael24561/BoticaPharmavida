@@ -2,7 +2,11 @@ package com.tecsup.boticaphar
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tecsup.boticaphar.adapters.CategoriaAdapter
+import com.tecsup.boticaphar.adapters.ProductoAdapter
 import com.tecsup.boticaphar.models.Categoria
 import com.tecsup.boticaphar.models.Producto
 import com.tecsup.boticaphar.network.ApiService
@@ -22,16 +27,27 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var categoriaAdapter: CategoriaAdapter
+    private lateinit var searchBar: EditText
+    private lateinit var productoAdapter: ProductoAdapter
+    private lateinit var productos: List<Producto>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         recyclerView = findViewById(R.id.category_recycler_view)
+        searchBar = findViewById(R.id.search_bar) // Barra de búsqueda
+
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Iniciar la carga de categorías y productos
         obtenerCategorias()
+
+        // Usar setOnClickListener para manejar el clic una sola vez
+        searchBar.setOnClickListener {
+            // Verificar si la actividad de búsqueda no está ya abierta
+            val intent = Intent(this, BusquedaActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun obtenerCategorias() {
@@ -41,7 +57,7 @@ class HomeActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val categorias = response.body() ?: emptyList()
                     if (categorias.isNotEmpty()) {
-                        // Después de obtener las categorías, obtenemos los productos
+                        // Obtener los productos después de obtener las categorías
                         obtenerProductos(categorias)
                     } else {
                         Toast.makeText(this@HomeActivity, "No se encontraron categorías", Toast.LENGTH_SHORT).show()
@@ -59,19 +75,16 @@ class HomeActivity : AppCompatActivity() {
 
     private fun obtenerProductos(categorias: List<Categoria>) {
         val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
-
-        // Llamada para obtener todos los productos, sin filtros
         apiService.obtenerProductos().enqueue(object : Callback<List<Producto>> {
             override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {
                 if (response.isSuccessful) {
-                    val productos = response.body() ?: emptyList()
+                    productos = response.body() ?: emptyList()
 
-                    // Asignar productos a su categoría correspondiente
                     categorias.forEach { categoria ->
                         categoria.productos = productos.filter { it.categoria == categoria.id }
                     }
 
-                    // Configurar el adaptador de categorías
+                    productoAdapter = ProductoAdapter(productos)
                     categoriaAdapter = CategoriaAdapter(categorias)
                     recyclerView.adapter = categoriaAdapter
                 } else {

@@ -40,9 +40,9 @@
         <activity android:name=".EditarPerfilActivity" />
         <activity android:name=".HistorialPedidosActivity" />
         <activity android:name=".SobrenosotrosActivity" />
-        <activity android:name="DetalleProductoActivity" />
+        <activity android:name=".DetalleProductoActivity" />
+        <activity android:name=".BusquedaActivity" />
         <activity android:name=".ProductosCategoriaActivity" />
-
 
     </application>
 

@@ -3,6 +3,7 @@ package com.tecsup.boticaphar.models
 import android.os.Parcel
 import android.os.Parcelable
 
+
 data class Categoria(
     val id: Int,
     val nombre: String,

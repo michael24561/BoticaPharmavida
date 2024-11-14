@@ -104,16 +104,16 @@
                     android:id="@+id/boton_agregar_carrito"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Agregar al Carrito"
-                    android:textSize="16sp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginStart="25dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
+                    android:backgroundTint="@android:color/holo_blue_dark"
                     android:drawableLeft="@drawable/ic_cart"
                     android:drawableTint="@android:color/white"
-                    android:backgroundTint="@android:color/holo_blue_dark"
-                    android:textColor="@android:color/white" />
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="Agregar al Carrito"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

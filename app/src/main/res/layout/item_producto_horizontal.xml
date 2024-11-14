@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:elevation="4dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+    <!-- Imagen del producto -->
+    <ImageView
+        android:id="@+id/producto_imagen"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="Imagen del producto" />
+
+    <!-- Información del producto -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="16dp">
+
+        <TextView
+            android:id="@+id/producto_nombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre del producto"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/producto_precio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Precio: $0.00"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_agregar_carrito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:drawableLeft="@drawable/ic_cart"
+            android:drawableTint="@android:color/white"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="Agregar al Carrito"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+</LinearLayout>
+
+    </androidx.cardview.widget.CardView>
