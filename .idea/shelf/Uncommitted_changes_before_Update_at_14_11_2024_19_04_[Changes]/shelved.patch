@@ -1,0 +1,906 @@
+Index: app/src/main/java/com/tecsup/boticaphar/ProductosCategoriaActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.tecsup.boticaphar\r\n\r\nimport android.os.Bundle\r\nimport android.widget.TextView\r\nimport android.widget.Toast\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport androidx.recyclerview.widget.GridLayoutManager\r\nimport androidx.recyclerview.widget.LinearLayoutManager\r\nimport androidx.recyclerview.widget.RecyclerView\r\nimport com.tecsup.boticaphar.adapters.ProductoAdapter\r\nimport com.tecsup.boticaphar.models.Producto\r\nimport com.tecsup.boticaphar.network.ApiService\r\nimport com.tecsup.boticaphar.network.RetrofitClient\r\nimport retrofit2.Call\r\nimport retrofit2.Callback\r\nimport retrofit2.Response\r\n\r\nclass ProductosCategoriaActivity : AppCompatActivity() {\r\n\r\n    private lateinit var recyclerView: RecyclerView\r\n    private lateinit var productoAdapter: ProductoAdapter\r\n    private var productos: List<Producto> = listOf()\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_productos_categoria)\r\n\r\n        // Obtener el ID y nombre de la categoría del Intent\r\n        val categoriaId = intent.getIntExtra(\"categoriaId\", -1)\r\n        val categoriaNombre = intent.getStringExtra(\"categoriaNombre\") ?: \"\"\r\n\r\n        // Establecer el nombre de la categoría en el TextView en lugar del título\r\n        val categoriaNombreTextView = findViewById<TextView>(R.id.categoria_nombre)\r\n        categoriaNombreTextView.text = categoriaNombre\r\n\r\n        if (categoriaId != -1) {\r\n            // Inicializar RecyclerView con GridLayoutManager para mostrar 2 columnas\r\n            recyclerView = findViewById(R.id.productos_recycler_view)\r\n            recyclerView.layoutManager = GridLayoutManager(this, 2)  // 2 columnas\r\n\r\n            // Llamar a la función para obtener productos por categoría\r\n            obtenerProductosPorCategoria(categoriaId)\r\n        } else {\r\n            Toast.makeText(this, \"ID de categoría no disponible\", Toast.LENGTH_SHORT).show()\r\n        }\r\n    }\r\n\r\n\r\n    private fun obtenerProductosPorCategoria(categoriaId: Int) {\r\n        val apiService = RetrofitClient.getInstance().create(ApiService::class.java)\r\n\r\n        // Llamada a la API para obtener productos por categoría\r\n        apiService.obtenerProductosPorCategoria(categoriaId).enqueue(object : Callback<List<Producto>> {\r\n            override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {\r\n                if (response.isSuccessful) {\r\n                    val productosObtenidos = response.body() ?: emptyList()\r\n\r\n                    // Si hay productos, los asignamos al RecyclerView\r\n                    if (productosObtenidos.isNotEmpty()) {\r\n                        productos = productosObtenidos\r\n                        productoAdapter = ProductoAdapter(productos)\r\n                        recyclerView.adapter = productoAdapter\r\n                    } else {\r\n                        Toast.makeText(this@ProductosCategoriaActivity, \"No hay productos en esta categoría\", Toast.LENGTH_SHORT).show()\r\n                    }\r\n                } else {\r\n                    Toast.makeText(this@ProductosCategoriaActivity, \"Error al cargar los productos\", Toast.LENGTH_SHORT).show()\r\n                }\r\n            }\r\n\r\n            override fun onFailure(call: Call<List<Producto>>, t: Throwable) {\r\n                Toast.makeText(this@ProductosCategoriaActivity, \"Error en la conexión\", Toast.LENGTH_SHORT).show()\r\n            }\r\n        })\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/tecsup/boticaphar/ProductosCategoriaActivity.kt b/app/src/main/java/com/tecsup/boticaphar/ProductosCategoriaActivity.kt
+--- a/app/src/main/java/com/tecsup/boticaphar/ProductosCategoriaActivity.kt	(revision 25381b70852e96de64073d801954a20fe0b4dbdf)
++++ b/app/src/main/java/com/tecsup/boticaphar/ProductosCategoriaActivity.kt	(date 1731629005339)
+@@ -4,7 +4,6 @@
+ import android.widget.TextView
+ import android.widget.Toast
+ import androidx.appcompat.app.AppCompatActivity
+-import androidx.recyclerview.widget.GridLayoutManager
+ import androidx.recyclerview.widget.LinearLayoutManager
+ import androidx.recyclerview.widget.RecyclerView
+ import com.tecsup.boticaphar.adapters.ProductoAdapter
+@@ -34,9 +33,9 @@
+         categoriaNombreTextView.text = categoriaNombre
+ 
+         if (categoriaId != -1) {
+-            // Inicializar RecyclerView con GridLayoutManager para mostrar 2 columnas
++            // Inicializar RecyclerView
+             recyclerView = findViewById(R.id.productos_recycler_view)
+-            recyclerView.layoutManager = GridLayoutManager(this, 2)  // 2 columnas
++            recyclerView.layoutManager = LinearLayoutManager(this)
+ 
+             // Llamar a la función para obtener productos por categoría
+             obtenerProductosPorCategoria(categoriaId)
+@@ -45,7 +44,6 @@
+         }
+     }
+ 
+-
+     private fun obtenerProductosPorCategoria(categoriaId: Int) {
+         val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
+ 
+Index: app/src/main/res/layout/activity_productos_categoria.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:orientation=\"vertical\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:padding=\"16dp\">\r\n\r\n    <!-- Nombre de la categoría, centrado y con tamaño de texto más grande -->\r\n    <TextView\r\n        android:id=\"@+id/categoria_nombre\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:gravity=\"center\"\r\n        android:text=\"Categoría\"\r\n        android:textSize=\"24sp\"\r\n        android:textColor=\"@color/black\"\r\n        android:textStyle=\"bold\"\r\n        android:paddingBottom=\"16dp\" />\r\n\r\n    <!-- RecyclerView para productos en un diseño de cuadrícula de 2 columnas -->\r\n    <androidx.recyclerview.widget.RecyclerView\r\n        android:id=\"@+id/productos_recycler_view\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginBottom=\"16dp\" />\r\n</LinearLayout>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_productos_categoria.xml b/app/src/main/res/layout/activity_productos_categoria.xml
+--- a/app/src/main/res/layout/activity_productos_categoria.xml	(revision 25381b70852e96de64073d801954a20fe0b4dbdf)
++++ b/app/src/main/res/layout/activity_productos_categoria.xml	(date 1731628991349)
+@@ -1,25 +1,22 @@
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:orientation="vertical"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    android:padding="16dp">
++    android:layout_height="wrap_content"
++    android:padding="8dp">
+ 
+-    <!-- Nombre de la categoría, centrado y con tamaño de texto más grande -->
+     <TextView
+         android:id="@+id/categoria_nombre"
+-        android:layout_width="match_parent"
++        android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        android:gravity="center"
+         android:text="Categoría"
+-        android:textSize="24sp"
+-        android:textColor="@color/black"
++        android:textSize="20sp"
+         android:textStyle="bold"
+-        android:paddingBottom="16dp" />
++        android:paddingBottom="8dp" />
+ 
+-    <!-- RecyclerView para productos en un diseño de cuadrícula de 2 columnas -->
+     <androidx.recyclerview.widget.RecyclerView
+         android:id="@+id/productos_recycler_view"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
++        android:orientation="vertical"
+         android:layout_marginBottom="16dp" />
+ </LinearLayout>
+Index: app/src/main/java/com/tecsup/boticaphar/adapters/ProductoAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.tecsup.boticaphar.adapters\r\n\r\nimport android.content.Intent\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport android.widget.ImageView\r\nimport android.widget.TextView\r\nimport androidx.recyclerview.widget.RecyclerView\r\nimport com.squareup.picasso.Picasso\r\nimport com.tecsup.boticaphar.DetalleProductoActivity\r\nimport com.tecsup.boticaphar.R\r\nimport com.tecsup.boticaphar.models.Producto\r\n\r\nclass ProductoAdapter(\r\n    private val productos: List<Producto>,\r\n    private val isProductosSimilares: Boolean = false\r\n) : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {\r\n\r\n    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {\r\n        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_producto, parent, false)\r\n        return ProductoViewHolder(view)\r\n    }\r\n\r\n    override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {\r\n        val producto = productos[position]\r\n        holder.productoNombre.text = producto.nombre\r\n        holder.productoPrecio.text = \"$${producto.precio}\"\r\n        holder.productoDescripcion.text = producto.descripcion\r\n\r\n        // Cargar la imagen usando Picasso\r\n        Picasso.get().load(producto.imagen).into(holder.productoImagen)\r\n\r\n        // Configurar el clic para abrir la actividad de detalle\r\n        holder.itemView.setOnClickListener {\r\n            val intent = Intent(it.context, DetalleProductoActivity::class.java)\r\n            intent.putExtra(\"producto\", producto) // Pasar el producto seleccionado\r\n            it.context.startActivity(intent)\r\n        }\r\n    }\r\n\r\n    override fun getItemCount(): Int = productos.size\r\n\r\n    inner class ProductoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {\r\n        val productoNombre: TextView = itemView.findViewById(R.id.producto_nombre)\r\n        val productoPrecio: TextView = itemView.findViewById(R.id.producto_precio)\r\n        val productoImagen: ImageView = itemView.findViewById(R.id.producto_imagen)\r\n        val productoDescripcion: TextView = itemView.findViewById(R.id.producto_descripcion)\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/tecsup/boticaphar/adapters/ProductoAdapter.kt b/app/src/main/java/com/tecsup/boticaphar/adapters/ProductoAdapter.kt
+--- a/app/src/main/java/com/tecsup/boticaphar/adapters/ProductoAdapter.kt	(revision 25381b70852e96de64073d801954a20fe0b4dbdf)
++++ b/app/src/main/java/com/tecsup/boticaphar/adapters/ProductoAdapter.kt	(date 1731628984839)
+@@ -11,19 +11,35 @@
+ import com.tecsup.boticaphar.DetalleProductoActivity
+ import com.tecsup.boticaphar.R
+ import com.tecsup.boticaphar.models.Producto
++import java.util.Locale
+ 
+ class ProductoAdapter(
+-    private val productos: List<Producto>,
+-    private val isProductosSimilares: Boolean = false
++    private var productos: List<Producto>,
++    private val isHorizontal: Boolean = false // Nuevo parámetro para controlar el tipo de layout
+ ) : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {
+ 
++    private var productosFiltrados: List<Producto> = productos.toMutableList()
++
+     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
+-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_producto, parent, false)
++        // Inflar el layout dependiendo de si es horizontal o no
++        val layoutRes = if (isHorizontal) {
++            R.layout.item_producto_horizontal // Vista horizontal
++        } else {
++            R.layout.item_producto // Vista vertical
++        }
++
++        val view = LayoutInflater.from(parent.context).inflate(layoutRes, parent, false)
+         return ProductoViewHolder(view)
+     }
+ 
++    fun updateData(nuevosProductos: List<Producto>) {
++        this.productos = nuevosProductos
++        notifyDataSetChanged() // Esto notifica al RecyclerView que los datos han cambiado
++    }
++
++
+     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
+-        val producto = productos[position]
++        val producto = productosFiltrados[position]
+         holder.productoNombre.text = producto.nombre
+         holder.productoPrecio.text = "$${producto.precio}"
+         holder.productoDescripcion.text = producto.descripcion
+@@ -39,7 +55,21 @@
+         }
+     }
+ 
+-    override fun getItemCount(): Int = productos.size
++    override fun getItemCount(): Int = productosFiltrados.size
++
++    // Método para filtrar productos según el texto ingresado
++    fun filtrar(query: String) {
++        val textoBusqueda = query.lowercase(Locale.getDefault())
++        productosFiltrados = if (textoBusqueda.isEmpty()) {
++            productos
++        } else {
++            productos.filter { producto ->
++                producto.nombre.lowercase(Locale.getDefault()).contains(textoBusqueda) ||
++                        producto.descripcion.lowercase(Locale.getDefault()).contains(textoBusqueda)
++            }
++        }
++        notifyDataSetChanged()
++    }
+ 
+     inner class ProductoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+         val productoNombre: TextView = itemView.findViewById(R.id.producto_nombre)
+@@ -49,3 +79,4 @@
+     }
+ }
+ 
++
+Index: app/src/main/res/layout/activity_busqueda.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_busqueda.xml b/app/src/main/res/layout/activity_busqueda.xml
+new file mode 100644
+--- /dev/null	(date 1731628984866)
++++ b/app/src/main/res/layout/activity_busqueda.xml	(date 1731628984866)
+@@ -0,0 +1,83 @@
++<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent">
++
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:orientation="vertical">
++
++        <!-- Barra de búsqueda -->
++        <EditText
++            android:id="@+id/search_bar"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:hint="Buscar productos..."
++            android:padding="12dp"
++            android:imeOptions="actionSearch"
++            android:background="@drawable/search_bar_background"
++            android:drawableStart="@drawable/baseline_search_24"
++            android:drawablePadding="10dp"
++            android:textSize="16sp"
++            android:layout_margin="8dp"
++            android:maxLines="1"
++            android:ellipsize="end"
++            android:inputType="text" />
++
++        <!-- Contenedor para las Búsquedas Recientes -->
++        <LinearLayout
++            android:id="@+id/container_recientes"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:orientation="vertical"
++            android:visibility="gone"
++            android:paddingTop="8dp">
++
++            <TextView
++                android:id="@+id/txt_busqueda"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:text="Búsquedas Recientes"
++                android:textSize="18sp"
++                android:textStyle="bold"
++                android:paddingBottom="8dp" />
++
++            <!-- RecyclerView para mostrar las búsquedas recientes -->
++            <androidx.recyclerview.widget.RecyclerView
++                android:id="@+id/recent_searches_recycler_view"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:layout_marginTop="16dp"/>
++        </LinearLayout>
++
++        <!-- Contenedor para los Productos -->
++        <LinearLayout
++            android:id="@+id/container_productos"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:orientation="vertical"
++            android:visibility="gone"
++            android:paddingTop="8dp">
++
++            <!-- Título con el número de productos encontrados -->
++            <TextView
++                android:id="@+id/resultado_busqueda_titulo"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="Resultado de Búsqueda: 0 productos encontrados"
++                android:textSize="18sp"
++                android:textStyle="bold"
++                android:padding="8dp" />
++
++            <!-- RecyclerView para los productos filtrados -->
++            <androidx.recyclerview.widget.RecyclerView
++                android:id="@+id/recycler_view_productos"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:layout_marginTop="16dp"/>
++        </LinearLayout>
++
++    </LinearLayout>
++
++</androidx.coordinatorlayout.widget.CoordinatorLayout>
+Index: app/src/main/res/layout/item_recent_search.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/item_recent_search.xml b/app/src/main/res/layout/item_recent_search.xml
+new file mode 100644
+--- /dev/null	(date 1731628984890)
++++ b/app/src/main/res/layout/item_recent_search.xml	(date 1731628984890)
+@@ -0,0 +1,40 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content"
++    android:orientation="vertical"
++    android:padding="8dp"
++    android:gravity="start">
++
++    <!-- Contenedor para el texto de la búsqueda y el botón de eliminación -->
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:orientation="horizontal"
++        android:gravity="center_vertical"
++        android:paddingBottom="8dp">
++
++        <!-- Texto de búsqueda reciente -->
++        <TextView
++            android:id="@+id/search_text"
++            android:layout_width="0dp"
++            android:layout_height="wrap_content"
++            android:layout_weight="1"
++            android:text="Texto de búsqueda"
++            android:textSize="16sp"
++            android:textColor="@android:color/black" />
++
++        <!-- Botón de eliminar búsqueda -->
++        <ImageView
++            android:id="@+id/delete_button"
++            android:layout_width="24dp"
++            android:layout_height="24dp"
++            android:src="@drawable/ic_delete"
++            android:contentDescription="Eliminar búsqueda"
++            android:layout_marginStart="8dp"
++            android:padding="4dp"
++            android:clickable="true"
++            android:focusable="true"/>
++    </LinearLayout>
++
++</LinearLayout>
+Index: app/src/main/java/com/tecsup/boticaphar/adapters/RecentSearchesAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/tecsup/boticaphar/adapters/RecentSearchesAdapter.kt b/app/src/main/java/com/tecsup/boticaphar/adapters/RecentSearchesAdapter.kt
+new file mode 100644
+--- /dev/null	(date 1731628984853)
++++ b/app/src/main/java/com/tecsup/boticaphar/adapters/RecentSearchesAdapter.kt	(date 1731628984853)
+@@ -0,0 +1,60 @@
++package com.tecsup.boticaphar.adapters
++
++import android.content.Context
++import android.view.LayoutInflater
++import android.view.View
++import android.view.ViewGroup
++import android.widget.ImageView
++import android.widget.TextView
++import androidx.recyclerview.widget.RecyclerView
++import com.tecsup.boticaphar.R
++
++class RecentSearchesAdapter(
++    private val context: Context,
++    private var busquedasRecientes: MutableList<String>,
++    private val onSearchClickListener: (String) -> Unit,  // Listener para manejar clic en la búsqueda
++    private val onDeleteClickListener: (String) -> Unit   // Listener para manejar clic en el botón de eliminar
++) : RecyclerView.Adapter<RecentSearchesAdapter.ViewHolder>() {
++
++    // Crear el ViewHolder
++    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
++        val searchText: TextView = itemView.findViewById(R.id.search_text)
++        val deleteButton: ImageView = itemView.findViewById(R.id.delete_button)
++
++        init {
++            // Al hacer clic en el botón de eliminar
++            deleteButton.setOnClickListener {
++                val busqueda = busquedasRecientes[adapterPosition]
++                onDeleteClickListener(busqueda)
++            }
++
++            // Al hacer clic en el texto de la búsqueda
++            itemView.setOnClickListener {
++                val busqueda = busquedasRecientes[adapterPosition]
++                onSearchClickListener(busqueda)  // Ejecutar el listener de clic
++            }
++        }
++    }
++
++    // Crear el ViewHolder para cada elemento
++    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
++        val view = LayoutInflater.from(context).inflate(R.layout.item_recent_search, parent, false)
++        return ViewHolder(view)
++    }
++
++    // Enlazar los datos a la vista
++    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
++        val busqueda = busquedasRecientes[position]
++        holder.searchText.text = busqueda
++    }
++
++    override fun getItemCount(): Int {
++        return busquedasRecientes.size
++    }
++
++    // Actualizar la lista de búsquedas recientes
++    fun setData(busquedas: MutableList<String>) {
++        busquedasRecientes = busquedas
++        notifyDataSetChanged()
++    }
++}
+Index: app/src/main/res/layout/item_producto_horizontal.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/item_producto_horizontal.xml b/app/src/main/res/layout/item_producto_horizontal.xml
+new file mode 100644
+--- /dev/null	(date 1731628984888)
++++ b/app/src/main/res/layout/item_producto_horizontal.xml	(date 1731628984888)
+@@ -0,0 +1,61 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content"
++    android:layout_margin="8dp"
++    android:elevation="4dp">
++
++    <LinearLayout
++        android:orientation="horizontal"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:padding="16dp">
++
++    <!-- Imagen del producto -->
++    <ImageView
++        android:id="@+id/producto_imagen"
++        android:layout_width="100dp"
++        android:layout_height="100dp"
++        android:contentDescription="Imagen del producto" />
++
++    <!-- Información del producto -->
++    <LinearLayout
++        android:orientation="vertical"
++        android:layout_width="0dp"
++        android:layout_height="wrap_content"
++        android:layout_weight="1"
++        android:layout_marginStart="16dp">
++
++        <TextView
++            android:id="@+id/producto_nombre"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="Nombre del producto"
++            android:textSize="16sp"
++            android:textStyle="bold" />
++
++        <TextView
++            android:id="@+id/producto_precio"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="Precio: $0.00"
++            android:textSize="14sp" />
++
++        <Button
++            android:id="@+id/btn_agregar_carrito"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="16dp"
++            android:layout_marginBottom="8dp"
++            android:backgroundTint="@android:color/holo_blue_dark"
++            android:drawableLeft="@drawable/ic_cart"
++            android:drawableTint="@android:color/white"
++            android:paddingStart="16dp"
++            android:paddingEnd="16dp"
++            android:text="Agregar al Carrito"
++            android:textColor="@android:color/white"
++            android:textSize="16sp" />
++    </LinearLayout>
++</LinearLayout>
++
++    </androidx.cardview.widget.CardView>
+Index: app/src/main/java/com/tecsup/boticaphar/BusquedaActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/tecsup/boticaphar/BusquedaActivity.kt b/app/src/main/java/com/tecsup/boticaphar/BusquedaActivity.kt
+new file mode 100644
+--- /dev/null	(date 1731628984818)
++++ b/app/src/main/java/com/tecsup/boticaphar/BusquedaActivity.kt	(date 1731628984818)
+@@ -0,0 +1,192 @@
++package com.tecsup.boticaphar
++
++import android.content.SharedPreferences
++import android.os.Bundle
++import android.text.TextUtils
++import android.util.Log
++import android.widget.EditText
++import android.widget.Toast
++import androidx.appcompat.app.AppCompatActivity
++import androidx.recyclerview.widget.LinearLayoutManager
++import androidx.recyclerview.widget.RecyclerView
++import android.view.inputmethod.EditorInfo
++import android.view.inputmethod.InputMethodManager
++import android.widget.LinearLayout
++import android.widget.TextView
++import com.tecsup.boticaphar.adapters.RecentSearchesAdapter
++import com.tecsup.boticaphar.adapters.ProductoHorizontalAdapter
++import com.tecsup.boticaphar.models.Producto
++import com.tecsup.boticaphar.network.ApiService
++import com.tecsup.boticaphar.network.RetrofitClient
++import retrofit2.Call
++import retrofit2.Callback
++import retrofit2.Response
++
++class BusquedaActivity : AppCompatActivity() {
++
++    private val apiService: ApiService by lazy {
++        RetrofitClient.getInstance().create(ApiService::class.java)
++    }
++
++    private var productos: List<Producto> = emptyList()
++    private lateinit var recentSearchesAdapter: RecentSearchesAdapter
++    private lateinit var sharedPreferences: SharedPreferences
++    private lateinit var busquedasRecientes: MutableList<String>
++
++    override fun onCreate(savedInstanceState: Bundle?) {
++        super.onCreate(savedInstanceState)
++        setContentView(R.layout.activity_busqueda)
++
++        val searchInput: EditText = findViewById(R.id.search_bar)
++        val recyclerViewProductos: RecyclerView = findViewById(R.id.recycler_view_productos)
++        val recyclerViewRecientes: RecyclerView = findViewById(R.id.recent_searches_recycler_view)
++        val containerRecientes: LinearLayout = findViewById(R.id.container_recientes)
++        val containerProductos: LinearLayout = findViewById(R.id.container_productos)
++        val cantidadProductosTextView: TextView = findViewById(R.id.resultado_busqueda_titulo) // El TextView para mostrar la cantidad
++
++        // Configurar RecyclerView de productos (vertical)
++        recyclerViewProductos.layoutManager =
++            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
++        val adapter =
++            ProductoHorizontalAdapter(emptyList())  // Inicializar el adaptador con lista vacía
++        recyclerViewProductos.adapter = adapter
++
++        // Inicializar SharedPreferences y obtener las búsquedas recientes
++        sharedPreferences = getSharedPreferences("historial_busquedas", MODE_PRIVATE)
++        busquedasRecientes = cargarBusquedasRecientes()
++
++        // Configurar RecyclerView de búsquedas recientes
++        recyclerViewRecientes.layoutManager = LinearLayoutManager(this)
++
++        // Inicializar el adaptador para búsquedas recientes
++        recentSearchesAdapter = RecentSearchesAdapter(
++            context = this,
++            busquedasRecientes = busquedasRecientes,
++            onDeleteClickListener = { busqueda -> eliminarBusquedaReciente(busqueda) },
++            onSearchClickListener = { busqueda ->
++                // Colocar la búsqueda en la barra de búsqueda y realizar la búsqueda automáticamente
++                searchInput.setText(busqueda)
++                realizarBusqueda(busqueda)  // Realiza la búsqueda
++                containerRecientes.visibility = LinearLayout.GONE  // Ocultar las búsquedas recientes
++                containerProductos.visibility = LinearLayout.VISIBLE  // Mostrar los productos
++            }
++        )
++        recyclerViewRecientes.adapter = recentSearchesAdapter
++
++        // Mostrar las búsquedas recientes
++        if (busquedasRecientes.isNotEmpty()) {
++            containerRecientes.visibility = LinearLayout.VISIBLE
++            recentSearchesAdapter.setData(busquedasRecientes)
++        } else {
++            containerRecientes.visibility = LinearLayout.GONE
++        }
++
++        // Configurar el evento de Enter en la barra de búsqueda
++        searchInput.setOnEditorActionListener { v, actionId, event ->
++            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) {
++                val query = searchInput.text.toString().trim()
++                if (query.isNotEmpty()) {
++                    realizarBusqueda(query) // Llamar a realizar búsqueda con el texto ingresado
++                    guardarBusquedaReciente(query) // Guardar la búsqueda reciente
++                    ocultarTeclado() // Cerrar el teclado
++                    containerRecientes.visibility = LinearLayout.GONE // Ocultar búsquedas recientes
++                    containerProductos.visibility = LinearLayout.VISIBLE // Mostrar productos
++                } else {
++                    Toast.makeText(
++                        this,
++                        "Por favor ingrese un término de búsqueda",
++                        Toast.LENGTH_SHORT
++                    ).show()
++                }
++                true
++            } else {
++                false
++            }
++        }
++    }
++
++    // Método para realizar la búsqueda
++    private fun realizarBusqueda(query: String) {
++        if (TextUtils.isEmpty(query)) {
++            mostrarProductos(emptyList())  // Si la búsqueda está vacía, mostrar lista vacía
++        } else {
++            val call = apiService.obtenerProductos()  // Llamada a la API para obtener productos
++            call.enqueue(object : Callback<List<Producto>> {
++                override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {
++                    if (response.isSuccessful) {
++                        val productosRecibidos = response.body()
++                        if (productosRecibidos != null && productosRecibidos.isNotEmpty()) {
++                            // Filtrar productos que coincidan con la búsqueda
++                            productos = productosRecibidos.filter {
++                                it.nombre.contains(query, ignoreCase = true)  // Filtrar por nombre
++                            }
++
++                            // Mostrar productos encontrados
++                            mostrarProductos(productos)
++
++                            // Actualizar el número de productos en el TextView
++                            val cantidadProductos = productos.size
++                            val cantidadProductosTextView: TextView = findViewById(R.id.resultado_busqueda_titulo)
++                            cantidadProductosTextView.text = "Resultado de Búsqueda: $cantidadProductos productos encontrados"
++                        } else {
++                            Toast.makeText(this@BusquedaActivity, "No se encontraron productos", Toast.LENGTH_SHORT).show()
++                        }
++                    } else {
++                        Toast.makeText(this@BusquedaActivity, "Error al realizar la búsqueda", Toast.LENGTH_SHORT).show()
++                    }
++                }
++
++                override fun onFailure(call: Call<List<Producto>>, t: Throwable) {
++                    Toast.makeText(this@BusquedaActivity, "Error en la conexión: ${t.message}", Toast.LENGTH_SHORT).show()
++                }
++            })
++        }
++    }
++
++    private fun mostrarProductos(productos: List<Producto>) {
++        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view_productos)
++        val adapter = ProductoHorizontalAdapter(productos)  // Usar adaptador con productos filtrados
++        recyclerView.adapter = adapter
++    }
++
++    private fun ocultarTeclado() {
++        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
++        inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
++    }
++
++    private fun guardarBusquedaReciente(busqueda: String) {
++        if (!busquedasRecientes.contains(busqueda)) {
++            busquedasRecientes.add(0, busqueda)  // Agregar la búsqueda al inicio de la lista
++            if (busquedasRecientes.size > 5) {
++                busquedasRecientes.removeAt(busquedasRecientes.size - 1)  // Mantener un máximo de 5 búsquedas
++            }
++
++            val editor = sharedPreferences.edit()
++            editor.putStringSet("busquedas", busquedasRecientes.toSet())
++            editor.apply()
++
++            recentSearchesAdapter.setData(busquedasRecientes)  // Actualizar el adaptador de búsquedas recientes
++        }
++    }
++
++    private fun cargarBusquedasRecientes(): MutableList<String> {
++        val busquedas = sharedPreferences.getStringSet("busquedas", mutableSetOf()) ?: mutableSetOf()
++        return busquedas.toMutableList()
++    }
++
++    private fun eliminarBusquedaReciente(busqueda: String) {
++        if (busquedasRecientes.remove(busqueda)) {  // Remover la búsqueda y verificar si se eliminó
++            val editor = sharedPreferences.edit()
++            editor.putStringSet("busquedas", busquedasRecientes.toSet())
++            editor.apply()
++            recentSearchesAdapter.setData(busquedasRecientes)  // Actualizar el adaptador
++
++            // Mostrar u ocultar el contenedor de búsquedas recientes según la lista
++            val containerRecientes: LinearLayout = findViewById(R.id.container_recientes)
++            containerRecientes.visibility = if (busquedasRecientes.isEmpty()) LinearLayout.GONE else LinearLayout.VISIBLE
++        }
++    }
++}
++
++
++
+Index: app/src/main/java/com/tecsup/boticaphar/adapters/ProductoHorizontalAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/tecsup/boticaphar/adapters/ProductoHorizontalAdapter.kt b/app/src/main/java/com/tecsup/boticaphar/adapters/ProductoHorizontalAdapter.kt
+new file mode 100644
+--- /dev/null	(date 1731628984846)
++++ b/app/src/main/java/com/tecsup/boticaphar/adapters/ProductoHorizontalAdapter.kt	(date 1731628984846)
+@@ -0,0 +1,69 @@
++package com.tecsup.boticaphar.adapters
++
++import android.content.Intent
++import android.view.LayoutInflater
++import android.view.View
++import android.view.ViewGroup
++import android.widget.ImageView
++import android.widget.TextView
++import androidx.recyclerview.widget.RecyclerView
++import com.squareup.picasso.Picasso
++import com.tecsup.boticaphar.DetalleProductoActivity
++import com.tecsup.boticaphar.R
++import com.tecsup.boticaphar.models.Producto
++import java.util.Locale
++
++class ProductoHorizontalAdapter(
++    private var productos: List<Producto>
++) : RecyclerView.Adapter<ProductoHorizontalAdapter.ProductoViewHolder>() {
++
++    private var productosFiltrados: List<Producto> = productos.toMutableList()
++
++    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
++        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_producto_horizontal, parent, false)
++        return ProductoViewHolder(view)
++    }
++
++    fun updateData(nuevosProductos: List<Producto>) {
++        this.productos = nuevosProductos
++        notifyDataSetChanged() // Esto notifica al RecyclerView que los datos han cambiado
++    }
++
++    override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
++        val producto = productosFiltrados[position]
++        holder.productoNombre.text = producto.nombre
++        holder.productoPrecio.text = "$${producto.precio}"
++
++        // Cargar la imagen usando Picasso
++        Picasso.get().load(producto.imagen).into(holder.productoImagen)
++
++        // Configurar el clic para abrir la actividad de detalle
++        holder.itemView.setOnClickListener {
++            val intent = Intent(it.context, DetalleProductoActivity::class.java)
++            intent.putExtra("producto", producto) // Pasar el producto seleccionado
++            it.context.startActivity(intent)
++        }
++    }
++
++    override fun getItemCount(): Int = productosFiltrados.size
++
++    // Método para filtrar productos según el texto ingresado
++    fun filtrar(query: String) {
++        val textoBusqueda = query.lowercase(Locale.getDefault())
++        productosFiltrados = if (textoBusqueda.isEmpty()) {
++            productos
++        } else {
++            productos.filter { producto ->
++                producto.nombre.lowercase(Locale.getDefault()).contains(textoBusqueda) ||
++                        producto.descripcion.lowercase(Locale.getDefault()).contains(textoBusqueda)
++            }
++        }
++        notifyDataSetChanged()
++    }
++
++    inner class ProductoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
++        val productoNombre: TextView = itemView.findViewById(R.id.producto_nombre)
++        val productoPrecio: TextView = itemView.findViewById(R.id.producto_precio)
++        val productoImagen: ImageView = itemView.findViewById(R.id.producto_imagen)
++    }
++}
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\">\r\n    <uses-permission android:name=\"android.permission.INTERNET\"/>\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\r\n        android:fullBackupContent=\"@xml/backup_rules\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        tools:targetApi=\"31\"\r\n        android:theme=\"@style/AppTheme\"\r\n        android:usesCleartextTraffic=\"true\"> <!-- Permitir tráfico sin cifrado -->\r\n\r\n        <activity\r\n            android:name=\".MainActivity\"\r\n            android:exported=\"true\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n\r\n        <activity android:name=\".Inicio1Activity\" />\r\n        <activity android:name=\".Inicio2Activity\" />\r\n        <activity android:name=\".Inicio3Activity\" />\r\n        <activity android:name=\".SessionActivity\" />\r\n        <activity android:name=\".RegisterActivity\" />\r\n        <activity android:name=\".LoginActivity\" />\r\n        <activity android:name=\".HomeActivity\" />\r\n        <activity android:name=\".PerfilActivity\" />\r\n        <activity android:name=\".CarritoActivity\" />\r\n        <activity\r\n            android:name=\".MenuLateralActivity\"\r\n            android:exported=\"true\"/>\r\n        <activity android:name=\".NotificacionActivity\" />\r\n        <activity android:name=\".EditarPerfilActivity\" />\r\n        <activity android:name=\".HistorialPedidosActivity\" />\r\n        <activity android:name=\".SobrenosotrosActivity\" />\r\n        <activity android:name=\"DetalleProductoActivity\" />\r\n        <activity android:name=\".ProductosCategoriaActivity\" />\r\n\r\n\r\n    </application>\r\n\r\n</manifest>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision 25381b70852e96de64073d801954a20fe0b4dbdf)
++++ b/app/src/main/AndroidManifest.xml	(date 1731628992941)
+@@ -40,10 +40,10 @@
+         <activity android:name=".EditarPerfilActivity" />
+         <activity android:name=".HistorialPedidosActivity" />
+         <activity android:name=".SobrenosotrosActivity" />
+-        <activity android:name="DetalleProductoActivity" />
++        <activity android:name=".DetalleProductoActivity" />
++        <activity android:name=".BusquedaActivity" />
+         <activity android:name=".ProductosCategoriaActivity" />
+ 
+-
+     </application>
+ 
+ </manifest>
+Index: app/src/main/res/drawable/search_bar_background.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><shape xmlns:android=\"http://schemas.android.com/apk/res/android\">\r\n    <solid android:color=\"@android:color/white\" />\r\n    <corners android:radius=\"16dp\"/>\r\n    <stroke\r\n        android:width=\"1dp\"\r\n        android:color=\"@android:color/darker_gray\" />\r\n</shape>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable/search_bar_background.xml b/app/src/main/res/drawable/search_bar_background.xml
+--- a/app/src/main/res/drawable/search_bar_background.xml	(revision 25381b70852e96de64073d801954a20fe0b4dbdf)
++++ b/app/src/main/res/drawable/search_bar_background.xml	(date 1731628984861)
+@@ -1,7 +1,7 @@
++<!-- search_bar_background.xml -->
+ <shape xmlns:android="http://schemas.android.com/apk/res/android">
+-    <solid android:color="@android:color/white" />
+-    <corners android:radius="16dp"/>
+-    <stroke
+-        android:width="1dp"
+-        android:color="@android:color/darker_gray" />
++    <solid android:color="#FFFFFF"/>
++    <corners android:radius="10dp"/>
++    <stroke android:color="#DDDDDD" android:width="1dp"/>
+ </shape>
++
+Index: app/src/main/res/layout/item_producto.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><androidx.cardview.widget.CardView xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"wrap_content\"\r\n    android:layout_height=\"wrap_content\"\r\n    android:layout_margin=\"8dp\"\r\n    android:orientation=\"vertical\"\r\n    android:elevation=\"4dp\"\r\n    android:layout_gravity=\"center\">\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:orientation=\"vertical\"\r\n        android:padding=\"8dp\">\r\n\r\n        <!-- Imagen del producto -->\r\n        <ImageView\r\n            android:id=\"@+id/producto_imagen\"\r\n            android:layout_width=\"100dp\"\r\n            android:layout_height=\"100dp\"\r\n            android:scaleType=\"centerCrop\"\r\n            android:layout_gravity=\"center\" />\r\n\r\n        <!-- Nombre del producto -->\r\n        <TextView\r\n            android:id=\"@+id/producto_nombre\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:text=\"Nombre del Producto\"\r\n            android:textSize=\"16sp\"\r\n            android:textColor=\"@color/black\"\r\n            android:textStyle=\"bold\"\r\n            android:gravity=\"center\"\r\n            android:paddingTop=\"4dp\" />\r\n\r\n        <!-- Precio del producto -->\r\n        <TextView\r\n            android:id=\"@+id/producto_precio\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:text=\"Precio\"\r\n            android:textSize=\"14sp\"\r\n            android:gravity=\"center\"\r\n            android:paddingTop=\"4dp\"\r\n            android:textColor=\"@color/black\" />\r\n\r\n        <TextView\r\n            android:id=\"@+id/producto_descripcion\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:text=\"Descripcion\"\r\n            android:textSize=\"14sp\"\r\n            android:gravity=\"center\"\r\n            android:paddingTop=\"4dp\"\r\n            android:textColor=\"@color/black\" />\r\n\r\n    </LinearLayout>\r\n</androidx.cardview.widget.CardView>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/item_producto.xml b/app/src/main/res/layout/item_producto.xml
+--- a/app/src/main/res/layout/item_producto.xml	(revision 25381b70852e96de64073d801954a20fe0b4dbdf)
++++ b/app/src/main/res/layout/item_producto.xml	(date 1731629004818)
+@@ -1,57 +1,79 @@
+ <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+-    android:layout_margin="8dp"
+-    android:orientation="vertical"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_margin="16dp"
++    android:padding="16dp"
+     android:elevation="4dp"
++    app:cardCornerRadius="8dp"
++    android:orientation="vertical"
+     android:layout_gravity="center">
+ 
+     <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+-        android:padding="8dp">
++        android:padding="12dp">
+ 
+-        <!-- Imagen del producto -->
++        <!-- Imagen del producto con altura mayor que su ancho -->
+         <ImageView
+             android:id="@+id/producto_imagen"
+-            android:layout_width="100dp"
+-            android:layout_height="100dp"
++            android:layout_width="150dp"
++            android:layout_height="200dp"
+             android:scaleType="centerCrop"
+             android:layout_gravity="center" />
+ 
+-        <!-- Nombre del producto -->
++        <!-- Nombre del producto con margen inferior -->
+         <TextView
+             android:id="@+id/producto_nombre"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Nombre del Producto"
+-            android:textSize="16sp"
+-            android:textColor="@color/black"
++            android:textSize="18sp"
+             android:textStyle="bold"
+             android:gravity="center"
+-            android:paddingTop="4dp" />
++            android:paddingTop="8dp"
++            android:layout_marginBottom="8dp" />
+ 
+-        <!-- Precio del producto -->
++        <!-- Precio del producto con margen inferior -->
+         <TextView
+             android:id="@+id/producto_precio"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Precio"
+-            android:textSize="14sp"
++            android:textSize="16sp"
+             android:gravity="center"
+             android:paddingTop="4dp"
++            android:layout_marginBottom="8dp"
+             android:textColor="@color/black" />
+ 
++        <!-- Descripción del producto con margen inferior -->
+         <TextView
+             android:id="@+id/producto_descripcion"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+-            android:text="Descripcion"
++            android:text="Descripción"
+             android:textSize="14sp"
+             android:gravity="center"
+             android:paddingTop="4dp"
++            android:layout_marginBottom="12dp"
+             android:textColor="@color/black" />
+ 
++        <!-- Botón Agregar al Carrito con margen superior e inferior -->
++        <Button
++            android:id="@+id/boton_agregar_carrito"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="16dp"
++            android:layout_marginBottom="8dp"
++            android:backgroundTint="@android:color/holo_blue_dark"
++            android:drawableLeft="@drawable/ic_cart"
++            android:drawableTint="@android:color/white"
++            android:paddingStart="16dp"
++            android:paddingEnd="16dp"
++            android:text="Agregar al Carrito"
++            android:textColor="@android:color/white"
++            android:textSize="16sp" />
++
+     </LinearLayout>
+ </androidx.cardview.widget.CardView>
+Index: app/src/main/res/layout/activity_producto_detalle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.core.widget.NestedScrollView xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    xmlns:cardview=\"http://schemas.android.com/apk/res-auto\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:fillViewport=\"true\"\r\n    tools:context=\".DetalleProductoActivity\">\r\n\r\n    <LinearLayout\r\n        android:orientation=\"vertical\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:padding=\"20dp\"\r\n        android:scrollbars=\"vertical\">\r\n\r\n        <EditText\r\n            android:id=\"@+id/search_bar\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:hint=\"¿Qué deseas el día de hoy?\"\r\n            android:padding=\"12dp\"\r\n            android:background=\"@drawable/search_bar_background\"\r\n            android:drawableStart=\"@drawable/baseline_search_24\"\r\n            android:drawablePadding=\"10dp\"\r\n            android:textSize=\"16sp\"\r\n            android:maxLines=\"1\"\r\n            android:ellipsize=\"end\"\r\n            android:inputType=\"text\"\r\n            android:layout_marginTop=\"8dp\" />\r\n\r\n        <androidx.cardview.widget.CardView\r\n            android:id=\"@+id/card_producto\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_margin=\"16dp\"\r\n            android:padding=\"16dp\"\r\n            app:cardCornerRadius=\"12dp\"\r\n            app:cardElevation=\"6dp\"\r\n            app:cardUseCompatPadding=\"true\"\r\n            app:contentPadding=\"16dp\">\r\n\r\n            <LinearLayout\r\n                android:orientation=\"vertical\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:gravity=\"center\">\r\n\r\n                <ImageView\r\n                    android:id=\"@+id/imagen_producto\"\r\n                    android:layout_width=\"200dp\"\r\n                    android:layout_height=\"200dp\"\r\n                    android:layout_gravity=\"center\"\r\n                    android:scaleType=\"centerCrop\"/>\r\n\r\n                <TextView\r\n                    android:id=\"@+id/nombre_producto\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:text=\"Nombre del Producto\"\r\n                    android:textSize=\"20sp\"\r\n                    android:layout_marginTop=\"16dp\"\r\n                    android:gravity=\"center\" />\r\n\r\n                <TextView\r\n                    android:id=\"@+id/descripcion_producto\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:text=\"Descripción del producto\"\r\n                    android:textSize=\"16sp\"\r\n                    android:layout_marginTop=\"8dp\"\r\n                    android:gravity=\"center\" />\r\n\r\n                <TextView\r\n                    android:id=\"@+id/fecha_vencimiento\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:text=\"Fecha de vencimiento\"\r\n                    android:textSize=\"14sp\"\r\n                    android:layout_marginTop=\"8dp\"\r\n                    android:gravity=\"center\" />\r\n\r\n                <TextView\r\n                    android:id=\"@+id/presentacion\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:text=\"Presentación\"\r\n                    android:textSize=\"14sp\"\r\n                    android:layout_marginTop=\"8dp\"\r\n                    android:gravity=\"center\" />\r\n\r\n                <TextView\r\n                    android:id=\"@+id/precio_producto\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:text=\"S/ 100.00\"\r\n                    android:textSize=\"18sp\"\r\n                    android:textColor=\"@android:color/holo_red_light\"\r\n                    android:layout_marginTop=\"8dp\"\r\n                    android:gravity=\"center\" />\r\n\r\n                <Button\r\n                    android:id=\"@+id/boton_agregar_carrito\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:text=\"Agregar al Carrito\"\r\n                    android:textSize=\"16sp\"\r\n                    android:layout_marginTop=\"16dp\"\r\n                    android:layout_marginStart=\"25dp\"\r\n                    android:paddingStart=\"16dp\"\r\n                    android:paddingEnd=\"16dp\"\r\n                    android:drawableLeft=\"@drawable/ic_cart\"\r\n                    android:drawableTint=\"@android:color/white\"\r\n                    android:backgroundTint=\"@android:color/holo_blue_dark\"\r\n                    android:textColor=\"@android:color/white\" />\r\n\r\n            </LinearLayout>\r\n        </androidx.cardview.widget.CardView>\r\n\r\n        <TextView\r\n            android:id=\"@+id/texto_productos_similares\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:text=\"Productos Similares\"\r\n            android:textSize=\"18sp\"\r\n            android:textStyle=\"bold\"\r\n            android:layout_marginTop=\"20dp\"\r\n            android:gravity=\"center\" />\r\n\r\n        <androidx.recyclerview.widget.RecyclerView\r\n            android:id=\"@+id/recyclerview_similares\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"horizontal\"\r\n            android:layout_marginTop=\"16dp\"\r\n            android:paddingTop=\"8dp\"\r\n            android:paddingBottom=\"8dp\" />\r\n\r\n    </LinearLayout>\r\n</androidx.core.widget.NestedScrollView>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_producto_detalle.xml b/app/src/main/res/layout/activity_producto_detalle.xml
+--- a/app/src/main/res/layout/activity_producto_detalle.xml	(revision 25381b70852e96de64073d801954a20fe0b4dbdf)
++++ b/app/src/main/res/layout/activity_producto_detalle.xml	(date 1731628984873)
+@@ -104,16 +104,16 @@
+                     android:id="@+id/boton_agregar_carrito"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+-                    android:text="Agregar al Carrito"
+-                    android:textSize="16sp"
++                    android:layout_marginStart="16dp"
+                     android:layout_marginTop="16dp"
+-                    android:layout_marginStart="25dp"
+-                    android:paddingStart="16dp"
+-                    android:paddingEnd="16dp"
++                    android:backgroundTint="@android:color/holo_blue_dark"
+                     android:drawableLeft="@drawable/ic_cart"
+                     android:drawableTint="@android:color/white"
+-                    android:backgroundTint="@android:color/holo_blue_dark"
+-                    android:textColor="@android:color/white" />
++                    android:paddingStart="16dp"
++                    android:paddingEnd="16dp"
++                    android:text="Agregar al Carrito"
++                    android:textColor="@android:color/white"
++                    android:textSize="16sp" />
+ 
+             </LinearLayout>
+         </androidx.cardview.widget.CardView>
