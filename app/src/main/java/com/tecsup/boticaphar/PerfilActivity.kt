@@ -84,14 +84,13 @@ class PerfilActivity : AppCompatActivity() {
 
     // Función para abrir Google Maps con una ubicación específica
     private fun openGoogleMaps() {
-        val location = Uri.parse("geo:0,0?q=40.748817,-73.985428")  // Ejemplo: Coordenadas de la Estatua de la Libertad
+        val location = Uri.parse("geo:0,0?q=-8.094023264182493,-79.03693931820501") // Coordenadas de FarmaVida
         val mapIntent = Intent(Intent.ACTION_VIEW, location)
         mapIntent.setPackage("com.google.android.apps.maps")
         if (mapIntent.resolveActivity(packageManager) != null) {
             startActivity(mapIntent)
         }
     }
-
     // Función para cerrar sesión
     private fun cerrarSesion() {
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
