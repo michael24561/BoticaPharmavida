@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    //id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -57,4 +59,9 @@ dependencies {
     implementation(libs.convertergson)
     implementation(libs.glide)
     implementation(libs.glideCompiler)
+
+    //GoogleMaps
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
 }

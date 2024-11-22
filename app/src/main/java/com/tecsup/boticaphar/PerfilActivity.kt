@@ -2,6 +2,7 @@ package com.tecsup.boticaphar
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -29,11 +30,13 @@ class PerfilActivity : AppCompatActivity() {
         val editarPerfil = findViewById<ImageView>(R.id.ic_profile)
         val misPedidos = findViewById<ImageView>(R.id.pedidos)
 
+        // Configurar el click listener para el botón de editar perfil
         editarPerfil.setOnClickListener {
             val intent = Intent(this, EditarPerfilActivity::class.java)
             startActivity(intent)
         }
 
+        // Configurar el click listener para el botón de mis pedidos
         misPedidos.setOnClickListener {
             val intent = Intent(this, HistorialPedidosActivity::class.java)
             startActivity(intent)
@@ -71,11 +74,29 @@ class PerfilActivity : AppCompatActivity() {
         btnCerrarSesion.setOnClickListener {
             cerrarSesion()
         }
+
+        // Agregar el OnClickListener para abrir Google Maps al hacer clic en el ícono de mapa
+        val mapButton = findViewById<ImageView>(R.id.ic_maps)
+        mapButton.setOnClickListener {
+            openGoogleMaps()
+        }
     }
 
+    // Función para abrir Google Maps con una ubicación específica
+    private fun openGoogleMaps() {
+        val location = Uri.parse("geo:0,0?q=40.748817,-73.985428")  // Ejemplo: Coordenadas de la Estatua de la Libertad
+        val mapIntent = Intent(Intent.ACTION_VIEW, location)
+        mapIntent.setPackage("com.google.android.apps.maps")
+        if (mapIntent.resolveActivity(packageManager) != null) {
+            startActivity(mapIntent)
+        }
+    }
+
+    // Función para cerrar sesión
     private fun cerrarSesion() {
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
+        editor.clear()
         editor.apply()
 
         val intent = Intent(this, LoginActivity::class.java)

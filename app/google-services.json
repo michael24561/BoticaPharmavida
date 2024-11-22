@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "113786776630",
+    "project_id": "farmavida-d0424",
+    "storage_bucket": "farmavida-d0424.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113786776630:android:e6c7ab4896c44b4695fc97",
+        "android_client_info": {
+          "package_name": "com.tecsup.boticaphar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM51VU646OWwWXa6cfUpo_woXUwbDa3lU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
