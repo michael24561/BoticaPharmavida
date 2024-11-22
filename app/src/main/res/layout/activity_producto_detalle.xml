@@ -1,141 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:cardview="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
+    android:orientation="vertical"
     tools:context=".DetalleProductoActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_retroceder3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:scrollbars="vertical">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:contentInsetStartWithNavigation="0dp">
 
-        <EditText
-            android:id="@+id/search_bar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="¿Qué deseas el día de hoy?"
-            android:padding="12dp"
-            android:background="@drawable/search_bar_background"
-            android:drawableStart="@drawable/baseline_search_24"
-            android:drawablePadding="10dp"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:inputType="text"
-            android:layout_marginTop="8dp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_producto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:padding="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="6dp"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="16dp">
+            <ImageView
+                android:id="@+id/menu_retroceder3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:src="@drawable/ic_back" />
 
             <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/imagen_producto"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    android:scaleType="centerCrop"/>
+                    android:id="@+id/logo_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/pharmavida"
+                    android:padding="8dp" />
 
                 <TextView
-                    android:id="@+id/nombre_producto"
+                    android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nombre del Producto"
+                    android:text="iHealth"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center" />
-
-                <TextView
-                    android:id="@+id/descripcion_producto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Descripción del producto"
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center" />
-
-                <TextView
-                    android:id="@+id/fecha_vencimiento"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Fecha de vencimiento"
-                    android:textSize="14sp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center" />
-
-                <TextView
-                    android:id="@+id/presentacion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Presentación"
-                    android:textSize="14sp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center" />
-
-                <TextView
-                    android:id="@+id/precio_producto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="S/ 100.00"
-                    android:textSize="18sp"
-                    android:textColor="@android:color/holo_red_light"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center" />
-
-                <Button
-                    android:id="@+id/boton_agregar_carrito"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:backgroundTint="@android:color/holo_blue_dark"
-                    android:drawableLeft="@drawable/ic_cart"
-                    android:drawableTint="@android:color/white"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="Agregar al Carrito"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
-
+                    android:layout_marginStart="8dp" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/texto_productos_similares"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Productos Similares"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            android:gravity="center" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_similares"
+    <!-- Contenido desplazable -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp" />
+            android:padding="20dp">
 
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+            <EditText
+                android:id="@+id/search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="¿Qué deseas el día de hoy?"
+                android:padding="12dp"
+                android:background="@drawable/search_bar_background"
+                android:drawableStart="@drawable/baseline_search_24"
+                android:drawablePadding="10dp"
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:inputType="text"
+                android:layout_marginTop="8dp" />
+
+            <!-- Tarjeta del producto -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_producto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imagen_producto"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop" />
+
+                    <TextView
+                        android:id="@+id/nombre_producto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nombre del Producto"
+                        android:textSize="20sp"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/descripcion_producto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Descripción del producto"
+                        android:textSize="16sp"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/fecha_vencimiento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fecha de vencimiento"
+                        android:textSize="14sp"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/presentacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Presentación"
+                        android:textSize="14sp"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/precio_producto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="S/ 100.00"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/holo_red_light"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center" />
+
+                    <Button
+                        android:id="@+id/boton_agregar_carrito"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:backgroundTint="@android:color/holo_blue_dark"
+                        android:drawableLeft="@drawable/ic_cart"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Agregar al Carrito"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Productos Similares -->
+            <TextView
+                android:id="@+id/texto_productos_similares"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Productos Similares"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:gravity="center" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_similares"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

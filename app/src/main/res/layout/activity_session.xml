@@ -20,44 +20,46 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:text="Bienvenido a Pharmavida"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/footer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         android:text="¡Tu salud, nuestra prioridad!"
         android:textColor="@color/lead"
-        android:textSize="16sp" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_width="290dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="22dp"
         android:backgroundTint="@color/skyblue"
         android:drawablePadding="10dp"
         android:elevation="4dp"
-        android:padding="12dp"
+        android:padding="16dp"
         android:text="Iniciar Sesión"
         android:textAllCaps="false"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btn_register"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_width="290dp"
+        android:layout_height="60dp"
         android:backgroundTint="@color/black"
         android:drawablePadding="10dp"
         android:elevation="4dp"
-        android:padding="12dp"
+        android:padding="16dp"
         android:text="Registrarse"
         android:textAllCaps="false"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
 </LinearLayout>

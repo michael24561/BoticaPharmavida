@@ -6,41 +6,44 @@
 
     <ImageView
         android:id="@+id/image_placeholder"
-        android:layout_width="216dp"
-        android:layout_height="204dp"
+        android:layout_width="390dp"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
         android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
         android:src="@drawable/inicio2" />
 
     <TextView
         android:id="@+id/title_text"
-        android:layout_width="282dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/image_placeholder"
-        android:layout_marginTop="14dp"
-        android:text="Busque en nuestra base de base de datos"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Busque en nuestra base de datos"
         android:textColor="#000000"
-        android:textSize="35sp"
+        android:textSize="40sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/description_text"
-        android:layout_width="170dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_text"
-        android:layout_marginTop="17dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
         android:text="Es fácil encontrar una farmacia cercana a tu ubicación. Con solo un toque."
         android:textColor="#000000"
-        android:textSize="14sp" />
+        android:textSize="18sp" />
 
     <LinearLayout
         android:id="@+id/indicator_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/description_text"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="25dp"
+        android:layout_centerHorizontal="true"
         android:orientation="horizontal">
-
 
         <View
             android:id="@+id/indicator1"
@@ -69,8 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/indicator_layout"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="90dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -92,7 +94,7 @@
             android:background="@drawable/button_rounded_black"
             android:text="Saltar"
             android:textAllCaps="false"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </RelativeLayout>

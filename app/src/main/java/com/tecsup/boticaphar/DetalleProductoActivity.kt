@@ -29,6 +29,13 @@ class DetalleProductoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_producto_detalle)
 
+        val menuRetroceder = findViewById<ImageView>(R.id.menu_retroceder3)
+        menuRetroceder.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         searchBar = findViewById(R.id.search_bar)
 
         // Usar setOnClickListener para manejar el clic una sola vez

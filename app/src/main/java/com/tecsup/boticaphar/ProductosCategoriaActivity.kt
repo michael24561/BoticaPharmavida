@@ -1,6 +1,8 @@
 package com.tecsup.boticaphar
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +25,13 @@ class ProductosCategoriaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_productos_categoria)
+
+        val menuRetroceder = findViewById<ImageView>(R.id.menu_retroceder2)
+        menuRetroceder.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         // Obtener el ID y nombre de la categoría del Intent
         val categoriaId = intent.getIntExtra("categoriaId", -1)

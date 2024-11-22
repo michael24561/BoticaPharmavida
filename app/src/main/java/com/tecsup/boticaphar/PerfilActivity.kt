@@ -69,20 +69,19 @@ class PerfilActivity : AppCompatActivity() {
             }
         }
 
-        // Manejo del botón de cerrar sesión
         val btnCerrarSesion = findViewById<LinearLayout>(R.id.btn_cerrar_sesion)
         btnCerrarSesion.setOnClickListener {
             cerrarSesion()
         }
 
-        // Agregar el OnClickListener para abrir Google Maps al hacer clic en el ícono de mapa
+
         val mapButton = findViewById<ImageView>(R.id.ic_maps)
         mapButton.setOnClickListener {
             openGoogleMaps()
         }
     }
 
-    // Función para abrir Google Maps con una ubicación específica
+    //Google Maps
     private fun openGoogleMaps() {
         val location = Uri.parse("geo:0,0?q=-8.094023264182493,-79.03693931820501&markers=-8.094023264182493,-79.03693931820501|-8.09637611172991,-79.02977049308365|-8.095781285121767,-79.0113168949252|-8.102154382244429,-79.01063024939796")
         val mapIntent = Intent(Intent.ACTION_VIEW, location)
@@ -92,7 +91,6 @@ class PerfilActivity : AppCompatActivity() {
         }
     }
 
-    // Función para cerrar sesión
     private fun cerrarSesion() {
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()

@@ -10,8 +10,8 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:src="@drawable/pharmavida" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Pharmavida"
-        android:textSize="38sp"
+        android:textSize="42sp"
         android:textStyle="bold" />
 
     <TextView
@@ -28,7 +28,6 @@
         android:gravity="center"
         android:paddingTop="6dp"
         android:text="La salud es lo primero"
-        android:textSize="14sp" />
-
+        android:textSize="18sp" />
 
 </LinearLayout>
