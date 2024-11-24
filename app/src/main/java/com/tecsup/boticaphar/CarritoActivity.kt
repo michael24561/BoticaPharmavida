@@ -9,13 +9,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.tecsup.boticaphar.adapters.CarritoAdapter
 import com.tecsup.boticaphar.adapters.ProductoAdapter
+import com.tecsup.boticaphar.models.Producto
 import com.tecsup.boticaphar.utils.Carrito
 
 class CarritoActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var carritoAdapter: ProductoAdapter
+    private lateinit var carritoAdapter: CarritoAdapter // Nuevo adaptador personalizado
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +28,12 @@ class CarritoActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Obtener productos en el carrito
-        val productosEnCarrito = Carrito.obtenerProductos()
-        carritoAdapter = ProductoAdapter(productosEnCarrito)
+        val productosEnCarrito = Carrito.obtenerProductos().toMutableList()
+
+        // Configurar el nuevo adaptador personalizado para carrito
+        carritoAdapter = CarritoAdapter(productosEnCarrito) {
+            actualizarVistaCarrito() // Actualizar la vista si el carrito cambia
+        }
         recyclerView.adapter = carritoAdapter
 
         // Configurar el botón "Finalizar Compra"
@@ -36,7 +42,7 @@ class CarritoActivity : AppCompatActivity() {
             if (productosEnCarrito.isNotEmpty()) {
                 Toast.makeText(this, "Compra finalizada con éxito", Toast.LENGTH_SHORT).show()
                 Carrito.vaciarCarrito()
-                carritoAdapter.notifyDataSetChanged() // Actualizar la lista en pantalla
+                actualizarVistaCarrito()
             } else {
                 Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
             }
@@ -65,6 +71,13 @@ class CarritoActivity : AppCompatActivity() {
         menuRetroceder.setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
+        }
+    }
+
+    private fun actualizarVistaCarrito() {
+        carritoAdapter.notifyDataSetChanged()
+        if (Carrito.obtenerProductos().isEmpty()) {
+            Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
         }
     }
 }
