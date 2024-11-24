@@ -14,8 +14,8 @@ import com.tecsup.boticaphar.models.Producto
 import com.tecsup.boticaphar.utils.Carrito
 
 class CarritoAdapter(
-    private val productos: MutableList<Producto>, // Lista de productos en el carrito
-    private val onCarritoActualizado: () -> Unit // Callback para actualizar la vista del carrito
+    private val productos: MutableList<Producto>, // Lista de productos del carrito
+    private val onCarritoActualizado: () -> Unit // Callback para actualizar la vista
 ) : RecyclerView.Adapter<CarritoAdapter.CarritoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarritoViewHolder {
@@ -26,35 +26,48 @@ class CarritoAdapter(
     override fun onBindViewHolder(holder: CarritoViewHolder, position: Int) {
         val producto = productos[position]
 
-        // Configurar datos del producto
+        // Configurar los datos del producto
         holder.productName.text = producto.nombre
         holder.productDescription.text = producto.descripcion
         holder.productPrice.text = "S/ ${producto.precio}"
-        holder.productQuantity.text = "1" // Inicialmente, la cantidad es 1 (puedes cambiar esto según tu lógica)
+        holder.productQuantity.text = "1" // Cantidad inicial
+
+        // Calcular el precio total inicial
+        holder.productTotalPrice.text = "Total: S/ ${producto.precio}"
 
         // Cargar imagen con Picasso
         Picasso.get().load(producto.imagen).into(holder.productImage)
 
-        // Botón eliminar producto
+        // Botón para eliminar producto
         holder.btnRemoveProduct.setOnClickListener {
             productos.removeAt(position) // Eliminar de la lista local
             Carrito.eliminarProducto(producto) // Eliminar del carrito global
             notifyItemRemoved(position)
-            onCarritoActualizado() // Notificar al Activity que se actualizó el carrito
+            onCarritoActualizado() // Notificar que el carrito se actualizó
             Toast.makeText(holder.itemView.context, "${producto.nombre} eliminado del carrito", Toast.LENGTH_SHORT).show()
         }
 
-        // Botón aumentar cantidad
+        // Botón para aumentar cantidad
         holder.btnIncreaseQuantity.setOnClickListener {
             val cantidadActual = holder.productQuantity.text.toString().toInt()
-            holder.productQuantity.text = (cantidadActual + 1).toString()
+            val nuevaCantidad = cantidadActual + 1
+            holder.productQuantity.text = nuevaCantidad.toString()
+
+            // Actualizar precio total
+            val nuevoPrecioTotal = nuevaCantidad * producto.precio
+            holder.productTotalPrice.text = "Total: S/ ${String.format("%.2f", nuevoPrecioTotal)}"
         }
 
-        // Botón disminuir cantidad
+        // Botón para disminuir cantidad
         holder.btnDecreaseQuantity.setOnClickListener {
             val cantidadActual = holder.productQuantity.text.toString().toInt()
             if (cantidadActual > 1) {
-                holder.productQuantity.text = (cantidadActual - 1).toString()
+                val nuevaCantidad = cantidadActual - 1
+                holder.productQuantity.text = nuevaCantidad.toString()
+
+                // Actualizar precio total
+                val nuevoPrecioTotal = nuevaCantidad * producto.precio
+                holder.productTotalPrice.text = "Total: S/ ${String.format("%.2f", nuevoPrecioTotal)}"
             } else {
                 Toast.makeText(holder.itemView.context, "Cantidad mínima alcanzada", Toast.LENGTH_SHORT).show()
             }
@@ -69,6 +82,7 @@ class CarritoAdapter(
         val productDescription: TextView = itemView.findViewById(R.id.product_description)
         val productPrice: TextView = itemView.findViewById(R.id.product_price)
         val productQuantity: TextView = itemView.findViewById(R.id.product_quantity)
+        val productTotalPrice: TextView = itemView.findViewById(R.id.product_total_price) // Precio total
         val btnIncreaseQuantity: ImageButton = itemView.findViewById(R.id.btn_increase_quantity)
         val btnDecreaseQuantity: ImageButton = itemView.findViewById(R.id.btn_decrease_quantity)
         val btnRemoveProduct: ImageButton = itemView.findViewById(R.id.btn_remove_product)
