@@ -131,5 +131,16 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, NotificacionActivity::class.java))
             Toast.makeText(this, "Abriendo notificaciones", Toast.LENGTH_SHORT).show()
         }
+
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_cart -> {
+                    startActivity(Intent(this, CarritoActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
+
     }
 }

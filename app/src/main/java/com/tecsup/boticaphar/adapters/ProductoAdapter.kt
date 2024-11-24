@@ -4,39 +4,36 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.tecsup.boticaphar.DetalleProductoActivity
 import com.tecsup.boticaphar.R
 import com.tecsup.boticaphar.models.Producto
+import com.tecsup.boticaphar.utils.Carrito
 import java.util.Locale
 
 class ProductoAdapter(
     private var productos: List<Producto>,
-    private val isHorizontal: Boolean = false // Nuevo parámetro para controlar el tipo de layout
+    private val isHorizontal: Boolean = false // Tu parámetro original para layout horizontal
 ) : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {
 
     private var productosFiltrados: List<Producto> = productos.toMutableList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
-        // Inflar el layout dependiendo de si es horizontal o no
-        val layoutRes = if (isHorizontal) {
-            R.layout.item_producto_horizontal // Vista horizontal
-        } else {
-            R.layout.item_producto // Vista vertical
-        }
-
+        val layoutRes = if (isHorizontal) R.layout.item_producto_horizontal else R.layout.item_producto
         val view = LayoutInflater.from(parent.context).inflate(layoutRes, parent, false)
         return ProductoViewHolder(view)
     }
 
     fun updateData(nuevosProductos: List<Producto>) {
         this.productos = nuevosProductos
-        notifyDataSetChanged() // Esto notifica al RecyclerView que los datos han cambiado
+        this.productosFiltrados = nuevosProductos.toMutableList()
+        notifyDataSetChanged()
     }
-
 
     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
         val producto = productosFiltrados[position]
@@ -47,7 +44,13 @@ class ProductoAdapter(
         // Cargar la imagen usando Picasso
         Picasso.get().load(producto.imagen).into(holder.productoImagen)
 
-        // Configurar el clic para abrir la actividad de detalle
+        // Configurar clic en el botón "Agregar al Carrito"
+        holder.agregarCarritoBtn.setOnClickListener {
+            Carrito.agregarProducto(producto) // Agrega el producto al carrito
+            Toast.makeText(holder.itemView.context, "${producto.nombre} añadido al carrito", Toast.LENGTH_SHORT).show()
+        }
+
+        // Configurar clic en el item para abrir la actividad de detalle
         holder.itemView.setOnClickListener {
             val intent = Intent(it.context, DetalleProductoActivity::class.java)
             intent.putExtra("producto", producto) // Pasar el producto seleccionado
@@ -57,15 +60,14 @@ class ProductoAdapter(
 
     override fun getItemCount(): Int = productosFiltrados.size
 
-    // Método para filtrar productos según el texto ingresado
     fun filtrar(query: String) {
         val textoBusqueda = query.lowercase(Locale.getDefault())
         productosFiltrados = if (textoBusqueda.isEmpty()) {
             productos
         } else {
-            productos.filter { producto ->
-                producto.nombre.lowercase(Locale.getDefault()).contains(textoBusqueda) ||
-                        producto.descripcion.lowercase(Locale.getDefault()).contains(textoBusqueda)
+            productos.filter {
+                it.nombre.lowercase(Locale.getDefault()).contains(textoBusqueda) ||
+                        it.descripcion.lowercase(Locale.getDefault()).contains(textoBusqueda)
             }
         }
         notifyDataSetChanged()
@@ -76,7 +78,6 @@ class ProductoAdapter(
         val productoPrecio: TextView = itemView.findViewById(R.id.producto_precio)
         val productoImagen: ImageView = itemView.findViewById(R.id.producto_imagen)
         val productoDescripcion: TextView = itemView.findViewById(R.id.producto_descripcion)
+        val agregarCarritoBtn: Button = itemView.findViewById(R.id.agregar_carrito_btn)
     }
 }
-
-

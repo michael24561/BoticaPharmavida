@@ -61,7 +61,7 @@
 
         <!-- Botón Agregar al Carrito con margen superior e inferior -->
         <Button
-            android:id="@+id/boton_agregar_carrito"
+            android:id="@+id/agregar_carrito_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

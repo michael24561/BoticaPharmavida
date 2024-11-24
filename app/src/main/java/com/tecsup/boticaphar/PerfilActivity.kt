@@ -75,7 +75,7 @@ class PerfilActivity : AppCompatActivity() {
         }
 
 
-        val mapButton = findViewById<ImageView>(R.id.ic_maps)
+       val mapButton = findViewById<ImageView>(R.id.ic_maps)
         mapButton.setOnClickListener {
             openGoogleMaps()
         }
