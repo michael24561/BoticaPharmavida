@@ -14,6 +14,9 @@ import com.tecsup.boticaphar.adapters.ProductoAdapter
 import com.tecsup.boticaphar.models.Producto
 import com.tecsup.boticaphar.utils.Carrito
 
+// Importa la nueva actividad
+import com.tecsup.boticaphar.MetodosPagoActivity
+
 class CarritoActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
@@ -40,9 +43,9 @@ class CarritoActivity : AppCompatActivity() {
         val checkoutButton = findViewById<Button>(R.id.checkout_button)
         checkoutButton.setOnClickListener {
             if (productosEnCarrito.isNotEmpty()) {
-                Toast.makeText(this, "Compra finalizada con éxito", Toast.LENGTH_SHORT).show()
-                Carrito.vaciarCarrito()
-                actualizarVistaCarrito()
+                // Redirigir a la actividad de métodos de pago
+                val intent = Intent(this, MetodosPagoActivity::class.java)
+                startActivity(intent)
             } else {
                 Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
             }

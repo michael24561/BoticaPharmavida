@@ -52,6 +52,8 @@
         <activity android:name=".ProductosCategoriaActivity" />
         <activity android:name=".ClienteActivity" />
         <activity android:name=".MapsActivity"/>
+        <activity android:name=".PagoYapeActivity"/>
+        <activity android:name=".MetodosPagoActivity"/>
 
     </application>
 
