@@ -1,5 +1,6 @@
 package com.tecsup.boticaphar
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -26,30 +27,22 @@ class CarritoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_carrito)
 
+        // Obtener el username de las SharedPreferences
+        val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
+        val username = sharedPreferences.getString("username", "") ?: ""
+
         // Configurar el RecyclerView
         recyclerView = findViewById(R.id.carrito_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Obtener productos del carrito utilizando SharedPreferences
-        val productosEnCarrito = Carrito.obtenerProductos(this).toMutableList()
+        // Obtener productos del carrito utilizando el username
+        val productosEnCarrito = Carrito.obtenerProductos(this, username).toMutableList()
 
         // Configurar el nuevo adaptador personalizado para el carrito
         carritoAdapter = CarritoAdapter(productosEnCarrito) {
             actualizarVistaCarrito()
         }
         recyclerView.adapter = carritoAdapter
-
-        // Configurar el botón "Finalizar Compra"
-        val checkoutButton = findViewById<Button>(R.id.checkout_button)
-        checkoutButton.setOnClickListener {
-            if (productosEnCarrito.isNotEmpty()) {
-                // Redirigir a la actividad de métodos de pago
-                val intent = Intent(this, MetodosPagoActivity::class.java)
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
-            }
-        }
 
         // Configurar BottomNavigationView
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -69,20 +62,28 @@ class CarritoActivity : AppCompatActivity() {
             }
         }
 
-        // Configurar botón para retroceder
-        val menuRetroceder = findViewById<ImageView>(R.id.menu_retroceder)
-        menuRetroceder.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
-            finish()
+        // Configurar el botón "Finalizar Compra"
+        val checkoutButton = findViewById<Button>(R.id.checkout_button)
+        checkoutButton.setOnClickListener {
+            if (productosEnCarrito.isNotEmpty()) {
+                // Redirigir a la actividad de métodos de pago
+                val intent = Intent(this, MetodosPagoActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun actualizarVistaCarrito() {
         carritoAdapter.notifyDataSetChanged()
-        val productosEnCarrito = Carrito.obtenerProductos(this)
+        val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
+        val username = sharedPreferences.getString("username", "") ?: ""
+        val productosEnCarrito = Carrito.obtenerProductos(this, username)
         if (productosEnCarrito.isEmpty()) {
             Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
         }
     }
 }
+
 

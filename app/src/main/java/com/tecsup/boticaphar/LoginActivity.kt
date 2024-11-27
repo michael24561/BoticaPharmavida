@@ -54,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
                     val refreshToken = tokenResponse?.refresh
 
                     if (accessToken != null && refreshToken != null) {
-                        saveTokens(accessToken, refreshToken)
+                        saveTokens(accessToken, refreshToken, email)  // Guardamos el username también
                         Toast.makeText(this@LoginActivity, "Inicio de sesión exitoso.", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                         finish()
@@ -76,14 +76,15 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginActivity, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })
-
     }
 
-    private fun saveTokens(accessToken: String, refreshToken: String) {
+    private fun saveTokens(accessToken: String, refreshToken: String, username: String) {
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("access_token", accessToken)
         editor.putString("refresh_token", refreshToken)
+        editor.putString("username", username)  // Guardamos el username
         editor.apply()
     }
 }
+

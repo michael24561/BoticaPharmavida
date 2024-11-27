@@ -1,5 +1,6 @@
 package com.tecsup.boticaphar.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,11 @@ class CarritoAdapter(
 
     override fun onBindViewHolder(holder: CarritoViewHolder, position: Int) {
         val producto = productos[position]
+        val context = holder.itemView.context
+
+        // Obtener el username de SharedPreferences o de otro lugar adecuado
+        val sharedPreferences = context.getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
+        val username = sharedPreferences.getString("username", "") ?: ""  // Aquí tomamos el username guardado
 
         // Configurar los datos del producto
         holder.productName.text = producto.nombre
@@ -41,10 +47,10 @@ class CarritoAdapter(
         // Botón para eliminar producto
         holder.btnRemoveProduct.setOnClickListener {
             productos.removeAt(position) // Eliminar de la lista local
-            Carrito.eliminarProducto(holder.itemView.context, producto) // Eliminar del carrito global
+            Carrito.eliminarProducto(context, producto, username) // Pasar el username
             notifyItemRemoved(position)
             onCarritoActualizado() // Notificar que el carrito se actualizó
-            Toast.makeText(holder.itemView.context, "${producto.nombre} eliminado del carrito", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "${producto.nombre} eliminado del carrito", Toast.LENGTH_SHORT).show()
         }
 
         // Botón para aumentar cantidad
@@ -59,7 +65,7 @@ class CarritoAdapter(
             holder.productTotalPrice.text = "Total: S/ ${String.format("%.2f", nuevoPrecioTotal)}"
 
             // Actualizar carrito global
-            Carrito.actualizarCantidad(holder.itemView.context, producto, nuevaCantidad)
+            Carrito.actualizarCantidad(context, producto, nuevaCantidad, username) // Pasar el username
             onCarritoActualizado() // Notificar que el carrito se actualizó
         }
 
@@ -77,14 +83,13 @@ class CarritoAdapter(
                 holder.productTotalPrice.text = "Total: S/ ${String.format("%.2f", nuevoPrecioTotal)}"
 
                 // Actualizar carrito global
-                Carrito.actualizarCantidad(holder.itemView.context, producto, nuevaCantidad)
+                Carrito.actualizarCantidad(context, producto, nuevaCantidad, username) // Pasar el username
                 onCarritoActualizado() // Notificar que el carrito se actualizó
             } else {
-                Toast.makeText(holder.itemView.context, "Cantidad mínima alcanzada", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Cantidad mínima alcanzada", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
+}
 
     override fun getItemCount(): Int = productos.size
 

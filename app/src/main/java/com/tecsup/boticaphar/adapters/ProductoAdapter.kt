@@ -1,5 +1,6 @@
 package com.tecsup.boticaphar.adapters
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -44,10 +45,19 @@ class ProductoAdapter(
         // Cargar la imagen usando Picasso
         Picasso.get().load(producto.imagen).into(holder.productoImagen)
 
+        // Obtener el username desde SharedPreferences
+        val context = holder.itemView.context
+        val sharedPreferences = context.getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
+        val username = sharedPreferences.getString("username", "") ?: ""  // Asegúrate de obtener el username correctamente
+
         // Configurar clic en el botón "Agregar al Carrito"
         holder.agregarCarritoBtn.setOnClickListener {
-            Carrito.agregarProducto(holder.itemView.context, producto) // Agregar el producto al carrito
-            Toast.makeText(holder.itemView.context, "${producto.nombre} añadido al carrito", Toast.LENGTH_SHORT).show()
+            if (username.isNotEmpty()) {
+                Carrito.agregarProducto(context, producto, username) // Pasar el username al método
+                Toast.makeText(context, "${producto.nombre} añadido al carrito", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "No se ha encontrado el usuario. Intenta nuevamente.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Configurar clic en el item para abrir la actividad de detalle
@@ -56,7 +66,7 @@ class ProductoAdapter(
             intent.putExtra("producto", producto) // Pasar el producto seleccionado
             it.context.startActivity(intent)
         }
-    }
+}
 
     override fun getItemCount(): Int = productosFiltrados.size
 
