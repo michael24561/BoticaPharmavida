@@ -2,7 +2,6 @@ package com.tecsup.boticaphar.network
 
 import com.tecsup.boticaphar.models.Categoria
 import com.tecsup.boticaphar.models.Producto
-import com.tecsup.boticaphar.models.UpdateProfileRequest
 import com.tecsup.boticaphar.models.UserData
 import retrofit2.Call
 import retrofit2.http.Body
