@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.tecsup.boticaphar.R
 import com.tecsup.boticaphar.models.Producto
-import com.tecsup.boticaphar.utils.Carrito
+import com.tecsup.boticaphar.models.Carrito
 
 class CarritoAdapter(
     private val productos: MutableList<Producto>, // Lista de productos del carrito
@@ -30,10 +30,10 @@ class CarritoAdapter(
         holder.productName.text = producto.nombre
         holder.productDescription.text = producto.descripcion
         holder.productPrice.text = "S/ ${producto.precio}"
-        holder.productQuantity.text = "1" // Cantidad inicial
+        holder.productQuantity.text = producto.cantidad.toString() // Mostrar la cantidad desde el modelo
 
         // Calcular el precio total inicial
-        holder.productTotalPrice.text = "Total: S/ ${producto.precio}"
+        holder.productTotalPrice.text = "Total: S/ ${String.format("%.2f", producto.precio * producto.cantidad)}"
 
         // Cargar imagen con Picasso
         Picasso.get().load(producto.imagen).into(holder.productImage)
@@ -41,7 +41,7 @@ class CarritoAdapter(
         // Botón para eliminar producto
         holder.btnRemoveProduct.setOnClickListener {
             productos.removeAt(position) // Eliminar de la lista local
-            Carrito.eliminarProducto(producto) // Eliminar del carrito global
+            Carrito.eliminarProducto(holder.itemView.context, producto) // Eliminar del carrito global
             notifyItemRemoved(position)
             onCarritoActualizado() // Notificar que el carrito se actualizó
             Toast.makeText(holder.itemView.context, "${producto.nombre} eliminado del carrito", Toast.LENGTH_SHORT).show()
@@ -49,30 +49,42 @@ class CarritoAdapter(
 
         // Botón para aumentar cantidad
         holder.btnIncreaseQuantity.setOnClickListener {
-            val cantidadActual = holder.productQuantity.text.toString().toInt()
-            val nuevaCantidad = cantidadActual + 1
-            holder.productQuantity.text = nuevaCantidad.toString()
+            val nuevaCantidad = producto.cantidad + 1
+            producto.cantidad = nuevaCantidad // Actualizar la cantidad en el modelo
+
+            holder.productQuantity.text = nuevaCantidad.toString() // Actualizar la vista
 
             // Actualizar precio total
             val nuevoPrecioTotal = nuevaCantidad * producto.precio
             holder.productTotalPrice.text = "Total: S/ ${String.format("%.2f", nuevoPrecioTotal)}"
+
+            // Actualizar carrito global
+            Carrito.actualizarCantidad(holder.itemView.context, producto, nuevaCantidad)
+            onCarritoActualizado() // Notificar que el carrito se actualizó
         }
 
         // Botón para disminuir cantidad
         holder.btnDecreaseQuantity.setOnClickListener {
-            val cantidadActual = holder.productQuantity.text.toString().toInt()
+            val cantidadActual = producto.cantidad
             if (cantidadActual > 1) {
                 val nuevaCantidad = cantidadActual - 1
-                holder.productQuantity.text = nuevaCantidad.toString()
+                producto.cantidad = nuevaCantidad // Actualizar la cantidad en el modelo
+
+                holder.productQuantity.text = nuevaCantidad.toString() // Actualizar la vista
 
                 // Actualizar precio total
                 val nuevoPrecioTotal = nuevaCantidad * producto.precio
                 holder.productTotalPrice.text = "Total: S/ ${String.format("%.2f", nuevoPrecioTotal)}"
+
+                // Actualizar carrito global
+                Carrito.actualizarCantidad(holder.itemView.context, producto, nuevaCantidad)
+                onCarritoActualizado() // Notificar que el carrito se actualizó
             } else {
                 Toast.makeText(holder.itemView.context, "Cantidad mínima alcanzada", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
 
     override fun getItemCount(): Int = productos.size
 

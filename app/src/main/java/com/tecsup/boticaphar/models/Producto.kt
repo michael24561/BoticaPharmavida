@@ -10,8 +10,10 @@ data class Producto(
     val categoria: Int,
     val descripcion: String,
     val imagen: String,
+    val stock: String,
     val fecha_vencimiento: String,  // Nuevo campo: Fecha de vencimiento del producto
-    val presentacion: String        // Nuevo campo: Presentación del producto
+    val presentacion: String,
+    var cantidad: Int = 1         // Nuevo campo: Presentación del producto
 ) : Parcelable {
 
     // Constructor secundario que se utiliza para crear el objeto Producto a partir de un Parcel
@@ -22,8 +24,10 @@ data class Producto(
         parcel.readInt(),                     // Categoría del producto
         parcel.readString() ?: "",            // Descripción del producto
         parcel.readString() ?: "",            // Imagen del producto (ruta o nombre del archivo)
+        parcel.readString() ?: "",            // Stock del producto (nuevo campo)
         parcel.readString() ?: "",            // Fecha de vencimiento (nuevo campo)
-        parcel.readString() ?: ""             // Presentación del producto (nuevo campo)
+        parcel.readString() ?: "",           // Presentación del producto (nuevo campo)
+        parcel.readInt()                      // Cantidad del producto (nuevo campo)
     )
 
     // Método para escribir el objeto en un Parcel

@@ -12,7 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tecsup.boticaphar.adapters.CarritoAdapter
 import com.tecsup.boticaphar.adapters.ProductoAdapter
 import com.tecsup.boticaphar.models.Producto
-import com.tecsup.boticaphar.utils.Carrito
+import com.tecsup.boticaphar.models.Carrito
 
 // Importa la nueva actividad
 import com.tecsup.boticaphar.MetodosPagoActivity
@@ -20,7 +20,7 @@ import com.tecsup.boticaphar.MetodosPagoActivity
 class CarritoActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var carritoAdapter: CarritoAdapter // Nuevo adaptador personalizado
+    private lateinit var carritoAdapter: CarritoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +30,12 @@ class CarritoActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.carrito_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Obtener productos en el carrito
-        val productosEnCarrito = Carrito.obtenerProductos().toMutableList()
+        // Obtener productos del carrito utilizando SharedPreferences
+        val productosEnCarrito = Carrito.obtenerProductos(this).toMutableList()
 
-        // Configurar el nuevo adaptador personalizado para carrito
+        // Configurar el nuevo adaptador personalizado para el carrito
         carritoAdapter = CarritoAdapter(productosEnCarrito) {
-            actualizarVistaCarrito() // Actualizar la vista si el carrito cambia
+            actualizarVistaCarrito()
         }
         recyclerView.adapter = carritoAdapter
 
@@ -79,8 +79,10 @@ class CarritoActivity : AppCompatActivity() {
 
     private fun actualizarVistaCarrito() {
         carritoAdapter.notifyDataSetChanged()
-        if (Carrito.obtenerProductos().isEmpty()) {
+        val productosEnCarrito = Carrito.obtenerProductos(this)
+        if (productosEnCarrito.isEmpty()) {
             Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
         }
     }
 }
+

@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso
 import com.tecsup.boticaphar.DetalleProductoActivity
 import com.tecsup.boticaphar.R
 import com.tecsup.boticaphar.models.Producto
-import com.tecsup.boticaphar.utils.Carrito
+import com.tecsup.boticaphar.models.Carrito
 import java.util.Locale
 
 class ProductoAdapter(
@@ -46,7 +46,7 @@ class ProductoAdapter(
 
         // Configurar clic en el botón "Agregar al Carrito"
         holder.agregarCarritoBtn.setOnClickListener {
-            Carrito.agregarProducto(producto) // Agrega el producto al carrito
+            Carrito.agregarProducto(holder.itemView.context, producto) // Agregar el producto al carrito
             Toast.makeText(holder.itemView.context, "${producto.nombre} añadido al carrito", Toast.LENGTH_SHORT).show()
         }
 
@@ -81,3 +81,4 @@ class ProductoAdapter(
         val agregarCarritoBtn: Button = itemView.findViewById(R.id.agregar_carrito_btn)
     }
 }
+
