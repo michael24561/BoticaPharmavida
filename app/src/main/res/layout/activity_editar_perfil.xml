@@ -143,60 +143,23 @@
                 android:textSize="16sp"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Apellido paterno y materno -->
-            <LinearLayout
+            <!-- Campo de Apellidos -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apellidos"
+                android:textSize="16sp"
+                android:textColor="@color/lead" />
+
+            <EditText
+                android:id="@+id/et_apellidos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Apellido paterno"
-                        android:textSize="16sp"
-                        android:textColor="@color/lead" />
-
-                    <EditText
-                        android:id="@+id/et_apellido_paterno"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Fernández"
-                        android:padding="12dp"
-                        android:textColorHint="@color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="16dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Apellido materno"
-                        android:textSize="16sp"
-                        android:textColor="@color/lead" />
-
-                    <EditText
-                        android:id="@+id/et_apellido_materno"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Hoyos"
-                        android:padding="12dp"
-                        android:textColorHint="@color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="16dp" />
-                </LinearLayout>
-            </LinearLayout>
+                android:hint="Fernández Hoyos"
+                android:padding="12dp"
+                android:textColorHint="@color/black"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp" />
 
             <!-- Correo electrónico -->
             <TextView
@@ -234,63 +197,18 @@
                 android:textSize="16sp"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Fecha de nacimiento -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fecha de nacimiento"
-                android:textSize="16sp"
-                android:textColor="@color/lead" />
-
-            <LinearLayout
+            <Button
+                android:id="@+id/btn_guardar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Selecciona una fecha"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/iv_calendar_icon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_calendario"
-                    android:layout_marginStart="8dp" />
-            </LinearLayout>
-
-            <!-- Género -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Género"
+                android:text="Guardar"
+                android:backgroundTint="@color/skyblue"
+                android:textColor="@color/white"
                 android:textSize="16sp"
-                android:textColor="@color/lead" />
+                android:padding="12dp"
+                android:layout_marginTop="16dp"/>
 
-            <Spinner
-                android:id="@+id/spinner_genero"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:spinnerMode="dropdown" />
+        </LinearLayout>
+    </ScrollView>
 
-        <Button
-            android:id="@+id/btn_guardar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Guardar"
-            android:backgroundTint="@color/skyblue"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:padding="12dp"
-            android:layout_marginTop="16dp"/>
-
-            </LinearLayout>
-        </ScrollView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

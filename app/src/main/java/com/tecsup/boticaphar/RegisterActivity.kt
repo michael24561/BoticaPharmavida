@@ -30,28 +30,37 @@ class RegisterActivity : AppCompatActivity() {
         btnRegister = findViewById(R.id.btn_register)
 
         // Datos recibidos del primer layout
-        val firstName = intent.getStringExtra("first_name")
-        val lastName = intent.getStringExtra("last_name")
-        val direccion = intent.getStringExtra("direccion")
-        val dni = intent.getStringExtra("dni")
+        val firstName = intent.getStringExtra("first_name") ?: ""
+        val lastName = intent.getStringExtra("last_name") ?: ""
+        val direccion = intent.getStringExtra("direccion") ?: ""
+        val dni = intent.getStringExtra("dni") ?: ""
 
         btnRegister.setOnClickListener {
-            val email = etEmail.text.toString()
-            val password = etPassword.text.toString()
-            val confirmPassword = etConfirmPassword.text.toString()
+            val email = etEmail.text.toString().trim()
+            val password = etPassword.text.toString().trim()
+            val confirmPassword = etConfirmPassword.text.toString().trim()
 
+            // Validar que los campos no estén vacíos
+            if (firstName.isEmpty() || lastName.isEmpty() || direccion.isEmpty() || dni.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Validar que las contraseñas coincidan
             if (password != confirmPassword) {
                 Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             val userData = UserData(
-                first_name = firstName.toString(),
-                last_name = lastName.toString(),
+                id = 0,  // El id será generado automáticamente por el backend
+                first_name = firstName,
+                last_name = lastName,
                 email = email,
+                user_id = 0,
                 password = password,
-                direccion = direccion.toString(),
-                dni = dni.toString()
+                direccion = direccion,
+                dni = dni
             )
 
             registrarUsuario(userData)
@@ -63,23 +72,35 @@ class RegisterActivity : AppCompatActivity() {
         apiService.registerUser(userData).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(this@RegisterActivity, "Registro exitoso", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this@RegisterActivity, "Registro exitoso", Toast.LENGTH_SHORT).show()
 
-                    // Redirigir a la siguiente actividad o mostrar mensaje de éxito
+                    // Aquí guardamos el ID y otros datos en SharedPreferences
+                    val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+
+                    // Guardamos el ID del usuario
+                    editor.putInt("user_id", userData.id)  // Guardamos el ID
+                    editor.putString("user_first_name", userData.first_name)  // Si lo necesitas
+                    editor.putString("user_last_name", userData.last_name)  // Si lo necesitas
+                    editor.putString("user_email", userData.email)  // Si lo necesitas
+                    editor.putString("user_dni", userData.dni)  // Si lo necesitas
+                    editor.apply()  // Guardamos los datos
+
+                    // Redirigir a la siguiente actividad (HomeActivity)
                     val intent = Intent(this@RegisterActivity, HomeActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
+                    // Manejo del error, si el servidor devuelve un mensaje de error
                     val errorMessage = response.errorBody()?.string() ?: "Error desconocido"
                     Toast.makeText(this@RegisterActivity, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                Toast.makeText(this@RegisterActivity, "Error: ${t.message}", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this@RegisterActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
+
 }
