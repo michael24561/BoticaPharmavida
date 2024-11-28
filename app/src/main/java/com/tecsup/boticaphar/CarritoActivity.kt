@@ -4,15 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tecsup.boticaphar.adapters.CarritoAdapter
-import com.tecsup.boticaphar.adapters.ProductoAdapter
-import com.tecsup.boticaphar.models.Producto
 import com.tecsup.boticaphar.models.Carrito
 
 // Importa la nueva actividad

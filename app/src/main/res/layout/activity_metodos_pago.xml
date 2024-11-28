@@ -86,8 +86,7 @@
             android:id="@+id/icono_flecha2"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/arrowright"
-            />
+            android:src="@drawable/arrowright" />
     </LinearLayout>
 
     <!-- Botón Yape -->
@@ -123,10 +122,7 @@
             android:id="@+id/icono_flecha1"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/arrowright"
-             />
+            android:src="@drawable/arrowright" />
     </LinearLayout>
-
-
 
 </LinearLayout>
