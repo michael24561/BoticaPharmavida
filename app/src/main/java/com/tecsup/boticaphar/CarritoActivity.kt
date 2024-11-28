@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import com.tecsup.boticaphar.models.Carrito
 
 // Importa la nueva actividad
 import com.tecsup.boticaphar.MetodosPagoActivity
+import com.tecsup.boticaphar.models.Producto
 
 class CarritoActivity : AppCompatActivity() {
 
@@ -50,11 +52,13 @@ class CarritoActivity : AppCompatActivity() {
                     startActivity(Intent(this, HomeActivity::class.java))
                     true
                 }
+
                 R.id.nav_cart -> true
                 R.id.nav_profile -> {
                     startActivity(Intent(this, PerfilActivity::class.java))
                     true
                 }
+
                 else -> false
             }
         }
@@ -70,17 +74,35 @@ class CarritoActivity : AppCompatActivity() {
                 Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
             }
         }
+
+        actualizarVistaCarrito()
     }
 
     private fun actualizarVistaCarrito() {
         carritoAdapter.notifyDataSetChanged()
+
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", "") ?: ""
         val productosEnCarrito = Carrito.obtenerProductos(this, username)
+
+        // Calcular el total
+        val total = calcularTotalCarrito(productosEnCarrito)
+        val totalPriceText: TextView = findViewById(R.id.total_price_text)
+        totalPriceText.text = "Total: S/ ${String.format("%.2f", total)}"
+
         if (productosEnCarrito.isEmpty()) {
             Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun calcularTotalCarrito(productosEnCarrito: List<Producto>): Double {
+        var total = 0.0
+        productosEnCarrito.forEach { producto ->
+            total += producto.precio * producto.cantidad
+        }
+        return total
+    }
 }
+
 
 

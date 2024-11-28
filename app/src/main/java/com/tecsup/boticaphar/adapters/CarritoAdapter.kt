@@ -28,9 +28,9 @@ class CarritoAdapter(
         val producto = productos[position]
         val context = holder.itemView.context
 
-        // Obtener el username de SharedPreferences o de otro lugar adecuado
+        // Obtener el username desde SharedPreferences
         val sharedPreferences = context.getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
-        val username = sharedPreferences.getString("username", "") ?: ""  // Aquí tomamos el username guardado
+        val username = sharedPreferences.getString("username", "") ?: ""  // Obtener el username guardado
 
         // Configurar los datos del producto
         holder.productName.text = producto.nombre
@@ -89,7 +89,7 @@ class CarritoAdapter(
                 Toast.makeText(context, "Cantidad mínima alcanzada", Toast.LENGTH_SHORT).show()
             }
         }
-}
+    }
 
     override fun getItemCount(): Int = productos.size
 
