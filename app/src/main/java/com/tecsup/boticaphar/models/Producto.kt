@@ -11,41 +11,42 @@ data class Producto(
     val descripcion: String,
     val imagen: String,
     val stock: String,
-    val fecha_vencimiento: String,  // Nuevo campo: Fecha de vencimiento del producto
+    val fecha_vencimiento: String,
     val presentacion: String,
-    var cantidad: Int = 1         // Nuevo campo: Presentación del producto
+    var cantidad: Int = 1,
+    val proveedor: Int
 ) : Parcelable {
 
-    // Constructor secundario que se utiliza para crear el objeto Producto a partir de un Parcel
+    // Constructor secundario para crear un objeto Producto a partir de un Parcel
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
-        parcel.readString() ?: "",            // Nombre del producto
-        parcel.readDouble(),                  // Precio del producto
-        parcel.readInt(),                     // Categoría del producto
-        parcel.readString() ?: "",            // Descripción del producto
-        parcel.readString() ?: "",            // Imagen del producto (ruta o nombre del archivo)
-        parcel.readString() ?: "",            // Stock del producto (nuevo campo)
-        parcel.readString() ?: "",            // Fecha de vencimiento (nuevo campo)
-        parcel.readString() ?: "",           // Presentación del producto (nuevo campo)
-        parcel.readInt()                      // Cantidad del producto (nuevo campo)
+        parcel.readString() ?: "",
+        parcel.readDouble(),
+        parcel.readInt(),
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readInt(),
+        parcel.readInt()
     )
 
-    // Método para escribir el objeto en un Parcel
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)                  // ID del producto
-        parcel.writeString(nombre)           // Nombre del producto
-        parcel.writeDouble(precio)           // Precio del producto
-        parcel.writeInt(categoria)           // Categoría del producto
-        parcel.writeString(descripcion)      // Descripción del producto
-        parcel.writeString(imagen)           // Imagen del producto
-        parcel.writeString(fecha_vencimiento)  // Guardando la fecha de vencimiento
-        parcel.writeString(presentacion)      // Guardando la presentación
+        parcel.writeInt(id)
+        parcel.writeString(nombre)
+        parcel.writeDouble(precio)
+        parcel.writeInt(categoria)
+        parcel.writeString(descripcion)
+        parcel.writeString(imagen)
+        parcel.writeString(fecha_vencimiento)
+        parcel.writeString(presentacion)
+        parcel.writeInt(cantidad)
+        parcel.writeInt(proveedor)
     }
 
-    // Método necesario para la interfaz Parcelable
     override fun describeContents(): Int = 0
 
-    // Companion object para la creación de objetos Producto a partir de Parcel
     companion object {
         @JvmField
         val CREATOR: Parcelable.Creator<Producto> = object : Parcelable.Creator<Producto> {

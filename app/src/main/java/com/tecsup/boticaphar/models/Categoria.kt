@@ -12,13 +12,13 @@ data class Categoria(
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString() ?: "",
-        parcel.createTypedArrayList(Producto.CREATOR) ?: listOf() // Recupera la lista de productos
+        parcel.createTypedArrayList(Producto.CREATOR) ?: listOf()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeString(nombre)
-        parcel.writeTypedList(productos) // Escribe la lista de productos
+        parcel.writeTypedList(productos)
     }
 
     override fun describeContents(): Int = 0

@@ -30,6 +30,49 @@
             android:contentDescription="Logo de la Botica"
             android:src="@drawable/pharmavida" />
 
+        <!-- Campos Personales -->
+        <EditText
+            android:id="@+id/et_first_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Nombre"
+            android:padding="12dp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <EditText
+            android:id="@+id/et_last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Apellido"
+            android:padding="12dp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <EditText
+            android:id="@+id/et_direccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Dirección"
+            android:padding="12dp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <EditText
+            android:id="@+id/et_dni"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="DNI"
+            android:inputType="number"
+            android:padding="12dp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <!-- Campos de Usuario -->
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
@@ -73,6 +116,7 @@
             android:maxLines="1"
             android:ellipsize="end" />
 
+        <!-- Botones -->
         <Button
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
@@ -95,6 +139,5 @@
             android:text="¿Ya tienes una cuenta? Iniciar sesión"
             android:textColor="@color/skyblue"
             android:textSize="15sp" />
-
     </LinearLayout>
 </ScrollView>

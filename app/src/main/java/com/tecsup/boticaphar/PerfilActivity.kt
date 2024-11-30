@@ -22,7 +22,6 @@ class PerfilActivity : AppCompatActivity() {
         nameTextView = findViewById(R.id.username)
         emailTextView = findViewById(R.id.et_email)
 
-        // Cargar datos de SharedPreferences
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", null)
         val email = sharedPreferences.getString("email", null)
@@ -30,26 +29,21 @@ class PerfilActivity : AppCompatActivity() {
         val editarPerfil = findViewById<ImageView>(R.id.ic_profile)
         val misPedidos = findViewById<ImageView>(R.id.pedidos)
 
-        // Configurar el click listener para el botón de editar perfil
         editarPerfil.setOnClickListener {
             val intent = Intent(this, EditarPerfilActivity::class.java)
             startActivity(intent)
         }
 
-        // Configurar el click listener para el botón de mis pedidos
         misPedidos.setOnClickListener {
             val intent = Intent(this, HistorialPedidosActivity::class.java)
             startActivity(intent)
         }
 
-        // Muestra los detalles en los TextViews
         nameTextView.text = username ?: "Nombre no disponible"
         emailTextView.text = email ?: "Email no disponible"
 
-        // Configurar BottomNavigationView
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        // Establecer el ítem del perfil como seleccionado
         bottomNavigationView.selectedItemId = R.id.nav_profile
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->

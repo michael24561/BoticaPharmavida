@@ -55,12 +55,6 @@ android:layout_height="match_parent">
                     android:layout_marginStart="8dp" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/notification_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_notification"
-                android:padding="8dp" />
         </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>

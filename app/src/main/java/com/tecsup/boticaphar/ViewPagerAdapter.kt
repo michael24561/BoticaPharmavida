@@ -10,9 +10,9 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapte
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> PerfilFragment() // Cambia por tu clase de fragmento real
-            1 -> HomeFragment() // Cambia por tu clase de fragmento real
-            2 -> CarritoFragment() // Cambia por tu clase de fragmento real
+            0 -> PerfilFragment()
+            1 -> HomeFragment()
+            2 -> CarritoFragment()
             else -> HomeFragment()
         }
     }

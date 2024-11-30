@@ -19,7 +19,7 @@ import java.util.Locale
 
 class ProductoAdapter(
     private var productos: List<Producto>,
-    private val isHorizontal: Boolean = false // Tu parámetro original para layout horizontal
+    private val isHorizontal: Boolean = false
 ) : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {
 
     private var productosFiltrados: List<Producto> = productos.toMutableList()
@@ -42,13 +42,11 @@ class ProductoAdapter(
         holder.productoPrecio.text = "$${producto.precio}"
         holder.productoDescripcion.text = producto.descripcion
 
-        // Cargar la imagen usando Picasso
         Picasso.get().load(producto.imagen).into(holder.productoImagen)
 
-        // Obtener el username desde SharedPreferences
         val context = holder.itemView.context
         val sharedPreferences = context.getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
-        val username = sharedPreferences.getString("username", "") ?: ""  // Asegúrate de obtener el username correctamente
+        val username = sharedPreferences.getString("username", "") ?: ""
 
         // Configurar clic en el botón "Agregar al Carrito"
         holder.agregarCarritoBtn.setOnClickListener {

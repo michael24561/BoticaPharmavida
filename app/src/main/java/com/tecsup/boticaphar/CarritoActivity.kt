@@ -3,6 +3,7 @@ package com.tecsup.boticaphar
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -12,38 +13,40 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tecsup.boticaphar.adapters.CarritoAdapter
 import com.tecsup.boticaphar.models.Carrito
-
-// Importa la nueva actividad
-import com.tecsup.boticaphar.MetodosPagoActivity
+import com.tecsup.boticaphar.models.Pedido
 import com.tecsup.boticaphar.models.Producto
+import com.tecsup.boticaphar.network.RetrofitClient
+import java.text.SimpleDateFormat
+import java.util.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CarritoActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var carritoAdapter: CarritoAdapter
+    private lateinit var totalPriceText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_carrito)
 
-        // Obtener el username de las SharedPreferences
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", "") ?: ""
 
-        // Configurar el RecyclerView
         recyclerView = findViewById(R.id.carrito_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Obtener productos del carrito utilizando el username
+        totalPriceText = findViewById(R.id.total_price_text)
+
         val productosEnCarrito = Carrito.obtenerProductos(this, username).toMutableList()
 
-        // Configurar el nuevo adaptador personalizado para el carrito
         carritoAdapter = CarritoAdapter(productosEnCarrito) {
             actualizarVistaCarrito()
         }
         recyclerView.adapter = carritoAdapter
 
-        // Configurar BottomNavigationView
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.selectedItemId = R.id.nav_cart
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
@@ -52,24 +55,19 @@ class CarritoActivity : AppCompatActivity() {
                     startActivity(Intent(this, HomeActivity::class.java))
                     true
                 }
-
                 R.id.nav_cart -> true
                 R.id.nav_profile -> {
                     startActivity(Intent(this, PerfilActivity::class.java))
                     true
                 }
-
                 else -> false
             }
         }
 
-        // Configurar el botón "Finalizar Compra"
         val checkoutButton = findViewById<Button>(R.id.checkout_button)
         checkoutButton.setOnClickListener {
             if (productosEnCarrito.isNotEmpty()) {
-                // Redirigir a la actividad de métodos de pago
-                val intent = Intent(this, MetodosPagoActivity::class.java)
-                startActivity(intent)
+                realizarPedido(username, productosEnCarrito)
             } else {
                 Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
             }
@@ -79,16 +77,15 @@ class CarritoActivity : AppCompatActivity() {
     }
 
     private fun actualizarVistaCarrito() {
-        carritoAdapter.notifyDataSetChanged()
-
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", "") ?: ""
         val productosEnCarrito = Carrito.obtenerProductos(this, username)
 
-        // Calcular el total
         val total = calcularTotalCarrito(productosEnCarrito)
-        val totalPriceText: TextView = findViewById(R.id.total_price_text)
+
         totalPriceText.text = "Total: S/ ${String.format("%.2f", total)}"
+
+        carritoAdapter.notifyDataSetChanged()
 
         if (productosEnCarrito.isEmpty()) {
             Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
@@ -102,7 +99,54 @@ class CarritoActivity : AppCompatActivity() {
         }
         return total
     }
+
+    private fun realizarPedido(username: String, productosEnCarrito: List<Producto>) {
+        val totalPedido = calcularTotalCarrito(productosEnCarrito)
+
+        val fechaPedido = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+        val estadoPedido = "Pendiente"
+
+        val pedido = Pedido(
+            id = 0,
+            fecha_pedido = fechaPedido,
+            total_pedido = totalPedido,
+            estado = estadoPedido,
+            cantidad = productosEnCarrito.sumOf { it.cantidad },
+            precio_compra = totalPedido,
+            producto = productosEnCarrito.firstOrNull()?.id ?: 0,
+            proveedor = 1
+        )
+
+        Log.d("CarritoActivity", "Realizando pedido con los siguientes datos: $pedido")
+        RetrofitClient.instance.realizarPedido(pedido).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(
+                        this@CarritoActivity,
+                        "Pedido realizado con éxito",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Carrito.vaciarCarrito(this@CarritoActivity, username)
+                    startActivity(Intent(this@CarritoActivity, MetodosPagoActivity::class.java))
+                } else {
+                    Log.e("CarritoActivity", "Error al realizar el pedido: ${response.message()}")
+                    Toast.makeText(
+                        this@CarritoActivity,
+                        "Error al realizar el pedido: ${response.message()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("CarritoActivity", "Error de conexión: ${t.message}")
+                Toast.makeText(
+                    this@CarritoActivity,
+                    "Error de conexión: ${t.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
 }
-
-
-

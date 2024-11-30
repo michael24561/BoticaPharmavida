@@ -125,4 +125,40 @@
             android:src="@drawable/arrowright" />
     </LinearLayout>
 
+    <!-- Botón PayPal -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="pagarConPayPal">
+
+        <ImageView
+            android:id="@+id/btn_pagar_paypal"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/paypal"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pagar con PayPal"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:layout_marginStart="20dp"/>
+
+        <ImageView
+            android:id="@+id/icono_flecha3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/arrowright" />
+    </LinearLayout>
+
+
 </LinearLayout>

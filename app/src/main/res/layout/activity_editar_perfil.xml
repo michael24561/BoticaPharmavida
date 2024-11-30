@@ -197,6 +197,24 @@
                 android:textSize="16sp"
                 android:layout_marginBottom="16dp" />
 
+            <!-- Campo de Dirección -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dirección"
+                android:textSize="16sp"
+                android:textColor="@color/lead" />
+
+            <EditText
+                android:id="@+id/et_direccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ejemplo: Calle 123"
+                android:padding="12dp"
+                android:textColorHint="@color/black"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp" />
+
             <Button
                 android:id="@+id/btn_guardar"
                 android:layout_width="match_parent"

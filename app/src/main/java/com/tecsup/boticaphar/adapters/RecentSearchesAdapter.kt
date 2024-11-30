@@ -12,26 +12,23 @@ import com.tecsup.boticaphar.R
 class RecentSearchesAdapter(
     private val context: Context,
     private var busquedasRecientes: MutableList<String>,
-    private val onSearchClickListener: (String) -> Unit,  // Listener para manejar clic en la búsqueda
-    private val onDeleteClickListener: (String) -> Unit   // Listener para manejar clic en el botón de eliminar
+    private val onSearchClickListener: (String) -> Unit,
+    private val onDeleteClickListener: (String) -> Unit
 ) : RecyclerView.Adapter<RecentSearchesAdapter.ViewHolder>() {
 
-    // Crear el ViewHolder
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val searchText: TextView = itemView.findViewById(R.id.search_text)
         val deleteButton: ImageView = itemView.findViewById(R.id.delete_button)
 
         init {
-            // Al hacer clic en el botón de eliminar
             deleteButton.setOnClickListener {
                 val busqueda = busquedasRecientes[adapterPosition]
                 onDeleteClickListener(busqueda)
             }
 
-            // Al hacer clic en el texto de la búsqueda
             itemView.setOnClickListener {
                 val busqueda = busquedasRecientes[adapterPosition]
-                onSearchClickListener(busqueda)  // Ejecutar el listener de clic
+                onSearchClickListener(busqueda)
             }
         }
     }

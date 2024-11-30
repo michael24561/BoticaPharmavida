@@ -19,7 +19,6 @@ object RetrofitClientAuth {
         return retrofit
     }
 
-    // Guarda el token en SharedPreferences
     fun saveAuthToken(context: Context, accessToken: String?, refreshToken: String?) {
         val sharedPreferences: SharedPreferences =
             context.getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE)

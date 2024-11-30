@@ -10,6 +10,6 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ApiServiceAuth {
-    @POST("token/")  // Endpoint para obtener el token
+    @POST("token/")
     fun loginUser(@Body loginRequest: LoginRequest): Call<TokenResponse>
 }

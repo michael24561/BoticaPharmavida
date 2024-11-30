@@ -127,10 +127,5 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, MenuLateralActivity::class.java))
         }
 
-        findViewById<View>(R.id.notification_icon).setOnClickListener {
-            startActivity(Intent(this, NotificacionActivity::class.java))
-            Toast.makeText(this, "Abriendo notificaciones", Toast.LENGTH_SHORT).show()
-        }
-
     }
 }

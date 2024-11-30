@@ -5,12 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.tecsup.boticaphar.models.LoginRequest
 import com.tecsup.boticaphar.models.TokenResponse
-
 import com.tecsup.boticaphar.network.RetrofitClientAuth
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,8 +36,13 @@ class LoginActivity : AppCompatActivity() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
 
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show()
+        if (email.isEmpty()) {
+            Toast.makeText(this, "Por favor, ingresa el correo.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (password.isEmpty()) {
+            Toast.makeText(this, "Por favor, ingresa la contraseña.", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -62,12 +65,10 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this@LoginActivity, "Error al obtener el token.", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    // Manejo de errores específicos
-                    val errorBody = response.errorBody()?.string()
-                    if (!errorBody.isNullOrEmpty()) {
-                        Toast.makeText(this@LoginActivity, "Error: $errorBody", Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(this@LoginActivity, "Credenciales incorrectas.", Toast.LENGTH_SHORT).show()
+                    when (response.code()) {
+                        400 -> Toast.makeText(this@LoginActivity, "Credenciales incorrectas. Verifica tu correo y contraseña.", Toast.LENGTH_SHORT).show()
+                        401 -> Toast.makeText(this@LoginActivity, "No autorizado. Revisa tus datos de acceso.", Toast.LENGTH_SHORT).show()
+                        else -> Toast.makeText(this@LoginActivity, "Error: ${response.code()}. Intenta nuevamente.", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -87,4 +88,3 @@ class LoginActivity : AppCompatActivity() {
         editor.apply()
     }
 }
-

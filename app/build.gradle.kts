@@ -71,4 +71,7 @@ dependencies {
     //Yape
     implementation ("com.google.zxing:core:3.4.0")
     implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    //Paypal
+    implementation ("com.paypal.sdk:paypal-android-sdk:2.16.0")
 }

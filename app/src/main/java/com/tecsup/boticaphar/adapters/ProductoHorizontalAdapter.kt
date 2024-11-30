@@ -26,7 +26,7 @@ class ProductoHorizontalAdapter(
 
     fun updateData(nuevosProductos: List<Producto>) {
         this.productos = nuevosProductos
-        notifyDataSetChanged() // Esto notifica al RecyclerView que los datos han cambiado
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
@@ -34,20 +34,17 @@ class ProductoHorizontalAdapter(
         holder.productoNombre.text = producto.nombre
         holder.productoPrecio.text = "$${producto.precio}"
 
-        // Cargar la imagen usando Picasso
         Picasso.get().load(producto.imagen).into(holder.productoImagen)
 
-        // Configurar el clic para abrir la actividad de detalle
         holder.itemView.setOnClickListener {
             val intent = Intent(it.context, DetalleProductoActivity::class.java)
-            intent.putExtra("producto", producto) // Pasar el producto seleccionado
+            intent.putExtra("producto", producto)
             it.context.startActivity(intent)
         }
     }
 
     override fun getItemCount(): Int = productosFiltrados.size
 
-    // Método para filtrar productos según el texto ingresado
     fun filtrar(query: String) {
         val textoBusqueda = query.lowercase(Locale.getDefault())
         productosFiltrados = if (textoBusqueda.isEmpty()) {

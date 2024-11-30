@@ -15,8 +15,8 @@ import com.tecsup.boticaphar.models.Producto
 import com.tecsup.boticaphar.models.Carrito
 
 class CarritoAdapter(
-    private val productos: MutableList<Producto>, // Lista de productos del carrito
-    private val onCarritoActualizado: () -> Unit // Callback para actualizar la vista
+    private val productos: MutableList<Producto>,
+    private val onCarritoActualizado: () -> Unit
 ) : RecyclerView.Adapter<CarritoAdapter.CarritoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarritoViewHolder {
@@ -28,63 +28,52 @@ class CarritoAdapter(
         val producto = productos[position]
         val context = holder.itemView.context
 
-        // Obtener el username desde SharedPreferences
         val sharedPreferences = context.getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
-        val username = sharedPreferences.getString("username", "") ?: ""  // Obtener el username guardado
+        val username = sharedPreferences.getString("username", "") ?: ""
 
-        // Configurar los datos del producto
         holder.productName.text = producto.nombre
         holder.productDescription.text = producto.descripcion
         holder.productPrice.text = "S/ ${producto.precio}"
-        holder.productQuantity.text = producto.cantidad.toString() // Mostrar la cantidad desde el modelo
+        holder.productQuantity.text = producto.cantidad.toString()
 
-        // Calcular el precio total inicial
         holder.productTotalPrice.text = "Total: S/ ${String.format("%.2f", producto.precio * producto.cantidad)}"
 
-        // Cargar imagen con Picasso
         Picasso.get().load(producto.imagen).into(holder.productImage)
 
-        // Botón para eliminar producto
         holder.btnRemoveProduct.setOnClickListener {
-            productos.removeAt(position) // Eliminar de la lista local
-            Carrito.eliminarProducto(context, producto, username) // Pasar el username
+            productos.removeAt(position)
+            Carrito.eliminarProducto(context, producto, username)
             notifyItemRemoved(position)
-            onCarritoActualizado() // Notificar que el carrito se actualizó
+            onCarritoActualizado()
             Toast.makeText(context, "${producto.nombre} eliminado del carrito", Toast.LENGTH_SHORT).show()
         }
 
-        // Botón para aumentar cantidad
         holder.btnIncreaseQuantity.setOnClickListener {
             val nuevaCantidad = producto.cantidad + 1
-            producto.cantidad = nuevaCantidad // Actualizar la cantidad en el modelo
+            producto.cantidad = nuevaCantidad
 
-            holder.productQuantity.text = nuevaCantidad.toString() // Actualizar la vista
+            holder.productQuantity.text = nuevaCantidad.toString()
 
-            // Actualizar precio total
             val nuevoPrecioTotal = nuevaCantidad * producto.precio
             holder.productTotalPrice.text = "Total: S/ ${String.format("%.2f", nuevoPrecioTotal)}"
 
-            // Actualizar carrito global
-            Carrito.actualizarCantidad(context, producto, nuevaCantidad, username) // Pasar el username
-            onCarritoActualizado() // Notificar que el carrito se actualizó
+            Carrito.actualizarCantidad(context, producto, nuevaCantidad, username)
+            onCarritoActualizado()
         }
 
-        // Botón para disminuir cantidad
         holder.btnDecreaseQuantity.setOnClickListener {
             val cantidadActual = producto.cantidad
             if (cantidadActual > 1) {
                 val nuevaCantidad = cantidadActual - 1
-                producto.cantidad = nuevaCantidad // Actualizar la cantidad en el modelo
+                producto.cantidad = nuevaCantidad
 
-                holder.productQuantity.text = nuevaCantidad.toString() // Actualizar la vista
+                holder.productQuantity.text = nuevaCantidad.toString()
 
-                // Actualizar precio total
                 val nuevoPrecioTotal = nuevaCantidad * producto.precio
                 holder.productTotalPrice.text = "Total: S/ ${String.format("%.2f", nuevoPrecioTotal)}"
 
-                // Actualizar carrito global
-                Carrito.actualizarCantidad(context, producto, nuevaCantidad, username) // Pasar el username
-                onCarritoActualizado() // Notificar que el carrito se actualizó
+                Carrito.actualizarCantidad(context, producto, nuevaCantidad, username)
+                onCarritoActualizado()
             } else {
                 Toast.makeText(context, "Cantidad mínima alcanzada", Toast.LENGTH_SHORT).show()
             }
