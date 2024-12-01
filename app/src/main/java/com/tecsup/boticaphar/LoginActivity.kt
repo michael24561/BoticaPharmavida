@@ -23,12 +23,27 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        // Comprobamos si ya hay un token almacenado
+        checkIfUserIsLoggedIn()
+
         emailEditText = findViewById(R.id.et_email)
         passwordEditText = findViewById(R.id.txt_password)
         val btnLogin = findViewById<Button>(R.id.btn_login)
 
         btnLogin.setOnClickListener {
             loginUser()
+        }
+    }
+
+    // Verifica si ya hay un token guardado
+    private fun checkIfUserIsLoggedIn() {
+        val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
+        val accessToken = sharedPreferences.getString("access_token", null)
+
+        if (!accessToken.isNullOrEmpty()) {
+            // Si ya hay un token, ir directamente al HomeActivity
+            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+            finish()  // Termina LoginActivity para evitar que el usuario regrese a ella
         }
     }
 

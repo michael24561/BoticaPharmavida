@@ -24,10 +24,28 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this@MainActivity, Inicio1Activity::class.java)
-            startActivity(intent)
-            finish()
-        }, 2000)
+        // Verifica si ya está autenticado
+        checkIfUserIsLoggedIn()
+    }
+
+    private fun checkIfUserIsLoggedIn() {
+        val sharedPreferences = getSharedPreferences("userPrefs", MODE_PRIVATE)
+        val accessToken = sharedPreferences.getString("access_token", null)
+
+        if (!accessToken.isNullOrEmpty()) {
+            // Si ya hay un token, ir directamente al HomeActivity
+            Handler(Looper.getMainLooper()).postDelayed({
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                finish()  // Finaliza MainActivity para evitar que el usuario regrese a ella
+            }, 2000) // Retraso de 2 segundos para mostrar la animación de inicio
+        } else {
+            // Si no hay token, ir a la pantalla de instrucciones o login
+            Handler(Looper.getMainLooper()).postDelayed({
+                val intent = Intent(this@MainActivity, Inicio1Activity::class.java)
+                startActivity(intent)
+                finish()
+            }, 2000)
+        }
     }
 }
