@@ -59,8 +59,9 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Crear el objeto UserData
             val userData = UserData(
-                id = 0,  // El ID será generado automáticamente por el backend
+                cliente_id = 0,  // El ID será generado automáticamente por el backend
                 first_name = firstName,
                 last_name = lastName,
                 email = email,
@@ -69,46 +70,34 @@ class RegisterActivity : AppCompatActivity() {
                 dni = dni
             )
 
+            // Realizar la solicitud de registro
             registrarUsuario(userData)
         }
     }
 
     private fun registrarUsuario(userData: UserData) {
         val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
+
         apiService.registerUser(userData).enqueue(object : Callback<UserData> {
             override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
                 if (response.isSuccessful) {
                     val registeredUser = response.body()
-                    Log.d("RegisterActivity", "Registered User: $registeredUser")  // Imprime el usuario registrado
+                    Log.d("RegisterActivity", "Registered User: $registeredUser")  // Loguea el usuario registrado
 
-                    val userId = registeredUser?.id ?: 0  // Obtén el ID del usuario registrado
-                    if (userId != 0) {
-                        Toast.makeText(this@RegisterActivity, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                    // Si el registro fue exitoso, redirige al login sin guardar nada en SharedPreferences
+                    Toast.makeText(this@RegisterActivity, "Registro exitoso", Toast.LENGTH_SHORT).show()
 
-                        // Guardar datos en SharedPreferences
-                        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-                        val editor = sharedPreferences.edit()
-                        editor.putInt("user_id", userId)  // Guarda el ID del usuario
-                        editor.putString("user_first_name", registeredUser?.first_name)
-                        editor.putString("user_last_name", registeredUser?.last_name)
-                        editor.putString("user_email", registeredUser?.email)
-                        editor.putString("user_dni", registeredUser?.dni)
-                        editor.apply()
+                    // Redirigir a la actividad de login
+                    val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
 
-                        // Redirigir a la siguiente actividad (LoginActivity)
-                        val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        Toast.makeText(this@RegisterActivity, "Error al obtener el ID", Toast.LENGTH_SHORT).show()
-                    }
                 } else {
                     val errorMessage = response.errorBody()?.string() ?: "Error desconocido"
-                    Log.d("RegisterActivity", "Error: $errorMessage")  // Imprime el mensaje de error
+                    Log.d("RegisterActivity", "Error: $errorMessage")
                     Toast.makeText(this@RegisterActivity, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
                 }
             }
-
 
             override fun onFailure(call: Call<UserData>, t: Throwable) {
                 Toast.makeText(this@RegisterActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
@@ -116,3 +105,4 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 }
+

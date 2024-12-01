@@ -8,7 +8,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.tecsup.boticaphar.models.UserData
-import com.tecsup.boticaphar.network.ApiService
 import com.tecsup.boticaphar.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,7 +19,7 @@ class EditarPerfilActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
     private lateinit var apellidosEditText: EditText
     private lateinit var dniEditText: EditText
-    private lateinit var direccionEditText: EditText  // Campo para la dirección
+    private lateinit var direccionEditText: EditText
     private lateinit var btnGuardar: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,100 +31,157 @@ class EditarPerfilActivity : AppCompatActivity() {
         emailEditText = findViewById(R.id.et_email)
         apellidosEditText = findViewById(R.id.et_apellidos)
         dniEditText = findViewById(R.id.et_num_documento)
-        direccionEditText = findViewById(R.id.et_direccion)  // Inicialización para la dirección
+        direccionEditText = findViewById(R.id.et_direccion)
         btnGuardar = findViewById(R.id.btn_guardar)
 
-        obtenerDatosUsuario()
+        // Recuperar el ID del usuario desde SharedPreferences
+        val sharedPreferences = getSharedPreferences("authPrefs", Context.MODE_PRIVATE)
+        val clienteId =
+            sharedPreferences.getInt("cliente_id", -1)  // Usamos "cliente_id" como clave
+
+        if (clienteId != -1) {
+            // Cargar los datos actuales del usuario
+            Log.d("EditarPerfilActivity", "Recuperando datos del usuario con ID: $clienteId")
+            getUserData(clienteId)
+        } else {
+            Log.e(
+                "EditarPerfilActivity",
+                "Error al obtener el ID del cliente desde SharedPreferences"
+            )
+            Toast.makeText(this, "Error al obtener los datos del usuario.", Toast.LENGTH_SHORT)
+                .show()
+        }
 
         btnGuardar.setOnClickListener {
-            actualizarPerfil()
+            // Obtener los datos del formulario
+            val nombre = nombreEditText.text.toString().trim()
+            val email = emailEditText.text.toString().trim()
+            val apellidos = apellidosEditText.text.toString().trim()
+            val dni = dniEditText.text.toString().trim()
+            val direccion = direccionEditText.text.toString().trim()
+
+            if (nombre.isEmpty() || email.isEmpty() || apellidos.isEmpty() || dni.isEmpty() || direccion.isEmpty()) {
+                Log.w("EditarPerfilActivity", "Campos incompletos al intentar guardar el perfil")
+                Toast.makeText(this, "Por favor completa todos los campos.", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
+
+            val updatedUserData = UserData(
+                cliente_id = clienteId,
+                first_name = nombre,
+                email = email,
+                last_name = apellidos,
+                dni = dni,
+                direccion = direccion
+            )
+
+            Log.d("EditarPerfilActivity", "Datos para actualizar: $updatedUserData")
+            updateUserProfile(clienteId, updatedUserData)
         }
     }
 
-    private fun obtenerDatosUsuario() {
-        val userId = getUserId() // Obtener el ID del usuario desde SharedPreferences
-        if (userId != -1) {
-            val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
+    private fun getUserData(userId: Int) {
+        val sharedPreferences = getSharedPreferences("authPrefs", Context.MODE_PRIVATE)
+        val accessToken = sharedPreferences.getString("access_token", "") ?: ""
 
-            // Obtener datos del usuario
-            apiService.getUserData(userId).enqueue(object : Callback<UserData> {
-                override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
-                    if (response.isSuccessful) {
-                        response.body()?.let { userData ->
-                            nombreEditText.setText(userData.first_name)
-                            emailEditText.setText(userData.email)
-                            apellidosEditText.setText(userData.last_name)
-                            dniEditText.setText(userData.dni)
-                            direccionEditText.setText(userData.direccion)  // Mostrar la dirección
-                        }
-                    } else {
-                        Toast.makeText(this@EditarPerfilActivity, "Error al obtener datos: ${response.code()}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<UserData>, t: Throwable) {
-                    Toast.makeText(this@EditarPerfilActivity, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
-                }
-            })
-        } else {
-            Toast.makeText(this, "ID de usuario no válido.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun actualizarPerfil() {
-        val nombre = nombreEditText.text.toString().trim()
-        val email = emailEditText.text.toString().trim()
-        val apellidos = apellidosEditText.text.toString().trim()
-        val dni = dniEditText.text.toString().trim()
-        val direccion = direccionEditText.text.toString().trim()
-
-        if (nombre.isEmpty() || email.isEmpty() || apellidos.isEmpty() || dni.isEmpty() || direccion.isEmpty()) {
-            Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show()
+        if (accessToken.isEmpty()) {
+            Log.e("EditarPerfilActivity", "El token de acceso no está disponible.")
+            Toast.makeText(this, "No se encuentra el token de acceso.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val userId = getUserId()
-        if (userId != -1) {
-            val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
+        val apiService = RetrofitClient.getApiService()
 
-            val updatedUserData = UserData(
-                id = userId,
-                first_name = nombre,
-                last_name = apellidos,
-                email = email,
-                dni = dni,
-                direccion = direccion // Solo enviamos los campos que queremos actualizar
-            )
-
-            // Log para ver los datos antes de enviarlos
-            Log.d("EditarPerfil", "Enviando datos al servidor: $updatedUserData")
-
-            apiService.updateUserProfile(userId, updatedUserData).enqueue(object : Callback<UserData> {
-                override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(this@EditarPerfilActivity, "Perfil actualizado correctamente.", Toast.LENGTH_SHORT).show()
+        // Agregar el token de autorización al encabezado
+        val bearerToken = "Bearer $accessToken"
+        apiService.getUserData(userId).enqueue(object : Callback<UserData> {
+            override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
+                if (response.isSuccessful) {
+                    val userData = response.body()
+                    if (userData != null) {
+                        Log.d("EditarPerfilActivity", "Datos del usuario recibidos: $userData")
+                        // Rellenamos los campos con los datos actuales del usuario
+                        nombreEditText.setText(userData.first_name)
+                        emailEditText.setText(userData.email)
+                        apellidosEditText.setText(userData.last_name)
+                        dniEditText.setText(userData.dni)
+                        direccionEditText.setText(userData.direccion)
                     } else {
-                        // Log para ver el error en la respuesta
-                        Log.e("EditarPerfil", "Error en la respuesta: ${response.code()} - ${response.errorBody()?.string()}")
-                        Toast.makeText(this@EditarPerfilActivity, "Error al actualizar: ${response.code()}", Toast.LENGTH_SHORT).show()
+                        Log.e(
+                            "EditarPerfilActivity",
+                            "Respuesta vacía: el cuerpo del mensaje es nulo"
+                        )
                     }
+                } else {
+                    Log.e(
+                        "EditarPerfilActivity",
+                        "Error en la respuesta de la API: ${response.code()} - ${response.message()}"
+                    )
+                    Toast.makeText(
+                        this@EditarPerfilActivity,
+                        "Error al obtener los datos del usuario.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+            }
 
-                override fun onFailure(call: Call<UserData>, t: Throwable) {
-                    // Log para ver el error de conexión
-                    Log.e("EditarPerfil", "Error de conexión: ${t.message}", t)
-                    Toast.makeText(this@EditarPerfilActivity, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
-                }
-            })
-        } else {
-            Toast.makeText(this, "ID de usuario no válido.", Toast.LENGTH_SHORT).show()
-        }
+            override fun onFailure(call: Call<UserData>, t: Throwable) {
+                Log.e("EditarPerfilActivity", "Error de conexión: ${t.message}")
+                Toast.makeText(
+                    this@EditarPerfilActivity,
+                    "Error de conexión: ${t.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
     }
 
 
+    private fun updateUserProfile(userId: Int, updatedUserData: UserData) {
+        val sharedPreferences = getSharedPreferences("authPrefs", Context.MODE_PRIVATE)
+        val accessToken = sharedPreferences.getString("access_token", "") ?: ""
 
-    private fun getUserId(): Int {
-        val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-        return sharedPreferences.getInt("user_id", -1) // Obtener el ID del usuario almacenado en SharedPreferences
+        if (accessToken.isEmpty()) {
+            Log.e("EditarPerfilActivity", "El token de acceso no está disponible.")
+            Toast.makeText(this, "No se encuentra el token de acceso.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val apiService = RetrofitClient.getApiService()
+
+        // Agregar el token de autorización al encabezado
+        val bearerToken = "Bearer $accessToken"
+        apiService.updateUserProfile(userId, updatedUserData).enqueue(object : Callback<UserData> {
+            override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
+                if (response.isSuccessful) {
+                    Log.d("EditarPerfilActivity", "Perfil actualizado exitosamente")
+                    Toast.makeText(
+                        this@EditarPerfilActivity,
+                        "Perfil actualizado exitosamente.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Log.e(
+                        "EditarPerfilActivity",
+                        "Error al actualizar el perfil: ${response.code()} - ${response.message()}"
+                    )
+                    Toast.makeText(
+                        this@EditarPerfilActivity,
+                        "Error al actualizar el perfil.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<UserData>, t: Throwable) {
+                Log.e("EditarPerfilActivity", "Error de conexión al actualizar: ${t.message}")
+                Toast.makeText(
+                    this@EditarPerfilActivity,
+                    "Error de conexión: ${t.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
     }
 }

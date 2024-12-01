@@ -6,6 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
     private const val BASE_URL = "http://10.0.2.2:8000/api/v1/"
 
+    // Instancia de Retrofit que se inicializa solo una vez
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -13,16 +14,17 @@ object RetrofitClient {
             .build()
     }
 
+    // Función para obtener la instancia del Retrofit (sin necesidad de crearla de nuevo)
     fun getInstance(): Retrofit {
         return retrofit
     }
 
+    // Instancia de ApiService utilizando la instancia de Retrofit
     val instance: ApiService by lazy {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
         retrofit.create(ApiService::class.java)
+    }
+
+    fun getApiService(): ApiService {
+        return retrofit.create(ApiService::class.java)
     }
 }

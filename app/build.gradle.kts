@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.tecsup.boticaphar"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.tecsup.boticaphar"
@@ -74,4 +74,8 @@ dependencies {
 
     //Paypal
     implementation ("com.paypal.sdk:paypal-android-sdk:2.16.0")
+
+    //
+    implementation ("com.squareup.okhttp3:okhttp:4.9.0")
+
 }

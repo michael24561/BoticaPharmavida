@@ -1,5 +1,6 @@
 package com.tecsup.boticaphar.network
 
+import com.tecsup.boticaphar.User
 import com.tecsup.boticaphar.models.Categoria
 import com.tecsup.boticaphar.models.Pedido
 import com.tecsup.boticaphar.models.Producto
@@ -30,14 +31,22 @@ interface ApiService {
     fun registerUser(@Body userData: UserData): Call<UserData>
 
     @GET("clientes/{id}/")
-    fun getUserData(@Path("id") userId: Int): Call<UserData>
+    fun getUserData(@Path("id") clienteId: Int): Call<UserData>
 
     @GET("clientes/")
     fun getUserData(@Header("Authorization") authHeader: String): Call<UserData>
 
     @PUT("clientes/{id}/")
-    fun updateUserProfile(@Path("id") userId: Int, @Body userData: UserData): Call<UserData>
+    fun updateUserProfile(@Path("id") clienteId: Int, @Body userData: UserData): Call<UserData>
 
+    @GET("current-user/") // Endpoint para obtener el usuario actual
+    fun getCurrentUser(@Header("Authorization") token: String): Call<UserData>
+
+    @PUT("current-user/") // Endpoint para actualizar los datos del usuario
+    fun updateUserProfile(
+        @Header("Authorization") token: String,
+        @Body userData: UserData // Solo el cuerpo de la solicitud con los datos a actualizar
+    ): Call<UserData>
 
     @PATCH("clientes/{id}/")
     fun patchClient(@Path("id") clientId: Int, @Body clientData: Map<String, Any>): Call<UserData>
