@@ -87,21 +87,7 @@ class EditarPerfilActivity : AppCompatActivity() {
     }
 
     private fun getUserData(userId: Int) {
-        val sharedPreferences = getSharedPreferences("authPrefs", Context.MODE_PRIVATE)
-        val accessToken = sharedPreferences.getString("access_token", "")
-
-        if (accessToken.isNullOrEmpty()) {
-            Log.e("EditarPerfilActivity", "El token de acceso no está disponible. Razones posibles:")
-            Log.e("EditarPerfilActivity", "1. El token no fue guardado correctamente en SharedPreferences.")
-            Log.e("EditarPerfilActivity", "2. La clave 'access_token' no coincide o fue modificada.")
-            Log.e("EditarPerfilActivity", "3. SharedPreferences pudo ser borrado o corrupto.")
-            Log.e("EditarPerfilActivity", "Contenido actual de SharedPreferences: ${sharedPreferences.all}")
-            Toast.makeText(this, "No se encuentra el token de acceso.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
         val apiService = RetrofitClient.getApiService()
-        val bearerToken = "Bearer $accessToken"
 
         apiService.getUserData(userId).enqueue(object : Callback<UserData> {
             override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
@@ -144,22 +130,9 @@ class EditarPerfilActivity : AppCompatActivity() {
         })
     }
 
+
     private fun updateUserProfile(userId: Int, updatedUserData: UserData) {
-        val sharedPreferences = getSharedPreferences("authPrefs", Context.MODE_PRIVATE)
-        val accessToken = sharedPreferences.getString("access_token", "")
-
-        if (accessToken.isNullOrEmpty()) {
-            Log.e("EditarPerfilActivity", "El token de acceso no está disponible. Razones posibles:")
-            Log.e("EditarPerfilActivity", "1. El token no fue guardado correctamente en SharedPreferences.")
-            Log.e("EditarPerfilActivity", "2. La clave 'access_token' no coincide o fue modificada.")
-            Log.e("EditarPerfilActivity", "3. SharedPreferences pudo ser borrado o corrupto.")
-            Log.e("EditarPerfilActivity", "Contenido actual de SharedPreferences: ${sharedPreferences.all}")
-            Toast.makeText(this, "No se encuentra el token de acceso.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
         val apiService = RetrofitClient.getApiService()
-        val bearerToken = "Bearer $accessToken"
 
         apiService.updateUserProfile(userId, updatedUserData).enqueue(object : Callback<UserData> {
             override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
