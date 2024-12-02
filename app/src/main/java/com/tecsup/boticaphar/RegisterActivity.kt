@@ -104,5 +104,13 @@ class RegisterActivity : AppCompatActivity() {
             }
         })
     }
+
+    // Método para redirigir al LoginActivity desde el TextView
+    fun onReturnToLoginClick(view: android.view.View) {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 }
+
 

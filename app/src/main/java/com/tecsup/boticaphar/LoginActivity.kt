@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -36,6 +37,13 @@ class LoginActivity : AppCompatActivity() {
         btnLogin.setOnClickListener {
             loginUser()
         }
+    }
+
+    // Método para manejar clic en el TextView de registro
+    fun onRegisterClick(view: View) {
+        Log.d("LoginActivity", "El usuario hizo clic en 'Crea una cuenta'. Redirigiendo a RegisterActivity.")
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
     }
 
     // Verifica si ya hay un token guardado
@@ -121,10 +129,6 @@ class LoginActivity : AppCompatActivity() {
         editor.apply()
 
         Log.d("LoginActivity", "Tokens guardados correctamente: Access Token: $accessToken, Refresh Token: $refreshToken")
-        // Confirmación de que se guardaron correctamente
-        val savedAccessToken = sharedPreferences.getString("access_token", null)
-        val savedRefreshToken = sharedPreferences.getString("refresh_token", null)
-        Log.d("LoginActivity", "Verificación de almacenamiento: Access Token: $savedAccessToken, Refresh Token: $savedRefreshToken")
     }
 
     private fun getCurrentUser(accessToken: String) {
