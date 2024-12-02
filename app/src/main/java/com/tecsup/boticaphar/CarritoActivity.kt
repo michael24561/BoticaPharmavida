@@ -120,9 +120,10 @@ class CarritoActivity : AppCompatActivity() {
             estado = estadoPedido,
             cantidad = productosEnCarrito.sumOf { it.cantidad },
             precio_compra = totalPedido,
-            producto = productosEnCarrito.firstOrNull()?.id ?: 0,
-            proveedor = 1
+            productoId = productosEnCarrito.firstOrNull()?.id ?: 0, // Cambiar a productoId
+            proveedorId = 1
         )
+
 
         Log.d("CarritoActivity", "Realizando pedido con los siguientes datos: $pedido")
         RetrofitClient.instance.realizarPedido(pedido).enqueue(object : Callback<Void> {
@@ -136,12 +137,26 @@ class CarritoActivity : AppCompatActivity() {
                     Carrito.vaciarCarrito(this@CarritoActivity, username)
                     startActivity(Intent(this@CarritoActivity, MetodosPagoActivity::class.java))
                 } else {
+                    // Aquí vamos a imprimir más detalles del error
                     Log.e("CarritoActivity", "Error al realizar el pedido: ${response.message()}")
-                    Toast.makeText(
-                        this@CarritoActivity,
-                        "Error al realizar el pedido: ${response.message()}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
+                    // Si la respuesta no es exitosa, intentamos imprimir el cuerpo de la respuesta de error
+                    response.errorBody()?.let {
+                        try {
+                            val errorMessage = it.string()
+                            Log.e("CarritoActivity", "Detalles del error: $errorMessage")
+                            Toast.makeText(
+                                this@CarritoActivity,
+                                "Error al realizar el pedido: $errorMessage",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } catch (e: Exception) {
+                            Log.e(
+                                "CarritoActivity",
+                                "Error al leer el cuerpo del error: ${e.message}"
+                            )
+                        }
+                    }
                 }
             }
 

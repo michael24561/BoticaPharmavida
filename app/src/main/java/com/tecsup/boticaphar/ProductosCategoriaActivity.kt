@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tecsup.boticaphar.adapters.ProductoAdapter
 import com.tecsup.boticaphar.models.Producto
 import com.tecsup.boticaphar.network.ApiService
@@ -31,6 +32,28 @@ class ProductosCategoriaActivity : AppCompatActivity() {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
+        }
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigationView.selectedItemId = R.id.nav_home
+
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    Toast.makeText(this, "Estás en la página principal", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.nav_cart -> {
+                    startActivity(Intent(this, CarritoActivity::class.java))
+                    true
+                }
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, PerfilActivity::class.java))
+                    true
+                }
+                else -> false
+            }
         }
 
         // Obtener el ID y nombre de la categoría del Intent
