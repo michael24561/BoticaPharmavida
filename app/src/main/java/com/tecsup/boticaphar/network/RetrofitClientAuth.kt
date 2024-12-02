@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClientAuth {
-    private const val BASE_URL_AUTH = "http://10.0.2.2:8000/api/"  // URL base para token
+    private const val BASE_URL_AUTH = "https://alexsandrovs.pythonanywhere.com/api/"  // URL base para token
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()

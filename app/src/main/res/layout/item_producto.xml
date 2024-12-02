@@ -48,16 +48,20 @@
             android:textColor="@color/black" />
 
         <!-- Descripción del producto con margen inferior -->
+        <!-- Descripción del producto con ancho limitado -->
         <TextView
             android:id="@+id/producto_descripcion"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="Descripción"
+            android:text="Descripción del producto aquí, con un diseño más vertical."
             android:textSize="14sp"
             android:gravity="center"
             android:paddingTop="4dp"
             android:layout_marginBottom="12dp"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:ellipsize="end"
+            android:maxLines="4" />
+
 
         <!-- Botón Agregar al Carrito con margen superior e inferior -->
         <Button

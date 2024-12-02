@@ -42,12 +42,6 @@ interface ApiService {
     @GET("current-user/") // Endpoint para obtener el usuario actual
     fun getCurrentUser(@Header("Authorization") token: String): Call<UserData>
 
-    @PUT("current-user/") // Endpoint para actualizar los datos del usuario
-    fun updateUserProfile(
-        @Header("Authorization") token: String,
-        @Body userData: UserData // Solo el cuerpo de la solicitud con los datos a actualizar
-    ): Call<UserData>
-
     @PATCH("clientes/{id}/")
     fun patchClient(@Path("id") clientId: Int, @Body clientData: Map<String, Any>): Call<UserData>
 
