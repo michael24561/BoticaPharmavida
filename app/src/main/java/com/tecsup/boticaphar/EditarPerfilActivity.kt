@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.tecsup.boticaphar.models.UserData
@@ -36,8 +37,12 @@ class EditarPerfilActivity : AppCompatActivity() {
 
         // Recuperar el ID del usuario desde SharedPreferences
         val sharedPreferences = getSharedPreferences("authPrefs", Context.MODE_PRIVATE)
-        val clienteId =
-            sharedPreferences.getInt("cliente_id", -1)  // Usamos "cliente_id" como clave
+        val clienteId = sharedPreferences.getInt("cliente_id", -1)
+
+        val retrocederButton = findViewById<ImageView>(R.id.menu_retroceder1)
+        retrocederButton.setOnClickListener {
+            onBackPressed() // Retrocede a la actividad anterior
+        }
 
         if (clienteId != -1) {
             // Cargar los datos actuales del usuario
@@ -83,25 +88,27 @@ class EditarPerfilActivity : AppCompatActivity() {
 
     private fun getUserData(userId: Int) {
         val sharedPreferences = getSharedPreferences("authPrefs", Context.MODE_PRIVATE)
-        val accessToken = sharedPreferences.getString("access_token", "") ?: ""
+        val accessToken = sharedPreferences.getString("access_token", "")
 
-        if (accessToken.isEmpty()) {
-            Log.e("EditarPerfilActivity", "El token de acceso no está disponible.")
+        if (accessToken.isNullOrEmpty()) {
+            Log.e("EditarPerfilActivity", "El token de acceso no está disponible. Razones posibles:")
+            Log.e("EditarPerfilActivity", "1. El token no fue guardado correctamente en SharedPreferences.")
+            Log.e("EditarPerfilActivity", "2. La clave 'access_token' no coincide o fue modificada.")
+            Log.e("EditarPerfilActivity", "3. SharedPreferences pudo ser borrado o corrupto.")
+            Log.e("EditarPerfilActivity", "Contenido actual de SharedPreferences: ${sharedPreferences.all}")
             Toast.makeText(this, "No se encuentra el token de acceso.", Toast.LENGTH_SHORT).show()
             return
         }
 
         val apiService = RetrofitClient.getApiService()
-
-        // Agregar el token de autorización al encabezado
         val bearerToken = "Bearer $accessToken"
+
         apiService.getUserData(userId).enqueue(object : Callback<UserData> {
             override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
                 if (response.isSuccessful) {
                     val userData = response.body()
                     if (userData != null) {
                         Log.d("EditarPerfilActivity", "Datos del usuario recibidos: $userData")
-                        // Rellenamos los campos con los datos actuales del usuario
                         nombreEditText.setText(userData.first_name)
                         emailEditText.setText(userData.email)
                         apellidosEditText.setText(userData.last_name)
@@ -137,21 +144,23 @@ class EditarPerfilActivity : AppCompatActivity() {
         })
     }
 
-
     private fun updateUserProfile(userId: Int, updatedUserData: UserData) {
         val sharedPreferences = getSharedPreferences("authPrefs", Context.MODE_PRIVATE)
-        val accessToken = sharedPreferences.getString("access_token", "") ?: ""
+        val accessToken = sharedPreferences.getString("access_token", "")
 
-        if (accessToken.isEmpty()) {
-            Log.e("EditarPerfilActivity", "El token de acceso no está disponible.")
+        if (accessToken.isNullOrEmpty()) {
+            Log.e("EditarPerfilActivity", "El token de acceso no está disponible. Razones posibles:")
+            Log.e("EditarPerfilActivity", "1. El token no fue guardado correctamente en SharedPreferences.")
+            Log.e("EditarPerfilActivity", "2. La clave 'access_token' no coincide o fue modificada.")
+            Log.e("EditarPerfilActivity", "3. SharedPreferences pudo ser borrado o corrupto.")
+            Log.e("EditarPerfilActivity", "Contenido actual de SharedPreferences: ${sharedPreferences.all}")
             Toast.makeText(this, "No se encuentra el token de acceso.", Toast.LENGTH_SHORT).show()
             return
         }
 
         val apiService = RetrofitClient.getApiService()
-
-        // Agregar el token de autorización al encabezado
         val bearerToken = "Bearer $accessToken"
+
         apiService.updateUserProfile(userId, updatedUserData).enqueue(object : Callback<UserData> {
             override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
                 if (response.isSuccessful) {

@@ -43,13 +43,12 @@ class LoginActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val accessToken = sharedPreferences.getString("access_token", null)
 
-        Log.d("LoginActivity", "Comprobando si el usuario está logueado. Token: $accessToken")
+        Log.d("LoginActivity", "Comprobando si el usuario está logueado. Token almacenado: $accessToken")
 
         if (!accessToken.isNullOrEmpty()) {
-            // Si ya hay un token, ir directamente al HomeActivity
             Log.d("LoginActivity", "Token encontrado. Redirigiendo a HomeActivity.")
             startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-            finish()  // Termina LoginActivity para evitar que el usuario regrese a ella
+            finish()
         } else {
             Log.d("LoginActivity", "No se encontró token. Continuar con el login.")
         }
@@ -84,68 +83,55 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("LoginActivity", "Respuesta exitosa de login. Acceso: $accessToken, Refresh: $refreshToken")
 
                     if (accessToken != null && refreshToken != null) {
-                        saveTokens(accessToken, refreshToken, email)  // Guardamos el access_token, refresh_token y username
-                        getCurrentUser(accessToken)  // Obtenemos el id del usuario
+                        saveTokens(accessToken, refreshToken, email)
+                        getCurrentUser(accessToken)
                     } else {
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Error al obtener el token.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Log.e("LoginActivity", "Error: El token de acceso o refresh es nulo.")
+                        Toast.makeText(this@LoginActivity, "Error al obtener el token.", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Log.d("LoginActivity", "Error al hacer login. Código: ${response.code()}")
+                    Log.d("LoginActivity", "Error al hacer login. Código: ${response.code()} Respuesta: ${response.errorBody()?.string()}")
                     handleLoginError(response.code())
                 }
             }
 
             override fun onFailure(call: Call<TokenResponse>, t: Throwable) {
-                Log.e("LoginActivity", "Error de conexión: ${t.message}")
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Error de conexión: ${t.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                Log.e("LoginActivity", "Error de conexión: ${t.message}", t)
+                Toast.makeText(this@LoginActivity, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })
     }
 
     private fun handleLoginError(errorCode: Int) {
+        Log.d("LoginActivity", "Manejando error de login. Código de error: $errorCode")
         when (errorCode) {
-            400 -> Toast.makeText(
-                this@LoginActivity,
-                "Credenciales incorrectas. Verifica tu correo y contraseña.",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            401 -> Toast.makeText(
-                this@LoginActivity,
-                "No autorizado. Revisa tus datos de acceso.",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            else -> Toast.makeText(
-                this@LoginActivity,
-                "Error: $errorCode. Intenta nuevamente.",
-                Toast.LENGTH_LONG
-            ).show()
+            400 -> Toast.makeText(this@LoginActivity, "Credenciales incorrectas. Verifica tu correo y contraseña.", Toast.LENGTH_SHORT).show()
+            401 -> Toast.makeText(this@LoginActivity, "No autorizado. Revisa tus datos de acceso.", Toast.LENGTH_SHORT).show()
+            else -> Toast.makeText(this@LoginActivity, "Error: $errorCode. Intenta nuevamente.", Toast.LENGTH_LONG).show()
         }
     }
 
     private fun saveTokens(accessToken: String, refreshToken: String, username: String) {
+        Log.d("LoginActivity", "Guardando tokens en SharedPreferences...")
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("access_token", accessToken)
         editor.putString("refresh_token", refreshToken)
-        editor.putString("username", username)  // Guardamos el username
+        editor.putString("username", username)
         editor.apply()
 
-        Log.d("LoginActivity", "Tokens guardados: Access Token: $accessToken, Refresh Token: $refreshToken")
+        Log.d("LoginActivity", "Tokens guardados correctamente: Access Token: $accessToken, Refresh Token: $refreshToken")
+        // Confirmación de que se guardaron correctamente
+        val savedAccessToken = sharedPreferences.getString("access_token", null)
+        val savedRefreshToken = sharedPreferences.getString("refresh_token", null)
+        Log.d("LoginActivity", "Verificación de almacenamiento: Access Token: $savedAccessToken, Refresh Token: $savedRefreshToken")
     }
 
     private fun getCurrentUser(accessToken: String) {
         val apiService = RetrofitClient.getApiService()
         val bearerToken = "Bearer $accessToken"
+
+        Log.d("LoginActivity", "Obteniendo datos del usuario con token: $bearerToken")
 
         apiService.getCurrentUser(bearerToken).enqueue(object : Callback<UserData> {
             override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
@@ -155,51 +141,35 @@ class LoginActivity : AppCompatActivity() {
 
                     if (userData != null && userData.cliente_id != null) {
                         Log.d("LoginActivity", "ID del usuario obtenido: ${userData.cliente_id}")
-                        saveClientId(userData.cliente_id)  // Guardamos solo el ID del cliente
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Inicio de sesión exitoso.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        saveClientId(userData.cliente_id)
+                        Toast.makeText(this@LoginActivity, "Inicio de sesión exitoso.", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                         finish()
                     } else {
-                        Log.e("LoginActivity", "ID del usuario es nulo o vacío")
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Error al obtener el ID del usuario.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Log.e("LoginActivity", "Error: ID del usuario es nulo o vacío.")
+                        Toast.makeText(this@LoginActivity, "Error al obtener el ID del usuario.", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Log.e("LoginActivity", "Error en la respuesta al obtener datos del usuario: ${response.code()}")
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "Error al obtener los datos del usuario.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Log.e("LoginActivity", "Error al obtener datos del usuario. Código: ${response.code()} Respuesta: ${response.errorBody()?.string()}")
+                    Toast.makeText(this@LoginActivity, "Error al obtener los datos del usuario.", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<UserData>, t: Throwable) {
-                Log.e("LoginActivity", "Error de conexión: ${t.message}", t)
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Error de conexión: ${t.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                Log.e("LoginActivity", "Error de conexión al obtener datos del usuario: ${t.message}", t)
+                Toast.makeText(this@LoginActivity, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })
     }
 
     private fun saveClientId(clientId: Int) {
+        Log.d("LoginActivity", "Guardando el ID del cliente en SharedPreferences...")
         val sharedPreferences = getSharedPreferences("authPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        editor.putInt("cliente_id", clientId)  // Guardamos el ID del cliente
+        editor.putInt("cliente_id", clientId)
         editor.apply()
 
-        // Verificamos si se guardó correctamente
         val savedId = sharedPreferences.getInt("cliente_id", -1)
-        Log.d("LoginActivity", "ID del cliente guardado: $savedId")
+        Log.d("LoginActivity", "Verificación de almacenamiento de ID del cliente: $savedId")
     }
 }

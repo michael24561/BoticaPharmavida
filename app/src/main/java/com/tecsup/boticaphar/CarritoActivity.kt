@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,11 @@ class CarritoActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", "") ?: ""
+
+        val retrocederButton = findViewById<ImageView>(R.id.menu_retroceder)
+        retrocederButton.setOnClickListener {
+            onBackPressed() // Retrocede a la actividad anterior
+        }
 
         recyclerView = findViewById(R.id.carrito_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
