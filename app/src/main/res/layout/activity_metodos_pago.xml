@@ -310,7 +310,6 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:padding="16dp"
             android:gravity="center" />
 
         <!-- Botón Confirmar Pedido -->
@@ -322,8 +321,6 @@
             android:background="@color/red"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            android:layout_margin="16dp"
-            android:padding="12dp"
             android:onClick="confirmOrder" />
     </LinearLayout>
 

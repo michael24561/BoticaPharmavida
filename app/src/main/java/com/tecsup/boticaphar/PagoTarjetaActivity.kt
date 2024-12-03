@@ -32,6 +32,7 @@ class PagoTarjetaActivity : AppCompatActivity() {
                         creditCardNumber.setText(formatted)
                         creditCardNumber.setSelection(formatted.length)
                     }
+                    updateCardTypeIcon(s.toString(), cardTypeIcon)
                 }
             }
 
@@ -73,5 +74,27 @@ class PagoTarjetaActivity : AppCompatActivity() {
             formattedCardNumber.append(cleanCardNumber[i])
         }
         return formattedCardNumber.toString().take(19)
+    }
+
+    // Función para actualizar el icono de la tarjeta según el tipo
+    private fun updateCardTypeIcon(cardNumber: String, cardTypeIcon: ImageView) {
+        when {
+            cardNumber.startsWith("4") -> {
+                // Si comienza con '4', es Visa
+                cardTypeIcon.setImageResource(R.drawable.ic_visa) // Asegúrate de tener el ícono de Visa
+            }
+            cardNumber.startsWith("5") -> {
+                // Si comienza con '5', es MasterCard
+                cardTypeIcon.setImageResource(R.drawable.ic_mastercard) // Asegúrate de tener el ícono de MasterCard
+            }
+            cardNumber.startsWith("3") -> {
+                // Si comienza con '3', es American Express
+                cardTypeIcon.setImageResource(R.drawable.ic_amex) // Asegúrate de tener el ícono de American Express
+            }
+            else -> {
+                // Si no es ninguno de los anteriores, puedes mostrar un ícono genérico o ninguno
+                cardTypeIcon.setImageResource(R.drawable.ic_default_card) // Asegúrate de tener un ícono genérico
+            }
+        }
     }
 }
