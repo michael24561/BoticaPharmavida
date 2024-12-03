@@ -1,46 +1,43 @@
 package com.tecsup.boticaphar
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.widget.LinearLayout
-import android.widget.ImageView
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.tecsup.boticaphar.R
 
 class MetodosPagoActivity : AppCompatActivity() {
 
-    @SuppressLint("MissingInflatedId")
+    private lateinit var lugarRecojo: TextView
+    private lateinit var direccionRecojo: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_metodos_pago)
 
-        // Configurar botón para retroceder
-        val menuRetroceder = findViewById<ImageView>(R.id.menu_retroceder5)
-        menuRetroceder.setOnClickListener {
+        lugarRecojo = findViewById(R.id.lugarRecojo)
+        direccionRecojo = findViewById(R.id.direccionRecojo)
+
+        findViewById<View>(R.id.menu_retroceder5).setOnClickListener {
             startActivity(Intent(this, CarritoActivity::class.java))
             finish()
         }
     }
 
-    // Método para manejar clics en "Pagar con tarjeta"
-    fun pagarConTarjeta(view: android.view.View) {
-        val intent = Intent(this, PagoTarjetaActivity::class.java)
-        startActivity(intent)
+    fun openBoticasList(view: View) {
+        val intent = Intent(this, BoticasListActivity::class.java)
+        startActivityForResult(intent, 1)
     }
 
-    // Método para manejar clics en "Pagar con Yape"
-    fun pagarConYape(view: android.view.View) {
-        try {
-            val amount = 10
-            val phoneNumber = "902608436"
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse("yape://pay?amount=$amount&to=$phoneNumber")
-            startActivity(intent)
-        } catch (e: Exception) {
-            val playStoreIntent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.yape"))
-            startActivity(playStoreIntent)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            val nombreBotica = data?.getStringExtra("nombreBotica")
+            val direccionBotica = data?.getStringExtra("direccionBotica")
+
+            lugarRecojo.text = nombreBotica
+            direccionRecojo.text = direccionBotica
         }
     }
 }
-

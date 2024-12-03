@@ -52,12 +52,11 @@
         <activity android:name=".DetalleProductoActivity" />
         <activity android:name=".BusquedaActivity" />
         <activity android:name=".ProductosCategoriaActivity" />
-
         <activity android:name=".MapsActivity"/>
+
+        <activity android:name=".BoticasListActivity"/>
+
         <activity android:name=".MetodosPagoActivity"/>
 
-
-
     </application>
-
 </manifest>

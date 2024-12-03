@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/border_background"
+    android:layout_marginBottom="8dp"
+    android:elevation="4dp">
+
+    <TextView
+        android:id="@+id/nombreBotica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre de la botica"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/direccionBotica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dirección de la botica"
+        android:textSize="16sp"
+        android:textColor="#555555"
+        android:layout_marginBottom="4dp"/>
+
+</LinearLayout>
