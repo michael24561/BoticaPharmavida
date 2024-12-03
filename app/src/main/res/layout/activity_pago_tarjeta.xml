@@ -97,10 +97,10 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/et_nombres"
+            android:id="@+id/nombresCompletos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="David el pro"
+            android:hint="Nombre del titular"
             android:inputType="text" />
 
         <EditText

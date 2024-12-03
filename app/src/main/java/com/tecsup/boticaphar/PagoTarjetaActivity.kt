@@ -1,8 +1,9 @@
 package com.tecsup.boticaphar
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
+import android.text.InputType
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.ImageView
@@ -10,46 +11,67 @@ import androidx.appcompat.app.AppCompatActivity
 
 class PagoTarjetaActivity : AppCompatActivity() {
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pago_tarjeta)
 
         val creditCardNumber = findViewById<EditText>(R.id.credit_card_number)
+        val expirationDate = findViewById<EditText>(R.id.expiration_date)
+        val cvvCode = findViewById<EditText>(R.id.cvv_code)
         val cardTypeIcon = findViewById<ImageView>(R.id.card_type_icon)
 
-        // Añadir un TextWatcher al EditText para detectar el número de la tarjeta
+        // Configurar el filtro para limitar la longitud de número de tarjeta a 19 caracteres
+        creditCardNumber.filters = arrayOf(InputFilter.LengthFilter(19))
+
+        // Añadir un TextWatcher al EditText para el número de la tarjeta
         creditCardNumber.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                // Llamar a la función para detectar el tipo de tarjeta
-                val cardType = detectCardType(s.toString())
-                updateCardIcon(cardType, cardTypeIcon)
+                if (s != null) {
+                    val formatted = formatCardNumber(s.toString())
+                    if (s.toString() != formatted) {
+                        creditCardNumber.setText(formatted)
+                        creditCardNumber.setSelection(formatted.length)
+                    }
+                }
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
         })
+
+        // Configurar el filtro para limitar la longitud y formato de la fecha de expiración
+        expirationDate.filters = arrayOf(InputFilter.LengthFilter(5))
+        expirationDate.inputType = InputType.TYPE_CLASS_NUMBER
+        expirationDate.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null && s.length == 2 && !s.contains("/")) {
+                    expirationDate.setText("$s/")
+                    expirationDate.setSelection(expirationDate.length())
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        // Configurar el filtro para limitar la longitud de CVV a 3 caracteres
+        cvvCode.filters = arrayOf(InputFilter.LengthFilter(3))
+        cvvCode.inputType = InputType.TYPE_CLASS_NUMBER
     }
 
-    // Función para detectar el tipo de tarjeta
-    private fun detectCardType(cardNumber: String): String {
-        return when {
-            cardNumber.startsWith("4") -> "visa"
-            cardNumber.startsWith("5") -> "mastercard"
-            cardNumber.startsWith("3") -> "amex"
-            else -> "default" // Si no es un tipo conocido, se muestra un ícono genérico
-        }
-    }
+    // Función para formatear el número de tarjeta con guiones
+    private fun formatCardNumber(cardNumber: String): String {
+        val cleanCardNumber = cardNumber.replace("[^\\d]".toRegex(), "")
+        val formattedCardNumber = StringBuilder()
 
-    // Función para actualizar el ícono según el tipo de tarjeta
-    private fun updateCardIcon(cardType: String, cardTypeIcon: ImageView) {
-        when (cardType) {
-            "visa" -> cardTypeIcon.setImageResource(R.drawable.ic_visa) // Asegúrate de tener el ícono en los recursos
-            "mastercard" -> cardTypeIcon.setImageResource(R.drawable.ic_mastercard)
-            "amex" -> cardTypeIcon.setImageResource(R.drawable.ic_amex)
-            else -> cardTypeIcon.setImageResource(R.drawable.ic_default_card)
+        for (i in cleanCardNumber.indices) {
+            if (i > 0 && i % 4 == 0) {
+                formattedCardNumber.append("-")
+            }
+            formattedCardNumber.append(cleanCardNumber[i])
         }
+        return formattedCardNumber.toString().take(19)
     }
 }
