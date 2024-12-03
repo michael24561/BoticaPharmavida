@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!-- Toolbar -->
+    <!-- Primer Layout: Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_retroceder5"
         android:layout_width="match_parent"
@@ -50,116 +50,345 @@
                     android:textSize="20sp"
                     android:layout_marginStart="8dp" />
             </LinearLayout>
-
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <!-- Título -->
-    <TextView
-        android:id="@+id/tituloDetallePedido"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Detalle de tu pedido"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- Sección Lugar de Recojo -->
+    <!-- Segundo Layout: Contenido del Detalle del Pedido -->
     <LinearLayout
-        android:id="@+id/lugarRecojoSection"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tituloDetallePedido"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_marginEnd="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- Título del Detalle del Pedido -->
+        <TextView
+            android:id="@+id/tituloDetallePedido"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lugar de Recojo"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/cambiarBotica"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cambiar"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="16sp"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_gravity="end"
-                android:onClick="openBoticasList"/>
-        </LinearLayout>
+            android:text="Detalle de tu pedido"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp" />
 
         <!-- Lugar de Recojo -->
+        <LinearLayout
+            android:id="@+id/lugarRecojoSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lugar de Recojo"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/cambiarBotica"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cambiar"
+                    android:textColor="@android:color/holo_blue_dark"
+                    android:textSize="16sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_gravity="end"
+                    android:onClick="openBoticasList"/>
+            </LinearLayout>
+
+            <!-- Detalles del Lugar de Recojo -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/pharmavida"
+                    android:layout_marginEnd="8dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/lugarRecojo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FarmaVida"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/direccionRecojo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Av. Pablo Casals 292, Trujillo 13001"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/quienRecogera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¿Quién recogerá tu pedido?"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start"
+                android:paddingTop="8dp">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/iconperfil"
+                    android:layout_marginEnd="18dp" />
+
+                <TextView
+                    android:id="@+id/respuestaRecoger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yo"
+                    android:textStyle="bold"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Horario de Recojo -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-        android:gravity="center_vertical">
+            android:layout_marginTop="16dp">
 
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/pharmavida"
-            android:layout_marginEnd="8dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Horario de Recojo"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
 
-        <TextView
-            android:id="@+id/lugarRecojo"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estimamos que tu pedido estará listo desde el"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Botica Real Plaza Trujillo"
-            android:textSize="16sp"
-            android:layout_marginEnd="8dp" />
+            android:background="@color/green"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/direccionRecojo"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/fechaRecojo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha de recojo"
+                android:textStyle="bold"
+                android:textColor="@color/green1"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:padding="1dp" />
+        </LinearLayout>
+
+
+        <!-- Primera fila con check y texto -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start"
+                android:paddingTop="8dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/check"
+                    android:layout_marginEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Te enviaremos un mensaje cuando tu pedido esté listo para recoger."
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Segunda fila con check y texto -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start"
+                android:paddingTop="8dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/check"
+                    android:layout_marginEnd="8dp"/>
+
+                <TextView
+                    android:id="@+id/textoPlazoRecojo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Una vez que tu pedido esté listo, tendrás hasta el día... para recogerlo."
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Tercera fila con check y texto -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start"
+                android:paddingTop="8dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/check"
+                    android:layout_marginEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recuerda que debes llevar tu DNI físico para poder recoger tu pedido."
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Av. Cesar Vallejo Oeste 1 1345"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp" />
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
 
+            <!-- Fila horizontal para Métodos de pago y Cambiar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start"
+                android:paddingEnd="16dp"> <!-- Padding al final para separar el texto y el botón -->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Métodos de pago"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_gravity="center_vertical"/>  <!-- Centrar verticalmente -->
+
+                <!-- Botón Cambiar al lado de Métodos de pago -->
+                <TextView
+                    android:id="@+id/cambiarPago"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cambiar"
+                    android:textColor="@android:color/holo_blue_dark"
+                    android:textSize="16sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="openBoticasList"
+                    android:layout_marginStart="16dp" /> <!-- Espacio entre "Métodos de pago" y "Cambiar" -->
+            </LinearLayout>
+
+            <!-- Tercera fila con check y texto -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start"
+                android:paddingTop="8dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/tarjeta"
+                    android:layout_marginEnd="8dp"/>
+
+                <!-- Fila vertical para "Pago en línea" y "Visa débito/crédito" -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pago en línea."
+                        android:textColor="#4D4343"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Visa débito/crédito"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
-        android:id="@+id/quienRecogera"
-        android:layout_width="wrap_content"
+        android:id="@+id/total_price_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="¿Quién recogerá tu pedido?"
-        android:textSize="16sp"
+        android:text="Total a Pagar: S/ 0.00"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginTop="16dp" />
-
-    <Spinner
-        android:id="@+id/respuestaRecoger"
-        android:layout_width="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/carrito_recycler_view"
+        app:layout_constraintBottom_toTopOf="@id/checkout_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center" />
+    <!-- Botón Finalizar Compra -->
+    <Button
+        android:id="@+id/finalizarCompra"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
-</LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="Finalizar Compra"
+        android:backgroundTint="@color/red"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </LinearLayout>

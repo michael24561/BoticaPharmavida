@@ -147,9 +147,10 @@ class CarritoActivity : AppCompatActivity() {
                     ).show()
                     Carrito.vaciarCarrito(this@CarritoActivity, username)
 
-                    // Verificar si el intento de redirección es correcto
+                    // Redirigir a la actividad de métodos de pago y pasar el total
                     try {
                         val intent = Intent(this@CarritoActivity, MetodosPagoActivity::class.java)
+                        intent.putExtra("totalPedido", totalPedido) // Pasar el total del carrito
                         Log.d("CarritoActivity", "Redirigiendo a MetodosPagoActivity.")
                         startActivity(intent)
                     } catch (e: Exception) {

@@ -53,7 +53,7 @@
         <activity android:name=".BusquedaActivity" />
         <activity android:name=".ProductosCategoriaActivity" />
         <activity android:name=".MapsActivity"/>
-
+        <activity android:name=".PagoTarjetaActivity" />
         <activity android:name=".BoticasListActivity"/>
 
         <activity android:name=".MetodosPagoActivity"/>

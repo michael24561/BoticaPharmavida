@@ -69,19 +69,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pago con Tarjeta"
+            android:text="Datos Tarjeta"
             android:textSize="18sp"
             android:textColor="@color/black" />
-
-        <!-- Información de la tarjeta -->
-        <TextView
-            android:id="@+id/card_info_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Información de la tarjeta"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:layout_marginTop="16dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,17 +97,24 @@
         </LinearLayout>
 
         <EditText
+            android:id="@+id/et_nombres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="David el pro"
+            android:inputType="text" />
+
+        <EditText
             android:id="@+id/expiration_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Fecha de vencimiento (MM/AA)"
+            android:hint="MM/AA"
             android:inputType="text" />
 
         <EditText
             android:id="@+id/cvv_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Código de seguridad"
+            android:hint="CVV"
             android:inputType="number" />
 
         <!-- Botón para confirmar el pago -->
