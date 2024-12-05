@@ -1,15 +1,12 @@
 package com.tecsup.boticaphar.network
 
-import com.tecsup.boticaphar.User
+import FacturaCliente
 import com.tecsup.boticaphar.models.Categoria
 import com.tecsup.boticaphar.models.Pedido
 import com.tecsup.boticaphar.models.Producto
 import com.tecsup.boticaphar.models.UserData
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
@@ -48,7 +45,8 @@ interface ApiService {
     @POST("pedidos/")
     fun realizarPedido(@Body pedido: Pedido): Call<Void>
 
-
+    @POST("crear_factura/")
+    fun crearFactura(@Body factura: FacturaCliente): Call<Map<String, Any>>
 
 }
 

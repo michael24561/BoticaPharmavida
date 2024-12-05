@@ -80,11 +80,11 @@ class CarritoActivity : AppCompatActivity() {
         // Configurar el botón de checkout
         val checkoutButton = findViewById<Button>(R.id.checkout_button)
         checkoutButton.setOnClickListener {
-            if (productosEnCarrito.isNotEmpty()) {
-                realizarPedido(username, productosEnCarrito)
-            } else {
-                Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
-            }
+            // Redirigir a la actividad de métodos de pago
+            val intent = Intent(this@CarritoActivity, MetodosPagoActivity::class.java)
+            val totalPedido = calcularTotalCarrito(productosEnCarrito)
+            intent.putExtra("totalPedido", totalPedido) // Pasar el total del carrito
+            startActivity(intent)
         }
 
         // Actualizar la vista al cargar la actividad

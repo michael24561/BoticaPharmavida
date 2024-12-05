@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -12,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.tecsup.boticaphar"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -71,13 +72,13 @@ dependencies {
 
 
     //Yape
-    implementation ("com.google.zxing:core:3.4.0")
-    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
+    //implementation ("com.google.zxing:core:3.4.0")
+    //implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 
-    //Paypal
-    implementation ("com.paypal.sdk:paypal-android-sdk:2.16.0")
 
     //
     implementation ("com.squareup.okhttp3:okhttp:4.9.0")
+
+
 
 }

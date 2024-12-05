@@ -118,14 +118,15 @@
             android:inputType="number" />
 
         <!-- Botón para confirmar el pago -->
+
         <Button
             android:id="@+id/btn_confirm_payment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Confirmar Pago"
+            android:layout_marginTop="16dp"
             android:background="@color/red"
-            android:textColor="@color/white"
-            android:layout_marginTop="16dp" />
+            android:text="Confirmar Pago"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
