@@ -3,13 +3,13 @@ package com.tecsup.boticaphar
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class PerfilActivity : AppCompatActivity() {
@@ -41,7 +41,6 @@ class PerfilActivity : AppCompatActivity() {
         nameTextView.text = username ?: "Nombre no disponible"
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
         bottomNavigationView.selectedItemId = R.id.nav_profile
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
@@ -66,22 +65,27 @@ class PerfilActivity : AppCompatActivity() {
             cerrarSesion()
         }
 
-
-       val mapButton = findViewById<ImageView>(R.id.ic_maps)
+        val mapButton = findViewById<ImageView>(R.id.ic_maps)
         mapButton.setOnClickListener {
-            openGoogleMaps()
+            openMapsActivity()
         }
     }
 
-    //Google Maps
-    private fun openGoogleMaps() {
-        val location = Uri.parse("geo:0,0?q=-8.094023264182493,-79.03693931820501&markers=-8.094023264182493,-79.03693931820501|-8.09637611172991,-79.02977049308365|-8.095781285121767,-79.0113168949252|-8.102154382244429,-79.01063024939796")
-        val mapIntent = Intent(Intent.ACTION_VIEW, location)
-        mapIntent.setPackage("com.google.android.apps.maps")
-        if (mapIntent.resolveActivity(packageManager) != null) {
-            startActivity(mapIntent)
-        }
+    private fun openMapsActivity() {
+        val intent = Intent(this, MapsActivity::class.java)
+
+        val coordinates = arrayListOf(
+            LatLng(-8.094023264182493, -79.03693931820501),
+            LatLng(-8.09637611172991, -79.02977049308365),
+            LatLng(-8.095781285121767, -79.0113168949252),
+            LatLng(-8.102154382244429, -79.01063024939796),
+            LatLng(-8.100000, -79.020000)
+        )
+
+        intent.putParcelableArrayListExtra("coordinates", coordinates)
+        startActivity(intent)
     }
+
 
     private fun cerrarSesion() {
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
@@ -93,5 +97,14 @@ class PerfilActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val menuIcon: ImageView = findViewById(R.id.menu_icon)
+        menuIcon.setOnClickListener {
+            startActivity(Intent(this, MenuLateralActivity::class.java))
+        }
+
     }
 }

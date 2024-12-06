@@ -42,9 +42,7 @@ class HomeActivity : AppCompatActivity() {
 
         obtenerCategorias()
 
-        // Usar setOnClickListener para manejar el clic una sola vez
         searchBar.setOnClickListener {
-            // Verificar si la actividad de búsqueda no está ya abierta
             val intent = Intent(this, BusquedaActivity::class.java)
             startActivity(intent)
         }
@@ -122,7 +120,6 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        // Manejo de iconos de menú y notificaciones
         menuIcon.setOnClickListener {
             startActivity(Intent(this, MenuLateralActivity::class.java))
         }

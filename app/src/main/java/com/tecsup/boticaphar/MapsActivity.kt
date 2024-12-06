@@ -10,7 +10,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-class MapsActivity: AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
 
@@ -19,35 +19,27 @@ class MapsActivity: AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_maps)
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.fragmentMap)
-            as SupportMapFragment
+                as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
-        override fun onMapReady(googleMap: GoogleMap) {
+    override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
-        map.uiSettings.isZoomControlsEnabled = true // zoom-botones
+        // Obtener las coordenadas del Intent
+        val coordinates = intent.getParcelableArrayListExtra<LatLng>("coordinates")
+
+        map.uiSettings.isZoomControlsEnabled = true
         map.uiSettings.isRotateGesturesEnabled = false
 
-        val marker = LatLng(-8.094023264182493,-79.03693931820501)
-
-        map.animateCamera(
-            CameraUpdateFactory.newLatLngZoom(marker, 18f), 4000, null
-        )
-        map.setOnMapClickListener { latLong ->
-            map.clear()
-            map.addMarker(
-                MarkerOptions().
-            position(latLong).title("Seleccionado"))
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLong, 18f))
-
-            val lat = latLong.latitude
-            val lng = latLong.longitude
-
-            Toast.makeText(this, "Lat: $lat, Lng: $lng",
-                Toast.LENGTH_SHORT).show()
+        // Agregar cada coordenada como marcador en el mapa
+        coordinates?.forEach { coordinate ->
+            map.addMarker(MarkerOptions().position(coordinate).title("Ubicación"))
         }
 
+        // Puedes centrar el mapa en la primera coordenada si lo deseas
+        if (coordinates != null && coordinates.isNotEmpty()) {
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates[0], 16f))
+        }
     }
-
 }
