@@ -42,11 +42,7 @@ class MenuLateralActivity : AppCompatActivity() {
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
-                R.id.nav_ofertas -> {
-                    // Acción para Ofertas
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                    true
-                }
+
                 R.id.nav_contactanos -> {
                     val intent = Intent(Intent.ACTION_VIEW).apply {
                         data = Uri.parse("https://www.youtube.com/watch?v=uWfbR_juSdY")

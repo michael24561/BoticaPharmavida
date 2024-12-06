@@ -2,6 +2,7 @@ package com.tecsup.boticaphar
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,8 +26,16 @@ class BoticasListActivity : AppCompatActivity() {
             Botica("Farma Vida", "Prol. Union 1558, Trujillo 13006", R.drawable.pharmavida)
         )
 
+
         val adapter = BoticasAdapter(boticasList, this)
         recyclerView.adapter = adapter
+
+
+        // Acción para retroceder al carrito
+        findViewById<View>(R.id.menu_retroceder7).setOnClickListener {
+            startActivity(Intent(this, MetodosPagoActivity::class.java))
+            finish()
+        }
     }
 
     // Asegúrate de que al seleccionar una botica, se pasan los datos correctamente
@@ -40,4 +49,5 @@ class BoticasListActivity : AppCompatActivity() {
         setResult(RESULT_OK, intent)
         finish()
     }
+
 }

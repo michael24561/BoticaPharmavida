@@ -43,7 +43,7 @@
 
         <Button
             android:id="@+id/btn_agregar_carrito"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
@@ -52,7 +52,7 @@
             android:drawableTint="@android:color/white"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="Agregar al Carrito"
+            android:text="Agregar"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
     </LinearLayout>

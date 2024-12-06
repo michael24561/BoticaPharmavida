@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -26,21 +24,12 @@ class PerfilActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", null)
 
-        val editarPerfil = findViewById<ImageView>(R.id.ic_profile)
-        val misPedidos = findViewById<ImageView>(R.id.pedidos)
+        val editarPerfilLayout = findViewById<LinearLayout>(R.id.ic_profile)
 
-        editarPerfil.setOnClickListener {
+        editarPerfilLayout.setOnClickListener {
             val intent = Intent(this, EditarPerfilActivity::class.java)
             startActivity(intent)
         }
-
-        misPedidos.setOnClickListener {
-            val intent = Intent(this, HistorialPedidosActivity::class.java)
-            startActivity(intent)
-        }
-
-
-
 
         nameTextView.text = username ?: "Nombre no disponible"
 
@@ -69,7 +58,7 @@ class PerfilActivity : AppCompatActivity() {
             cerrarSesion()
         }
 
-        val mapButton = findViewById<ImageView>(R.id.ic_maps)
+        val mapButton = findViewById<LinearLayout>(R.id.ic_maps)
         mapButton.setOnClickListener {
             openMapsActivity()
         }
@@ -90,7 +79,6 @@ class PerfilActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
     private fun cerrarSesion() {
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -109,6 +97,5 @@ class PerfilActivity : AppCompatActivity() {
         menuIcon.setOnClickListener {
             startActivity(Intent(this, MenuLateralActivity::class.java))
         }
-
     }
 }

@@ -23,8 +23,6 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        // Verifica si ya está autenticado
         checkIfUserIsLoggedIn()
     }
 
@@ -37,8 +35,8 @@ class MainActivity : AppCompatActivity() {
             Handler(Looper.getMainLooper()).postDelayed({
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
-                finish()  // Finaliza MainActivity para evitar que el usuario regrese a ella
-            }, 2000) // Retraso de 2 segundos para mostrar la animación de inicio
+                finish()
+            }, 2000)
         } else {
             // Si no hay token, ir a la pantalla de instrucciones o login
             Handler(Looper.getMainLooper()).postDelayed({

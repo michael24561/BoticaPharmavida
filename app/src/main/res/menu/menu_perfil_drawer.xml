@@ -11,10 +11,6 @@
     </item>
 
     <item
-        android:id="@+id/nav_ofertas"
-        android:title="Ofertas" />
-
-    <item
         android:id="@+id/nav_contactanos"
         android:title="Contáctanos" />
 

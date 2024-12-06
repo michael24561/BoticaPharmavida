@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -30,6 +31,12 @@ class PagoTarjetaActivity : AppCompatActivity() {
             return
         }
 
+        // Acción para retroceder al carrito
+        findViewById<View>(R.id.menu_retroceder8).setOnClickListener {
+            startActivity(Intent(this, MetodosPagoActivity::class.java))
+            finish()
+        }
+
         // Resto del código de configuración
         val nombreProducto = intent.getStringExtra("nombreProducto")
         val cantidad = intent.getIntExtra("cantidad", 1)
@@ -47,7 +54,12 @@ class PagoTarjetaActivity : AppCompatActivity() {
         cvvCode.filters = arrayOf(InputFilter.LengthFilter(3))
 
         creditCardNumber.addTextChangedListener(object : TextWatcher {
+            private var isFormatting = false // Evita bucles infinitos
+
             override fun afterTextChanged(s: Editable?) {
+                if (isFormatting) return
+                isFormatting = true
+
                 if (s != null) {
                     val formatted = formatCardNumber(s.toString())
                     if (s.toString() != formatted) {
@@ -56,6 +68,7 @@ class PagoTarjetaActivity : AppCompatActivity() {
                     }
                     updateCardTypeIcon(s.toString(), cardTypeIcon)
                 }
+                isFormatting = false
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -95,11 +108,10 @@ class PagoTarjetaActivity : AppCompatActivity() {
         }
     }
 
-    // Formatea el número de tarjeta con espacios entre cada 4 dígitos
+    // Formatea el número de tarjeta con guiones entre cada 4 dígitos
     private fun formatCardNumber(number: String): String {
-        return number.replace(" ".toRegex(), "")
-            .chunked(4)
-            .joinToString(" ")
+        val cleanNumber = number.replace("-", "") // Elimina los guiones existentes
+        return cleanNumber.chunked(4).joinToString("-") // Divide en grupos de 4 y une con guiones
     }
 
     // Actualiza el ícono del tipo de tarjeta basado en el número ingresado
@@ -107,6 +119,7 @@ class PagoTarjetaActivity : AppCompatActivity() {
         when {
             cardNumber.startsWith("4") -> iconView.setImageResource(R.drawable.ic_visa) // Ícono de Visa
             cardNumber.startsWith("5") -> iconView.setImageResource(R.drawable.ic_mastercard) // Ícono de MasterCard
+            cardNumber.startsWith("3") -> iconView.setImageResource(R.drawable.ic_amex) // Ícono de Amex
             else -> iconView.setImageResource(R.drawable.ic_default_card) // Ícono genérico
         }
     }
@@ -117,8 +130,11 @@ class PagoTarjetaActivity : AppCompatActivity() {
         expirationDate: EditText,
         cvvCode: EditText
     ): String? {
+        val cardNumber = creditCardNumber.text.toString().replace("-", "") // Elimina los guiones
+
         return when {
-            creditCardNumber.text.isNullOrEmpty() -> "Número de tarjeta"
+            cardNumber.isEmpty() -> "Número de tarjeta"
+            cardNumber.length != 16 -> "Número de tarjeta inválido"
             expirationDate.text.isNullOrEmpty() -> "Fecha de expiración"
             cvvCode.text.isNullOrEmpty() -> "CVV"
             else -> null
