@@ -14,7 +14,7 @@ class CargaActivity : AppCompatActivity() {
         // Simula un retraso para el procesamiento del pago (por ejemplo, 3 segundos)
         Handler().postDelayed({
             // Redirige a la actividad de factura con los datos del pedido
-            val facturaIntent = Intent(this, FacturaActivity::class.java)
+            val facturaIntent = Intent(this, MetodosPagoActivity::class.java)
             facturaIntent.putExtra("nombreProducto", intent.getStringExtra("nombreProducto"))
             facturaIntent.putExtra("precio", intent.getDoubleExtra("precio", 0.0))
             facturaIntent.putExtra("nombreUsuario", intent.getStringExtra("nombreUsuario"))

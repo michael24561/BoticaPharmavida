@@ -1,5 +1,6 @@
 package com.tecsup.boticaphar
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -13,13 +14,24 @@ import androidx.appcompat.app.AppCompatActivity
 
 class PagoTarjetaActivity : AppCompatActivity() {
 
+    private var accessToken: String? = null // Variable para guardar el token
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pago_tarjeta)
 
-        // Recuperar los datos del producto seleccionado pasados desde la actividad anterior
+        // Recuperar el token almacenado en SharedPreferences
+        val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
+        accessToken = sharedPreferences.getString("access_token", null)
+
+        if (accessToken.isNullOrEmpty()) {
+            Toast.makeText(this, "Error: Token no encontrado. Inicia sesión nuevamente.", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
+        // Resto del código de configuración
         val nombreProducto = intent.getStringExtra("nombreProducto")
-        val precio = intent.getDoubleExtra("precio", 0.0)
         val cantidad = intent.getIntExtra("cantidad", 1)
 
         val creditCardNumber = findViewById<EditText>(R.id.credit_card_number)
@@ -29,8 +41,10 @@ class PagoTarjetaActivity : AppCompatActivity() {
         val nombresCompletos = findViewById<EditText>(R.id.nombresCompletos)
         val btnConfirmPayment = findViewById<Button>(R.id.btn_confirm_payment)
 
-        // Limitar la longitud del número de tarjeta
+        // Limitar y formatear inputs
         creditCardNumber.filters = arrayOf(InputFilter.LengthFilter(19))
+        expirationDate.filters = arrayOf(InputFilter.LengthFilter(5))
+        cvvCode.filters = arrayOf(InputFilter.LengthFilter(3))
 
         creditCardNumber.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -38,7 +52,7 @@ class PagoTarjetaActivity : AppCompatActivity() {
                     val formatted = formatCardNumber(s.toString())
                     if (s.toString() != formatted) {
                         creditCardNumber.setText(formatted)
-                        creditCardNumber.setSelection(formatted.length) // Asegura que el cursor esté en la posición correcta
+                        creditCardNumber.setSelection(formatted.length)
                     }
                     updateCardTypeIcon(s.toString(), cardTypeIcon)
                 }
@@ -49,14 +63,11 @@ class PagoTarjetaActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // Limitar la longitud de la fecha de expiración a 5 caracteres (MM/AA)
-        expirationDate.filters = arrayOf(InputFilter.LengthFilter(5))
-
         expirationDate.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (s != null && s.length == 2 && !s.contains("/")) {
                     expirationDate.setText(s.toString() + "/")
-                    expirationDate.setSelection(s.length + 1) // Mover el cursor después del "/"
+                    expirationDate.setSelection(s.length + 1)
                 }
             }
 
@@ -65,73 +76,52 @@ class PagoTarjetaActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // Limitar la longitud del código CVV a 3 caracteres
-        cvvCode.filters = arrayOf(InputFilter.LengthFilter(3))
-
-        // Acción del botón para validar los campos
         btnConfirmPayment.setOnClickListener {
-            val missingField = validateFields(creditCardNumber, nombresCompletos, expirationDate, cvvCode)
+            val missingField = validateFields(creditCardNumber, expirationDate, cvvCode)
             if (missingField != null) {
                 Toast.makeText(this, "Falta llenar el campo: $missingField", Toast.LENGTH_SHORT).show()
             } else {
-                // Redirige a la actividad de carga con los datos del pedido
+                // Procesar el pago
+                Toast.makeText(this, "Procesando el pago con token: $accessToken", Toast.LENGTH_SHORT).show()
+
+                // Redirige a la actividad de carga
                 val cargaIntent = Intent(this, CargaActivity::class.java)
-                cargaIntent.putExtra("nombreProducto", nombreProducto)  // Usar los datos obtenidos del Intent
-                cargaIntent.putExtra("precio", precio)  // Usar el precio del producto
+                cargaIntent.putExtra("nombreProducto", nombreProducto)
+                cargaIntent.putExtra("cantidad", cantidad)
                 cargaIntent.putExtra("nombreUsuario", nombresCompletos.text.toString())
-                cargaIntent.putExtra("cantidad", cantidad)  // Usar la cantidad seleccionada
                 startActivity(cargaIntent)
                 finish()
             }
         }
     }
 
-    /**
-     * Valida que todos los campos estén llenos.
-     * @return El nombre del campo faltante, o `null` si todos están completos.
-     */
+    // Formatea el número de tarjeta con espacios entre cada 4 dígitos
+    private fun formatCardNumber(number: String): String {
+        return number.replace(" ".toRegex(), "")
+            .chunked(4)
+            .joinToString(" ")
+    }
+
+    // Actualiza el ícono del tipo de tarjeta basado en el número ingresado
+    private fun updateCardTypeIcon(cardNumber: String, iconView: ImageView) {
+        when {
+            cardNumber.startsWith("4") -> iconView.setImageResource(R.drawable.ic_visa) // Ícono de Visa
+            cardNumber.startsWith("5") -> iconView.setImageResource(R.drawable.ic_mastercard) // Ícono de MasterCard
+            else -> iconView.setImageResource(R.drawable.ic_default_card) // Ícono genérico
+        }
+    }
+
+    // Valida que los campos requeridos no estén vacíos
     private fun validateFields(
         creditCardNumber: EditText,
-        nombresCompletos: EditText,
         expirationDate: EditText,
         cvvCode: EditText
     ): String? {
         return when {
-            creditCardNumber.text.isNullOrBlank() -> "Número de tarjeta"
-            nombresCompletos.text.isNullOrBlank() -> "Nombre del titular"
-            expirationDate.text.isNullOrBlank() -> "Fecha de expiración"
-            cvvCode.text.isNullOrBlank() -> "CVV"
-            else -> null // Todo está completo
-        }
-    }
-
-    private fun formatCardNumber(cardNumber: String): String {
-        val cleanCardNumber = cardNumber.replace("[^\\d]".toRegex(), "") // Elimina todo lo que no sea número
-        val formattedCardNumber = StringBuilder()
-
-        for (i in cleanCardNumber.indices) {
-            if (i > 0 && i % 4 == 0) {
-                formattedCardNumber.append("-")
-            }
-            formattedCardNumber.append(cleanCardNumber[i])
-        }
-        return formattedCardNumber.toString().take(19) // Asegúrate de no exceder 19 caracteres
-    }
-
-    private fun updateCardTypeIcon(cardNumber: String, cardTypeIcon: ImageView) {
-        when {
-            cardNumber.startsWith("4") -> {
-                cardTypeIcon.setImageResource(R.drawable.ic_visa)
-            }
-            cardNumber.startsWith("5") -> {
-                cardTypeIcon.setImageResource(R.drawable.ic_mastercard)
-            }
-            cardNumber.startsWith("3") -> {
-                cardTypeIcon.setImageResource(R.drawable.ic_amex)
-            }
-            else -> {
-                cardTypeIcon.setImageResource(R.drawable.ic_default_card)
-            }
+            creditCardNumber.text.isNullOrEmpty() -> "Número de tarjeta"
+            expirationDate.text.isNullOrEmpty() -> "Fecha de expiración"
+            cvvCode.text.isNullOrEmpty() -> "CVV"
+            else -> null
         }
     }
 }

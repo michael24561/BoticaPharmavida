@@ -45,8 +45,11 @@ interface ApiService {
     @POST("pedidos/")
     fun realizarPedido(@Body pedido: Pedido): Call<Void>
 
-    @POST("crear_factura/")
-    fun crearFactura(@Body factura: FacturaCliente): Call<Map<String, Any>>
+    @POST("facturas-cliente/")
+    fun crearFactura(
+        @Header("Authorization") token: String,
+        @Body factura: FacturaCliente
+    ): Call<Map<String, Any>>
 
 }
 

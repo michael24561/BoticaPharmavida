@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
@@ -11,9 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
-        android:contentInsetStartWithNavigation="0dp"
         android:elevation="4dp"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,7 +28,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:src="@drawable/ic_back" />
+                android:src="@drawable/ic_back"
+                android:contentDescription="Retroceder" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -40,7 +43,8 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/pharmavida"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:contentDescription="Logo de iHealth" />
 
                 <TextView
                     android:id="@+id/toolbar_title"
@@ -61,15 +65,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
         app:layout_constraintTop_toBottomOf="@id/toolbar_retroceder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp">
 
-        <!-- Título del método de pago -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Datos Tarjeta"
+            android:text="Datos de la Tarjeta"
             android:textSize="18sp"
             android:textColor="@color/black" />
 
@@ -77,7 +81,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp">
 
             <EditText
                 android:id="@+id/credit_card_number"
@@ -85,15 +90,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Número de tarjeta"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="19" />
 
-            <!-- Icono de la tarjeta -->
             <ImageView
                 android:id="@+id/card_type_icon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
-                android:src="@drawable/ic_default_card" />
+                android:src="@drawable/ic_default_card"
+                android:contentDescription="Tipo de tarjeta" />
         </LinearLayout>
 
         <EditText
@@ -101,23 +107,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nombre del titular"
-            android:inputType="text" />
+            android:inputType="textPersonName"
+            android:layout_marginTop="8dp" />
 
         <EditText
             android:id="@+id/expiration_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="MM/AA"
-            android:inputType="text" />
+            android:inputType="text"
+            android:digits="0123456789/"
+            android:layout_marginTop="8dp" />
 
         <EditText
             android:id="@+id/cvv_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="CVV"
-            android:inputType="number" />
-
-        <!-- Botón para confirmar el pago -->
+            android:inputType="numberPassword"
+            android:maxLength="3"
+            android:layout_marginTop="8dp" />
 
         <Button
             android:id="@+id/btn_confirm_payment"
