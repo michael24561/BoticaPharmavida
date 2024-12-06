@@ -127,15 +127,6 @@
                         android:gravity="center" />
 
                     <TextView
-                        android:id="@+id/fecha_vencimiento"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fecha de vencimiento"
-                        android:textSize="14sp"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center" />
-
-                    <TextView
                         android:id="@+id/presentacion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -155,15 +146,17 @@
                         android:gravity="center" />
 
                     <Button
-                        android:id="@+id/boton_agregar_carrito"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/agregar_carrito_btn"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
                         android:backgroundTint="@android:color/holo_blue_dark"
                         android:drawableLeft="@drawable/ic_cart"
+                        android:drawableTint="@android:color/white"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
-                        android:text="Agregar al Carrito"
+                        android:text="Agregar"
                         android:textColor="@android:color/white"
                         android:textSize="16sp" />
 

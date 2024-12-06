@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:text="Nombre del producto"
             android:textSize="16sp"
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <!-- Descripción del producto -->
@@ -61,7 +62,7 @@
             <ImageButton
                 android:id="@+id/btn_decrease_quantity"
                 android:layout_width="15dp"
-                android:layout_height="13dp"
+                android:layout_height="15dp"
                 android:layout_marginTop="5dp"
                 android:background="?attr/selectableItemBackground"
                 android:src="@drawable/decrece"
@@ -83,7 +84,6 @@
                 android:layout_width="13dp"
                 android:layout_height="13dp"
                 android:layout_marginTop="5dp"
-                android:background="?attr/selectableItemBackground"
                 android:src="@drawable/incrementa"
                 android:scaleType="centerInside"
                 android:contentDescription="Aumentar cantidad" />
@@ -101,8 +101,8 @@
         <!-- Botón eliminar producto -->
         <ImageButton
             android:id="@+id/btn_remove_product"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
             android:src="@drawable/delete"
             android:contentDescription="Eliminar producto"
             android:background="?attr/selectableItemBackground"

@@ -38,14 +38,11 @@ class DetalleProductoActivity : AppCompatActivity() {
 
         searchBar = findViewById(R.id.search_bar)
 
-        // Usar setOnClickListener para manejar el clic una sola vez
         searchBar.setOnClickListener {
-            // Verificar si la actividad de búsqueda no está ya abierta
             val intent = Intent(this, BusquedaActivity::class.java)
             startActivity(intent)
         }
 
-        // Obtener el producto del Intent
         val producto = intent.getParcelableExtra<Producto>("producto")
 
         producto?.let {
@@ -53,7 +50,6 @@ class DetalleProductoActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.nombre_producto).text = it.nombre
             findViewById<TextView>(R.id.precio_producto).text = "$${it.precio}"
             findViewById<TextView>(R.id.descripcion_producto).text = it.descripcion
-            findViewById<TextView>(R.id.fecha_vencimiento).text = "Fecha de vencimiento: ${it.fecha_vencimiento}"
             findViewById<TextView>(R.id.presentacion).text = "Presentación: ${it.presentacion}"
 
             // Cargar la imagen usando Picasso

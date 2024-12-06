@@ -15,7 +15,6 @@
         android:orientation="vertical"
         android:padding="12dp">
 
-        <!-- Imagen del producto con altura mayor que su ancho -->
         <ImageView
             android:id="@+id/producto_imagen"
             android:layout_width="150dp"
@@ -23,7 +22,6 @@
             android:scaleType="centerCrop"
             android:layout_gravity="center" />
 
-        <!-- Nombre del producto con margen inferior -->
         <TextView
             android:id="@+id/producto_nombre"
             android:layout_width="wrap_content"
@@ -35,7 +33,6 @@
             android:paddingTop="8dp"
             android:layout_marginBottom="8dp" />
 
-        <!-- Precio del producto con margen inferior -->
         <TextView
             android:id="@+id/producto_precio"
             android:layout_width="wrap_content"
@@ -47,8 +44,6 @@
             android:layout_marginBottom="8dp"
             android:textColor="@color/black" />
 
-        <!-- Descripción del producto con margen inferior -->
-        <!-- Descripción del producto con ancho limitado -->
         <TextView
             android:id="@+id/producto_descripcion"
             android:layout_width="250dp"
@@ -62,11 +57,9 @@
             android:ellipsize="end"
             android:maxLines="4" />
 
-
-        <!-- Botón Agregar al Carrito con margen superior e inferior -->
         <Button
             android:id="@+id/agregar_carrito_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
@@ -75,9 +68,8 @@
             android:drawableTint="@android:color/white"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="Agregar al Carrito"
+            android:text="Agregar"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

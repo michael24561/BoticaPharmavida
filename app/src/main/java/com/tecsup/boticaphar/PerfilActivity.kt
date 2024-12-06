@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -37,6 +38,9 @@ class PerfilActivity : AppCompatActivity() {
             val intent = Intent(this, HistorialPedidosActivity::class.java)
             startActivity(intent)
         }
+
+
+
 
         nameTextView.text = username ?: "Nombre no disponible"
 
