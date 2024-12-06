@@ -26,7 +26,7 @@ class MapsActivity: AppCompatActivity(), OnMapReadyCallback {
         override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
-        /*map.uiSettings.isZoomControlsEnabled = true // zoom-botones
+        map.uiSettings.isZoomControlsEnabled = true // zoom-botones
         map.uiSettings.isRotateGesturesEnabled = false
 
         val marker = LatLng(-8.094023264182493,-79.03693931820501)
@@ -46,7 +46,7 @@ class MapsActivity: AppCompatActivity(), OnMapReadyCallback {
 
             Toast.makeText(this, "Lat: $lat, Lng: $lng",
                 Toast.LENGTH_SHORT).show()
-        }*/
+        }
 
     }
 

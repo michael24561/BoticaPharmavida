@@ -1,5 +1,6 @@
 package com.tecsup.boticaphar
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -13,18 +14,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class PerfilActivity : AppCompatActivity() {
     private lateinit var nameTextView: TextView
-    private lateinit var emailTextView: TextView
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil)
 
         nameTextView = findViewById(R.id.username)
-        emailTextView = findViewById(R.id.et_email)
 
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", null)
-        val email = sharedPreferences.getString("email", null)
 
         val editarPerfil = findViewById<ImageView>(R.id.ic_profile)
         val misPedidos = findViewById<ImageView>(R.id.pedidos)
@@ -40,7 +39,6 @@ class PerfilActivity : AppCompatActivity() {
         }
 
         nameTextView.text = username ?: "Nombre no disponible"
-        emailTextView.text = email ?: "Email no disponible"
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
