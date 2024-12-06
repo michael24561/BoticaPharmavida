@@ -79,13 +79,15 @@ class CarritoActivity : AppCompatActivity() {
 
         // Configurar el botón de checkout
         val checkoutButton = findViewById<Button>(R.id.checkout_button)
+        // Dentro de CarritoActivity, en el botón de "checkout"
         checkoutButton.setOnClickListener {
-            // Redirigir a la actividad de métodos de pago
-            val intent = Intent(this@CarritoActivity, MetodosPagoActivity::class.java)
             val totalPedido = calcularTotalCarrito(productosEnCarrito)
+            val intent = Intent(this@CarritoActivity, MetodosPagoActivity::class.java)
             intent.putExtra("totalPedido", totalPedido) // Pasar el total del carrito
+            intent.putParcelableArrayListExtra("productos", ArrayList(productosEnCarrito)) // Pasar los productos
             startActivity(intent)
         }
+
 
         // Actualizar la vista al cargar la actividad
         actualizarVistaCarrito()

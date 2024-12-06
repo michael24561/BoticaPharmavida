@@ -6,12 +6,20 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.tecsup.boticaphar.models.Pedido
+import com.tecsup.boticaphar.models.Producto
+import com.tecsup.boticaphar.network.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class PagoTarjetaActivity : AppCompatActivity() {
 
@@ -29,12 +37,6 @@ class PagoTarjetaActivity : AppCompatActivity() {
             Toast.makeText(this, "Error: Token no encontrado. Inicia sesión nuevamente.", Toast.LENGTH_SHORT).show()
             finish()
             return
-        }
-
-        // Acción para retroceder al carrito
-        findViewById<View>(R.id.menu_retroceder8).setOnClickListener {
-            startActivity(Intent(this, MetodosPagoActivity::class.java))
-            finish()
         }
 
         // Resto del código de configuración
@@ -90,20 +92,57 @@ class PagoTarjetaActivity : AppCompatActivity() {
         })
 
         btnConfirmPayment.setOnClickListener {
+            // Validación de campos
             val missingField = validateFields(creditCardNumber, expirationDate, cvvCode)
             if (missingField != null) {
                 Toast.makeText(this, "Falta llenar el campo: $missingField", Toast.LENGTH_SHORT).show()
             } else {
-                // Procesar el pago
-                Toast.makeText(this, "Procesando el pago con token: $accessToken", Toast.LENGTH_SHORT).show()
+                // Obtener el nombre del usuario
+                val nombreUsuario = nombresCompletos.text.toString()
 
-                // Redirige a la actividad de carga
-                val cargaIntent = Intent(this, CargaActivity::class.java)
-                cargaIntent.putExtra("nombreProducto", nombreProducto)
-                cargaIntent.putExtra("cantidad", cantidad)
-                cargaIntent.putExtra("nombreUsuario", nombresCompletos.text.toString())
-                startActivity(cargaIntent)
-                finish()
+                // Obtener productos desde el Intent
+                val productos = intent.getParcelableArrayListExtra<Producto>("productos") ?: emptyList()
+
+                // Asegúrate de que totalPedido esté correctamente inicializado
+                val totalPedido = intent.getDoubleExtra("totalPedido", 0.0) // O usa el cálculo que corresponda
+
+                // Crear el objeto Pedido con la información necesaria
+                val pedido = Pedido(
+                    id = 0, // El ID se generará automáticamente en la base de datos
+                    fecha_pedido = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()), // Fecha actual
+                    total_pedido = totalPedido, // El total calculado previamente
+                    estado = "Pendiente", // Estado inicial del pedido
+                    cantidad = productos.size, // Cantidad de productos
+                    precio_compra = totalPedido, // Precio total del pedido
+                    productoId = if (productos.isNotEmpty()) productos.first().id else 0, // Aseguramos que no esté vacío
+                    proveedorId = 1 // Suponiendo que el proveedor es constante, este puede venir de la API si es necesario
+                )
+
+                // Realizar la solicitud al servidor para crear el pedido
+                RetrofitClient.instance.realizarPedido(pedido).enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@PagoTarjetaActivity, "Pedido realizado con éxito", Toast.LENGTH_SHORT).show()
+
+                            // Redirigir a la actividad de carga
+                            val cargaIntent = Intent(this@PagoTarjetaActivity, CargaActivity::class.java)
+                            cargaIntent.putExtra("nombreProducto", nombreProducto)
+                            cargaIntent.putExtra("cantidad", cantidad)
+                            cargaIntent.putExtra("nombreUsuario", nombreUsuario)
+                            startActivity(cargaIntent)
+                            finish()
+                        } else {
+                            // Manejo de error basado en el código de respuesta HTTP
+                            val errorMessage = response.message() ?: "Error desconocido"
+                            Toast.makeText(this@PagoTarjetaActivity, "Error al realizar el pedido: $errorMessage", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        // Error de conexión
+                        Toast.makeText(this@PagoTarjetaActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
         }
     }

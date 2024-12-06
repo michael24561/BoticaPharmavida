@@ -1,7 +1,9 @@
 package com.tecsup.boticaphar.network
 
 import FacturaCliente
+import com.google.android.gms.common.api.Response
 import com.tecsup.boticaphar.models.Categoria
+import com.tecsup.boticaphar.models.Pago
 import com.tecsup.boticaphar.models.Pedido
 import com.tecsup.boticaphar.models.Producto
 import com.tecsup.boticaphar.models.UserData
@@ -46,10 +48,7 @@ interface ApiService {
     fun realizarPedido(@Body pedido: Pedido): Call<Void>
 
     @POST("facturas-cliente/")
-    fun crearFactura(
-        @Header("Authorization") token: String,
-        @Body factura: FacturaCliente
-    ): Call<Map<String, Any>>
+    suspend fun realizarPago(@Body pago: Pago): Response<Pago>
 
 }
 
