@@ -11,15 +11,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.tecsup.boticaphar.models.Pedido
-import com.tecsup.boticaphar.models.Producto
-import com.tecsup.boticaphar.network.RetrofitClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class PagoTarjetaActivity : AppCompatActivity() {
 
@@ -56,12 +47,7 @@ class PagoTarjetaActivity : AppCompatActivity() {
         cvvCode.filters = arrayOf(InputFilter.LengthFilter(3))
 
         creditCardNumber.addTextChangedListener(object : TextWatcher {
-            private var isFormatting = false // Evita bucles infinitos
-
             override fun afterTextChanged(s: Editable?) {
-                if (isFormatting) return
-                isFormatting = true
-
                 if (s != null) {
                     val formatted = formatCardNumber(s.toString())
                     if (s.toString() != formatted) {
@@ -70,7 +56,6 @@ class PagoTarjetaActivity : AppCompatActivity() {
                     }
                     updateCardTypeIcon(s.toString(), cardTypeIcon)
                 }
-                isFormatting = false
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -92,65 +77,29 @@ class PagoTarjetaActivity : AppCompatActivity() {
         })
 
         btnConfirmPayment.setOnClickListener {
-            // Validación de campos
             val missingField = validateFields(creditCardNumber, expirationDate, cvvCode)
             if (missingField != null) {
                 Toast.makeText(this, "Falta llenar el campo: $missingField", Toast.LENGTH_SHORT).show()
             } else {
-                // Obtener el nombre del usuario
-                val nombreUsuario = nombresCompletos.text.toString()
+                // Procesar el pago
+                Toast.makeText(this, "Procesando el pago con token: $accessToken", Toast.LENGTH_SHORT).show()
 
-                // Obtener productos desde el Intent
-                val productos = intent.getParcelableArrayListExtra<Producto>("productos") ?: emptyList()
-
-                // Asegúrate de que totalPedido esté correctamente inicializado
-                val totalPedido = intent.getDoubleExtra("totalPedido", 0.0) // O usa el cálculo que corresponda
-
-                // Crear el objeto Pedido con la información necesaria
-                val pedido = Pedido(
-                    id = 0, // El ID se generará automáticamente en la base de datos
-                    fecha_pedido = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()), // Fecha actual
-                    total_pedido = totalPedido, // El total calculado previamente
-                    estado = "Pendiente", // Estado inicial del pedido
-                    cantidad = productos.size, // Cantidad de productos
-                    precio_compra = totalPedido, // Precio total del pedido
-                    productoId = if (productos.isNotEmpty()) productos.first().id else 0, // Aseguramos que no esté vacío
-                    proveedorId = 1 // Suponiendo que el proveedor es constante, este puede venir de la API si es necesario
-                )
-
-                // Realizar la solicitud al servidor para crear el pedido
-                RetrofitClient.instance.realizarPedido(pedido).enqueue(object : Callback<Void> {
-                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                        if (response.isSuccessful) {
-                            Toast.makeText(this@PagoTarjetaActivity, "Pedido realizado con éxito", Toast.LENGTH_SHORT).show()
-
-                            // Redirigir a la actividad de carga
-                            val cargaIntent = Intent(this@PagoTarjetaActivity, CargaActivity::class.java)
-                            cargaIntent.putExtra("nombreProducto", nombreProducto)
-                            cargaIntent.putExtra("cantidad", cantidad)
-                            cargaIntent.putExtra("nombreUsuario", nombreUsuario)
-                            startActivity(cargaIntent)
-                            finish()
-                        } else {
-                            // Manejo de error basado en el código de respuesta HTTP
-                            val errorMessage = response.message() ?: "Error desconocido"
-                            Toast.makeText(this@PagoTarjetaActivity, "Error al realizar el pedido: $errorMessage", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                        // Error de conexión
-                        Toast.makeText(this@PagoTarjetaActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
-                    }
-                })
+                // Redirige a la actividad de carga
+                val cargaIntent = Intent(this, CargaActivity::class.java)
+                cargaIntent.putExtra("nombreProducto", nombreProducto)
+                cargaIntent.putExtra("cantidad", cantidad)
+                cargaIntent.putExtra("nombreUsuario", nombresCompletos.text.toString())
+                startActivity(cargaIntent)
+                finish()
             }
         }
     }
 
-    // Formatea el número de tarjeta con guiones entre cada 4 dígitos
+    // Formatea el número de tarjeta con espacios entre cada 4 dígitos
     private fun formatCardNumber(number: String): String {
-        val cleanNumber = number.replace("-", "") // Elimina los guiones existentes
-        return cleanNumber.chunked(4).joinToString("-") // Divide en grupos de 4 y une con guiones
+        return number.replace(" ".toRegex(), "")
+            .chunked(4)
+            .joinToString(" ")
     }
 
     // Actualiza el ícono del tipo de tarjeta basado en el número ingresado
@@ -158,7 +107,6 @@ class PagoTarjetaActivity : AppCompatActivity() {
         when {
             cardNumber.startsWith("4") -> iconView.setImageResource(R.drawable.ic_visa) // Ícono de Visa
             cardNumber.startsWith("5") -> iconView.setImageResource(R.drawable.ic_mastercard) // Ícono de MasterCard
-            cardNumber.startsWith("3") -> iconView.setImageResource(R.drawable.ic_amex) // Ícono de Amex
             else -> iconView.setImageResource(R.drawable.ic_default_card) // Ícono genérico
         }
     }
@@ -169,11 +117,8 @@ class PagoTarjetaActivity : AppCompatActivity() {
         expirationDate: EditText,
         cvvCode: EditText
     ): String? {
-        val cardNumber = creditCardNumber.text.toString().replace("-", "") // Elimina los guiones
-
         return when {
-            cardNumber.isEmpty() -> "Número de tarjeta"
-            cardNumber.length != 16 -> "Número de tarjeta inválido"
+            creditCardNumber.text.isNullOrEmpty() -> "Número de tarjeta"
             expirationDate.text.isNullOrEmpty() -> "Fecha de expiración"
             cvvCode.text.isNullOrEmpty() -> "CVV"
             else -> null

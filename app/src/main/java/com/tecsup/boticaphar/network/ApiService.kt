@@ -47,8 +47,6 @@ interface ApiService {
     @POST("pedidos/")
     fun realizarPedido(@Body pedido: Pedido): Call<Void>
 
-    @POST("facturas-cliente/")
-    suspend fun realizarPago(@Body pago: Pago): Response<Pago>
 
 }
 
