@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -12,6 +13,7 @@ class MetodosPagoActivity : AppCompatActivity() {
     private lateinit var totalPriceText: TextView
     private lateinit var lugarRecojo: TextView
     private lateinit var direccionRecojo: TextView
+    private lateinit var lugarRecojoImagen: ImageView
     private var totalPedido: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +23,8 @@ class MetodosPagoActivity : AppCompatActivity() {
         totalPriceText = findViewById(R.id.total_price_text)
         lugarRecojo = findViewById(R.id.lugarRecojo)
         direccionRecojo = findViewById(R.id.direccionRecojo)
+        lugarRecojoImagen = findViewById(R.id.lugarRecojoImagen)  // Asegúrate de que tengas este ImageView en tu layout
+
         val finalizarCompraButton = findViewById<Button>(R.id.finalizarCompra)
 
         val fechaRecojo: TextView = findViewById(R.id.fechaRecojo)
@@ -44,18 +48,25 @@ class MetodosPagoActivity : AppCompatActivity() {
         }
     }
 
+    // Método para abrir la lista de boticas
     fun openBoticasList(view: View) {
         val intent = Intent(this, BoticasListActivity::class.java)
         startActivityForResult(intent, 1)
     }
 
+    // Recibir los resultados de la selección de la botica
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            val lugar = data.getStringExtra("lugar")
-            val direccion = data.getStringExtra("direccion")
-            lugarRecojo.text = lugar
-            direccionRecojo.text = direccion
+
+        if (resultCode == RESULT_OK && requestCode == 1 && data != null) {
+            val nombreBotica = data.getStringExtra("nombreBotica")
+            val direccionBotica = data.getStringExtra("direccionBotica")
+            val imagenResId = data.getIntExtra("imageBotica", 0)
+
+            // Actualizar los campos con los datos seleccionados
+            lugarRecojo.text = nombreBotica
+            direccionRecojo.text = direccionBotica
+            lugarRecojoImagen.setImageResource(imagenResId ?: 0)
         }
     }
 }

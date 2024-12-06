@@ -1,13 +1,11 @@
 package com.tecsup.boticaphar
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -25,7 +23,6 @@ class MenuLateralActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
 
-
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +31,7 @@ class MenuLateralActivity : AppCompatActivity() {
         drawerLayout = findViewById(R.id.drawer_menu_perfil_completo)
         navigationView = findViewById(R.id.nav_menu_completo_view)
 
-        val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
-        val username = sharedPreferences.getString("username", null)
-
-        val usernameTextView = findViewById<TextView>(R.id.username)
-        usernameTextView.text = username ?: "Nombre no disponible"
-
+        // Llamada a la API para obtener las categorías
         obtenerCategorias()
 
         // Configuración del menú lateral

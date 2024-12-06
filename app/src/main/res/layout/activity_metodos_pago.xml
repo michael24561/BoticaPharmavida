@@ -104,6 +104,7 @@
                     android:gravity="center_vertical"
                     android:layout_marginBottom="8dp">
                     <ImageView
+                        android:id="@+id/lugarRecojoImagen"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:src="@drawable/pharmavida"
@@ -129,6 +130,7 @@
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/quienRecogera"
                     android:layout_width="wrap_content"
